@@ -147,7 +147,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	double ver_norm_x = 0;
 	double ver_norm_y = 0;
 
-	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
+	// S_c(X,Y) = 1 - (X \dot Y))
 
 
 	// init for random values
@@ -185,6 +185,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		// shr_client_set[i] = yc->PutSIMDINGate(bitlen, yvals[i], 1, CLIENT);
 	}
 
+	// We used to have verifcation for normalization but that happens in input now. 
 	// ver_norm_x = sqrt(ver_norm_x);
 	// ver_norm_y = sqrt(ver_norm_y);
 
