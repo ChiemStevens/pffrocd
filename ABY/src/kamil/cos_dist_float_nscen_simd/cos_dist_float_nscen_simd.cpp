@@ -360,10 +360,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	
 	std::cout << "x dot y: " << ver_x_dot_y << std::endl;
 
-	std::cout << "norm(x): " << ver_norm_x << std::endl;
-
-	std::cout << "norm(y): " << ver_norm_y << std::endl;
-
 	std::cout << "cos sim: " << ver_cos_sim << std::endl;
 
 	std::cout << "CIRCUIT RESULTS:" << std::endl;
@@ -392,15 +388,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
 	double x_dot_y = *((double *)x_dot_y_out_vals);
 
-	uint32_t *norm_x_out_vals = (uint32_t *)s_norm_x_out->get_clear_value_ptr();
-	double norm_x = *((double *)norm_x_out_vals);
+	// uint32_t *norm_x_out_vals = (uint32_t *)s_norm_x_out->get_clear_value_ptr();
+	// double norm_x = *((double *)norm_x_out_vals);
 
-	uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
-	double norm_y = *((double *)norm_y_out_vals);
+	// uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
+	// double norm_y = *((double *)norm_y_out_vals);
 
 	std::cout << "x dot share: " << x_dot_y << std::endl;
-	std::cout << "norm(x) : " << norm_x << std::endl;
-	std::cout << "norm(share): " << norm_y << std::endl;
 	std::cout << "cos sim: " << 1 - cos_sim << std::endl;
 
 	std::ofstream file;
