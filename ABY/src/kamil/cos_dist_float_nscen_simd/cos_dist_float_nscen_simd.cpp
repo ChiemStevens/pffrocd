@@ -185,10 +185,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		// shr_client_set[i] = yc->PutSIMDINGate(bitlen, yvals[i], 1, CLIENT);
 	}
 
-	ver_norm_x = sqrt(ver_norm_x);
-	ver_norm_y = sqrt(ver_norm_y);
+	// ver_norm_x = sqrt(ver_norm_x);
+	// ver_norm_y = sqrt(ver_norm_y);
 
-	double ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
+	double ver_cos_sim = 1 - (ver_x_dot_y);
 
 	// shr_server_set[0] = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
 	// shr_client_set[0] = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
@@ -248,81 +248,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 
 
-	// computing norm(X)
+	// share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL);
+	// // bc->PutPrintValueGate(s_norm_x_times_norm_y, "s_norm_x_times_norm_y");
 
-	share *s_x_times_x = bc->PutFPGate(s_xin, s_xin, MUL, bitlen, nvals, no_status);
-	// bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
+	// share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
+	// // bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
 
-
-	posids[0] = 0;
-	posids[1] = 0;
-	posids[2] = 1;
-	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_norm_x = bc->PutSubsetGate(s_x_times_x, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
-
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
-
-		// bc->PutPrintValueGate(bc->PutSubsetGate(s_product,posids,1,false), "First wire");
-
-		// share *s_product_split;
-		s_norm_x = bc->PutFPGate(s_norm_x , bc->PutSubsetGate(s_x_times_x,posids,1,true),ADD);
-		//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
-		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-		//bc->PutPrintValueGate(a_share, "a_share");
-	}
-
-	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
-	// bc->PutPrintValueGate(s_norm_x, "s_norm_x");
-
-	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, ALL);
-
-
-	// computing norm(Y)
-
-	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
-	// bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
-
-
-	posids[0] = 0;
-	posids[1] = 0;
-	posids[2] = 1;
-	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_norm_y = bc->PutSubsetGate(s_y_times_y, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
-
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
-
-		// bc->PutPrintValueGate(bc->PutSubsetGate(s_product,posids,1,false), "First wire");
-
-		// share *s_product_split;
-		s_norm_y = bc->PutFPGate(s_norm_y , bc->PutSubsetGate(s_y_times_y,posids,1,true),ADD);
-		//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
-		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-		//bc->PutPrintValueGate(a_share, "a_share");
-	}
-
-	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
-	// bc->PutPrintValueGate(s_norm_y, "s_norm_y");
-
-	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, ALL);
-
-
-	share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL);
-	// bc->PutPrintValueGate(s_norm_x_times_norm_y, "s_norm_x_times_norm_y");
-
-	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
-	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
-
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	// share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
