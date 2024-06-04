@@ -19,11 +19,11 @@ print("Getting two random embeddings...")
 x, y = pffrocd.get_two_random_embeddings(False)
 print("got the embeddings!")
 
-r = pffrocd.generate_nonce(y, dtype=NUMPY_DTYPE)
+r = pffrocd.generate_nonce(y)
 
 y1 = r
 
-y0 = pffrocd.fxor(y, y1, dtype=NUMPY_DTYPE)
+y0 = pffrocd.fxor(y, y1)
 
 
 output = pffrocd.run_sfe(x, y, y_0=y0, y_1=y1)
