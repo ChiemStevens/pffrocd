@@ -9,6 +9,9 @@ pffrocd.OUTPUT_FILE_NAME = f"output_{pffrocd.EXECUTABLE_NAME}.txt"
 
 # get two embeddings of different people
 x,y=pffrocd.get_two_random_embeddings(False)
+r = pffrocd.generate_nonce(y, dtype=np.float32)
+y1 = r
+y0 = pffrocd.fxor(y, y1, dtype=np.float32)
 
 # Print out the cosine distance for verificaiton before the normalization happens
 print("NUMPY COS_DIST:")
@@ -23,11 +26,24 @@ print("Normalize COS_DIST:")
 print(1 - np.dot(x, y))
 
 # Run the circuit
-r = pffrocd.generate_nonce(y, dtype=np.float32)
-y1 = r
-y0 = pffrocd.fxor(y, y1, dtype=np.float32)
-
 output = pffrocd.run_sfe(x, y, y_0=y0, y_1=y1)
+
+
+# get two embeddings of different people
+# print("Getting two random embeddings...")
+# x, y = pffrocd.get_two_random_embeddings(False)
+# print("got the embeddings!")
+
+# r = pffrocd.generate_nonce(y)
+
+# y1 = r
+
+# y0 = pffrocd.fxor(y, y1)
+
+
+# output = pffrocd.run_sfe(x, y, y_0=y0, y_1=y1)
+
+# print(output.stdout)
 
 # Print the output
 print(output.stdout)
