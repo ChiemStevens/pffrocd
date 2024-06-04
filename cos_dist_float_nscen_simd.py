@@ -23,9 +23,9 @@ print("Normalize COS_DIST:")
 print(1 - np.dot(x, y))
 
 # Run the circuit
-r = pffrocd.generate_nonce(y, dtype=NUMPY_DTYPE)
+r = pffrocd.generate_nonce(y, dtype=np.float32)
 y1 = r
-y0 = pffrocd.fxor(y, y1, dtype=NUMPY_DTYPE)
+y0 = pffrocd.fxor(y, y1, dtype=np.float32)
 
 output = pffrocd.run_sfe(x, y, y_0=y0, y_1=y1)
 
