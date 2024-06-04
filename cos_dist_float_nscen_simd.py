@@ -3,7 +3,7 @@ import pffrocd # helper functions
 import numpy as np
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_float_nscen_simd'
+pffrocd.EXECUTABLE_NAME = 'cos_dist_float_scen_simd_32'
 pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"output_{pffrocd.EXECUTABLE_NAME}.txt"
 
