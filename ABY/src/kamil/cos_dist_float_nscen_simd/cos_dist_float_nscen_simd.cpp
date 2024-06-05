@@ -382,8 +382,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// }
 
 
-	uint32_t *cos_sim_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
-	double cos_sim = *((double *)cos_sim_out_vals);
+	// uint32_t *cos_sim_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
+	// double cos_sim = *((double *)cos_sim_out_vals);
 
 	uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
 	double x_dot_y = *((double *)x_dot_y_out_vals);
@@ -395,7 +395,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// double norm_y = *((double *)norm_y_out_vals);
 
 	std::cout << "x dot share: " << x_dot_y << std::endl;
-	std::cout << "cos sim: " << 1 - cos_sim << std::endl;
+	std::cout << "cos sim: " << 1 - x_dot_y << std::endl;
 
 	std::ofstream file;
 	file << std::fixed;
