@@ -249,8 +249,8 @@ def run_sfe(x, y, y_0=None, y_1=None):
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
 
-def get_embedding(imagepath):
-    return DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=True)[0]["embedding"]
+def get_embedding(imagepath, dtype):
+    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"], dtype=dtype)
 
 def parse_powertop_csv(filepath):
     """
