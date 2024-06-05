@@ -14,6 +14,9 @@ x = np.array(x, dtype=np.float32)
 y = np.array(y, dtype=np.float32)
 share0, share1 = pffrocd.create_shares(y, dtype=np.float32)
 share0prime, share1prime = pffrocd.create_shares(share0, dtype=np.float32)
+print("x:", x)
+print("share0:", share0)
+print("share0prime:", share0prime)
 
 # Print out the cosine distance for verificaiton before the normalization happens
 print("NUMPY COS_DIST:")
