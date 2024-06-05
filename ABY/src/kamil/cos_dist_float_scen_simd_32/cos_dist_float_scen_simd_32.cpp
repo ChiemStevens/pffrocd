@@ -53,7 +53,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		 {(void *)inputfile, T_STR, "f", "Input file containing face embeddings", true, false},
 		 {(void *)pffrocd_path, T_STR, "o", "absolute path to pffrocd directory", true, false}
 		};
-
+	std::cout << "Start pre checks" << std::endl; 
 	if (!parse_options(argcp, argvp, options,
 					   sizeof(options) / sizeof(parsing_ctx)))
 	{
@@ -82,13 +82,14 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 	} else {
 		std::cout << "Invalid MT algorithm" << std::endl;
 		exit(EXIT_FAILURE);
-	} 
+	}
+	std::cout << "Finished pre checks" << std::endl; 
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
 							 e_mt_gen_alg mt_alg, e_sharing sharing, uint32_t debug, std::string inputfile, std::string pffrocd_path)
 {
-
+	std::cout << "Start of test" << std::endl; 
 	// std::cout << "SEC LEVEL: " << seclvl.symbits << std::endl;
 	// std::cout << "MT_ALG: " << mt_alg << std::endl;
 
