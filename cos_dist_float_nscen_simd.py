@@ -22,13 +22,13 @@ print("share0prime:", share0prime)
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
 
-# Normalize the embeddings
-x = x / np.linalg.norm(x)
-y = y / np.linalg.norm(y)
+# # Normalize the embeddings
+# x = x / np.linalg.norm(x)
+# y = y / np.linalg.norm(y)
 
-# Print out the cosine distance for verificaiton after the normalization happens
-print("Normalize COS_DIST:")
-print(1 - np.dot(x, y))
+# # Print out the cosine distance for verificaiton after the normalization happens
+# print("Normalize COS_DIST:")
+# print(1 - np.dot(x, y))
 
 # Run the circuit
 output = pffrocd.run_sfe(x, y, y_0=share0, y_1=share1)
