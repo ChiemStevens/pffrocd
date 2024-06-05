@@ -400,7 +400,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::ofstream file;
 	file << std::fixed;
 	file.open(outputfile);
-	file << 1- cos_sim << std::endl;
+	file << 1 - x_dot_y << std::endl;
 	file.close();
 	
 
