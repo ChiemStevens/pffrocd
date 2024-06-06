@@ -102,17 +102,11 @@ def run_test():
         # create shares of the reference image
         ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
-        share0prime, share1prime = pffrocd.create_shares(share0, dtype=NUMPY_DTYPE)
-        logger.debug(f"Share0prime: {share0prime}")
-
         # write the shares to the server and client
+        # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
+        # This made me confused for a while, so I think it is good to clarify this here
         pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
         pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
-
-        # write the shares to the server and client
-        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", share0prime)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0prime.txt", share1prime)
-
         # run the test for each image
         for count_img,img in enumerate(imgs):
             logger.info(f"Running test for {img}")
@@ -128,6 +122,17 @@ def run_test():
                 logger.error(stderr)
 
             logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
+
+            # Let the server create two shares from the embeddings
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_pffrocd_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
+            logger.debug(f"Stdout of extracting embedding: {stdout}")
+            logger.debug(f"Stderr of extracting embedding: {stderr}")
+            extraction_time = float(stdout)
+
+            if stderr != '':
+                logger.error("REMOTE EXECUTION OF COMMAND FAILED")
+                logger.error(stderr)
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", stdout)
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
@@ -231,6 +236,9 @@ def run_test():
 
             # break out of the loop, I only want to run for one person for now
             break
+
+        # break out of the loop, I only want to run for one person for now
+        break
 
 
 if __name__ == "__main__":
