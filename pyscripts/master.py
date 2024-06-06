@@ -127,11 +127,14 @@ def run_test():
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
-            s = stdout.replace('\n', '')
-            s.strip("[]")
-            logger.info(f"What is in stdout: {s}")
-            s.split()
-            logger.info(f"What is in stdout: {stdout}")
+            # Remove the brackets and split the string into a list of strings
+            print(stdout)
+            s = stdout.strip('[]').split()
+
+            # Convert the list of strings into a list of floats
+            s = [float(i) for i in s]
+
+            # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=NUMPY_DTYPE)
 
             if stderr != '':
