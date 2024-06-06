@@ -33,6 +33,7 @@ input_file = args.input
 with open(input_file, 'r') as f:
     ref_img_embedding = [float(line.strip()) for line in f]
 
+ref_img_embedding = np.array(ref_img_embedding, dtype=NUMPY_DTYPE)
 share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
 
 # Write the share to the output file

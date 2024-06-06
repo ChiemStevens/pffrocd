@@ -128,12 +128,12 @@ def run_test():
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             logger.info(f"What is in stdout: {stdout}")
-            # shareprime = NUMPY_DTYPE(stdout)
+            shareprime = NUMPY_DTYPE(stdout)
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            #pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
