@@ -128,12 +128,9 @@ def run_test():
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             # Remove the brackets and split the string into a list of strings
-            print(stdout)
             s = stdout.strip('[]').split()
-
             # Convert the list of strings into a list of floats
             s = [float(i) for i in s]
-
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=NUMPY_DTYPE)
 
@@ -182,6 +179,9 @@ def run_test():
             client_ram_usage = pffrocd.parse_usr_bin_time_output(client_sfe_error)
             logger.debug(f"Parsed server ram usage: {server_ram_usage}")
             logger.debug(f"Parsed client ram usage: {client_ram_usage}")
+
+            logger.info(f"Server SFE output: {server_sfe_output}")
+            logger.info(f"Client SFE output: {client_sfe_output}")
 
             # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
