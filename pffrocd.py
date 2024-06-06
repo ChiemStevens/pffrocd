@@ -616,13 +616,8 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
         client.close()
 
 
-def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray, optional_master_private_key_path=""):
-    # Here we check if the user supplied a master private key path, if not use the same path as the private key of the client
-    if not optional_master_private_key_path:
-        # Load the private key from the specified file path
-        private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
-    else:
-        private_key = paramiko.RSAKey.from_private_key_file(optional_master_private_key_path)
+def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray):
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
     # Create an SSH client
     client = paramiko.SSHClient()
@@ -673,12 +668,8 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         #     return f"f'iperf3 failed on {host_output.host}. stdout: {stdout}, stderr: {stderr}"
     '''read the logfile into a dictionary'''
     
-    # Here we check if the user supplied a master private key path, if not use the same path as the private key of the client
-    if not optional_master_private_key_path:
-        # Load the private key from the specified file path
-        private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
-    else:
-        private_key = paramiko.RSAKey.from_private_key_file(optional_master_private_key_path)
+    # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
     # Create an SSH client
     client = paramiko.SSHClient()

@@ -70,7 +70,7 @@ def run_test():
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
     # get the bandwidth and log it
-    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, server_key, server_pffrocd_path, current_datetime, master_key_path)
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, master_key_path, server_pffrocd_path, current_datetime, master_key_path)
     logger.info(f"Initial (tested with iperf3) bandwidth: {bandwidth:.2f} Mbits/sec")
 
     # get the list of people that have more than one image
@@ -104,15 +104,15 @@ def run_test():
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
 
         # write the shares to the server and client
-        pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0, master_key_path)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1, master_key_path)
+        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
+        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
 
         # run the test for each image
         for count_img,img in enumerate(imgs):
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             extraction_time = float(stdout)
@@ -125,8 +125,8 @@ def run_test():
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
-            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
-            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
             # run the sfe on both client and server in parallel
             logger.info("Running sfe...")
@@ -172,10 +172,10 @@ def run_test():
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
                 output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
-                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
+                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, master_key_path, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
                 logger.debug(f"All values from powertop for client: {all_values}")
                 logger.debug(f"Energy client: {energy_client}")
-                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, server_key, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
+                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, master_key_path, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
                 logger.debug(f"All values from powertop for server: {all_values}")
                 logger.debug(f"Energy server: {energy_server}")
             else:
