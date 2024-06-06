@@ -534,8 +534,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// uint32_t *cos_sim_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
 	// float cos_sim = *((float *)cos_sim_out_vals);
 
-	uint32_t *x_dot_y_out = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
-	float x_dot_y = *((float *)x_dot_y_out);
+	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
+	float x_dot_y = *((float *)x_dot_y_out_vals);
 
 	// uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
 	// double x_dot_y = *((double *)x_dot_y_out_vals);
