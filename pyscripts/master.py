@@ -129,8 +129,6 @@ def run_test():
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             logger.info(f"What is in stdout: {stdout}")
             shareprime = np.array(stdout)
-            logger.info(f"What is in shareprime: {shareprime}")
-            shareprime = shareprime.astype(NUMPY_DTYPE)
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
