@@ -145,7 +145,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//std::cout << "z: " << z << std::endl;
 		share_embeddings.push_back(z);
 	}
-	z = 0
+	z = 0;
 	while(infile_share_prime >> z) {
 		//std::cout << "z: " << z << std::endl;
 		share_embeddings_prime.push_back(z);
