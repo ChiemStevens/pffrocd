@@ -128,6 +128,9 @@ def run_test():
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             stdout = stdout.replace('\n', '')
+            stdout.strip("[]")
+            logger.info(f"What is in stdout: {stdout}")
+            stdout.split()
             logger.info(f"What is in stdout: {stdout}")
             shareprime = np.array(stdout, dtype=NUMPY_DTYPE)
 
