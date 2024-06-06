@@ -102,6 +102,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// array for the Sy<role> share
 	std::vector<float> share_embeddings;
+	std::vector<float> share_embeddings_prime;
 
 
 	// reading the non-xored embeddings, i.e. current face and database face
@@ -131,24 +132,29 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
     // sprintf(fname, "/home/dietpi/pffrocd/ABY/build/bin/share%d.txt", role);
 
 	std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
-
+	std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
 	//std::cout << "FNAME: " << fname << std::endl; 
 
 	std::fstream infile_share(fname);
+	std::fstream infile_share_prime(fnameprime);
 
 	float z;
-	std::cout << "Do we reach this part of the program?" << std::endl;
 	// std::cout << "starting reading z" << std::endl;
 
 	while(infile_share >> z) {
 		//std::cout << "z: " << z << std::endl;
 		share_embeddings.push_back(z);
 	}
+	z = 0
+	while(infile_share_prime >> z) {
+		//std::cout << "z: " << z << std::endl;
+		share_embeddings_prime.push_back(z);
+	}
 
-	std::cout<<"finished reading z" << std::endl;
+	//std::cout<<"finished reading z" << std::endl;
 
 	assert(share_embeddings.size() == nvals);
-
+	assert(share_embeddings_prime.size() == nvals);
 
 	std::string circuit_dir = pffrocd_path + "/ABY/bin/circ/";
 
@@ -172,6 +178,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t xvals[nvals];
 	uint32_t yvals[nvals];
 	uint32_t sharevals[nvals];
+	uint32_t sharevals_prime[nvals];
 	// std::cout << "here 1" << std::endl;
 
 	// verification in plaintext
@@ -192,14 +199,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		float current_x = xembeddings[i];
 		float current_y = yembeddings[i];
 		float current_share = share_embeddings[i];
+		float current_share_prime = share_embeddings_prime[i];
 
 		uint32_t *xptr = (uint32_t *)&current_x;
 		uint32_t *yptr = (uint32_t *)&current_y;
 		uint32_t *shareptr = (uint32_t *)&current_share;
+		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
 
 		xvals[i] = *xptr;
 		yvals[i] = *yptr;
 		sharevals[i] = *shareptr;
+		sharevals_prime[i] = *shareptr_prime;
 
 		ver_x_times_y[i] = current_x * current_y;
 		ver_x_dot_y += ver_x_times_y[i];
@@ -211,7 +221,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	// std::cout << "here 1" << std::endl;
-	std::cout << "Do we reach this part of the program?" << std::endl;
+	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
 
@@ -233,14 +243,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// std::cout << "assigning ingates" << std::endl;
 
-	if(role == SERVER) {
-		s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
-	} else { //role == CLIENT
-		s_xin = bc->PutDummySIMDINGate(nvals, bitlen);
-	}
+	// if(role == SERVER) {
+	// 	s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
+	// } else { //role == CLIENT
+	// 	s_xin = bc->PutDummySIMDINGate(nvals, bitlen);
+	// }
 
-	// Input of the pre-computed shares of the face in the database
-
+	// // Input of the pre-computed shares of the face in the database
+	s_xin = bc->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
 
