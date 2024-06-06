@@ -546,6 +546,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// std::cout << "x dot share: " << x_dot_y << std::endl;
 	// std::cout << "norm(x) : " << norm_x << std::endl;
 	// std::cout << "norm(share): " << norm_y << std::endl;
+	std::cout << "s x dot y: " << s_x_dot_y << std::endl;
+	std::cout << "x dot y: " << x_dot_y << std::endl;
 	std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
 
 }

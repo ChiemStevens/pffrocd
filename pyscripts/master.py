@@ -117,6 +117,7 @@ def run_test():
             second_image_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
             logger.info(f"Normal distance: {pffrocd.get_cos_dist_numpy(ref_img_embedding, second_image_embedding)}")
             second_image_embedding = second_image_embedding / np.linalg.norm(second_image_embedding)
+            logger.info(f"X dot Y: {np.dot(ref_img_embedding_norm, second_image_embedding)}")
             logger.info(f"Cosine distance: {1 - np.dot(ref_img_embedding_norm, second_image_embedding)}")
             
             
