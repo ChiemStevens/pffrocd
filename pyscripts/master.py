@@ -102,10 +102,16 @@ def run_test():
         # create shares of the reference image
         ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
+        share0prime, share1prime = pffrocd.create_shares(share0, dtype=NUMPY_DTYPE)
+        logger.debug(f"Share0prime: {share0prime}")
 
         # write the shares to the server and client
         pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
         pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
+
+        # write the shares to the server and client
+        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", share0prime)
+        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0prime.txt", share1prime)
 
         # run the test for each image
         for count_img,img in enumerate(imgs):
@@ -222,6 +228,9 @@ def run_test():
             output_path = f"dfs/{current_datetime}.csv"
             # append dataframe to file, only write headers if file does not exist yet
             df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
+
+            # break out of the loop, I only want to run for one person for now
+            break
 
 
 if __name__ == "__main__":
