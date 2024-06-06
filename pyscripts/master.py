@@ -127,12 +127,12 @@ def run_test():
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
-            stdout = stdout.replace('\n', '')
-            stdout.strip("[]")
+            s = stdout.replace('\n', '')
+            s.strip("[]")
+            logger.info(f"What is in stdout: {s}")
+            s.split()
             logger.info(f"What is in stdout: {stdout}")
-            stdout.split()
-            logger.info(f"What is in stdout: {stdout}")
-            shareprime = np.array(stdout, dtype=NUMPY_DTYPE)
+            shareprime = np.array(s, dtype=NUMPY_DTYPE)
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
