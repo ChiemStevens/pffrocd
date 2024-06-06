@@ -101,6 +101,9 @@ def run_test():
 
         # create shares of the reference image
         ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
+        # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
+        ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
+
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
@@ -112,7 +115,7 @@ def run_test():
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", master_key_path)
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt -n {True}", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             extraction_time = float(stdout)
