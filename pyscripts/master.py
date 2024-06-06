@@ -124,7 +124,7 @@ def run_test():
             logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
 
             # Let the server create two shares from the embeddings
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_pffrocd_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             logger.info(f"What is in stdout: {stdout}")
