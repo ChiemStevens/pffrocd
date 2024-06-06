@@ -38,6 +38,8 @@ server_exec_path = config.get('server', 'executable_path')
 server_exec_name = config.get('server', 'executable_name')
 server_pffrocd_path = config.get('server', 'pffrocd_path')
 
+master_key_path = config.get('master', 'private_ssh_key_path')
+
 nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
@@ -68,7 +70,7 @@ def run_test():
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
     # get the bandwidth and log it
-    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, server_key, server_pffrocd_path, current_datetime)
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, server_key, server_pffrocd_path, current_datetime, master_key_path)
     logger.info(f"Initial (tested with iperf3) bandwidth: {bandwidth:.2f} Mbits/sec")
 
     # get the list of people that have more than one image
@@ -102,8 +104,8 @@ def run_test():
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
 
         # write the shares to the server and client
-        pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1)
+        pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0, master_key_path)
+        pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1, master_key_path)
 
         # run the test for each image
         for count_img,img in enumerate(imgs):
