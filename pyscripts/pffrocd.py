@@ -233,7 +233,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
     with open(f"{EXECUTABLE_PATH}/{INPUT_FILE_NAME}", 'w') as f:
         for x_i, y_i in zip(x, y):
             f.write(f"{x_i} {y_i}\n")
-            
+
     if y_0 is not None and y_1 is not None:
         # write the shares into separate files
         with open(f"{EXECUTABLE_PATH}/share0.txt", 'w') as f:
@@ -242,9 +242,9 @@ def run_sfe(x, y, y_0=None, y_1=None):
         with open(f"{EXECUTABLE_PATH}/share1.txt", 'w') as f:
             for i in y_1:
                 f.write(f"{i}\n")
-            
+
     # execute the ABY cos sim computation
-    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -s 112 -x 0 & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -s 112 -x 0 2>&1 > /dev/null)"
+    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
     output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
@@ -255,10 +255,10 @@ def get_embedding(imagepath, dtype):
 def parse_powertop_csv(filepath):
     """
     Parse a PowerTop CSV file and extract a DataFrame containing the software power consumers.
-    
+
     Args:
         filepath (str): The path to the PowerTop CSV file.
-        
+
     Returns:
         pandas.DataFrame: A DataFrame containing the software power consumers.
     """
@@ -305,7 +305,7 @@ def get_energy_consumption(hostname, username, private_key_path, remote_path, ru
             for row in energy_series:
                 value, unit = row.split()
                 value = float(value)
-                if unit == 'mW': 
+                if unit == 'mW':
                     value*=0.001
                 elif unit == 'uW':
                     value*=0.000001
@@ -532,12 +532,12 @@ def setup_logging(name):
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
-    
+
     return logger
 
 # Function to execute a command on a remote host
 def execute_command(host, username, command, private_key_path):
-    
+
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -617,7 +617,6 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
 
 
 def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray):
-    # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
     # Create an SSH client
@@ -668,6 +667,7 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         # if host_output.exit_code != 0:
         #     return f"f'iperf3 failed on {host_output.host}. stdout: {stdout}, stderr: {stderr}"
     '''read the logfile into a dictionary'''
+    
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -692,7 +692,7 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
             d = json.loads(''.join(content))
             # print(f"{d=}")
             bandwidth = float(d['end']['sum_received']['bits_per_second']) / 1e6
-        
+
         # remove the file on the host
         sftp.remove(f'iperf3_{current_datetime}.log')
 
