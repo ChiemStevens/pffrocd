@@ -361,11 +361,11 @@ def fxor(x,y, dtype):
     else:
         raise Exception("Invalid dtype")
     
-def fmul(x,y, dtype):
+def fminus(x,y, dtype):
     if dtype == np.float64:
-        return x*y
+        return x-y
     elif dtype == np.float32:
-        return np.float32(x*y)
+        return np.float32(x-y)
     else:
         raise Exception("Invalid dtype")
 
@@ -724,7 +724,7 @@ def create_shares(x: np.ndarray, dtype):
 
     # client's part is the nonces xored with the embedding
     #share0 = fxor(x, share1, dtype)
-    share0 = fmul(x, share1, dtype)
+    share0 = fminus(x, share1, dtype)
 
     return share0.astype(dtype), share1.astype(dtype)
 
