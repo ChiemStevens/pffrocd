@@ -243,24 +243,24 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
-	s_xin = ac->PutMULGate(s_xin, s_yin);
+	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 
 	// split SIMD gate to separate wires (size many)
-	s_xin = ac->PutSplitterGate(s_xin);
+	s_x_times_y = ac->PutSplitterGate(s_x_times_y);
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
 	for (uint32_t i = 1; i < nvals; i++) {
-		s_xin->set_wire_id(0, ac->PutADDGate(s_xin->get_wire_id(0), s_xin->get_wire_id(i)));
+		s_x_times_y->set_wire_id(0, ac->PutADDGate(s_x_times_y->get_wire_id(0), s_x_times_y->get_wire_id(i)));
 	}
 
 	// discard all wires, except the addition result
-	s_xin->set_bitlength(1);
+	s_x_times_y->set_bitlength(1);
+	ac->PutPrintValueGate(s_x_times_y, "x_times_y");
 
 
-
-	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-	ac->PutPrintValueGate(s_xin, "x_times_y");
+	//share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
+	
 	// // computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
