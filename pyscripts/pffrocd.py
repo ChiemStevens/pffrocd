@@ -360,12 +360,14 @@ def fxor(x,y, dtype):
         return fxor32(x,y)
     else:
         raise Exception("Invalid dtype")
-    
+
+fminus64 = lambda x,y:(x.view("int64")-y.view("int64")).view("float64")
+fminus32 = lambda x,y:(x.view("int32")-y.view("int32")).view("float32")    
 def fminus(x,y, dtype):
     if dtype == np.float64:
-        return x-y
+        return fminus64(x,y)
     elif dtype == np.float32:
-        return np.float32(x-y)
+        return fminus32(x,y)
     else:
         raise Exception("Invalid dtype")
 
