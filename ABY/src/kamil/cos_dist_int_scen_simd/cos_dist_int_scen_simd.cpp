@@ -250,7 +250,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (i = 1; i < nvals; i++) {
+	for (uint32_t i = 1; i < nvals; i++) {
 		s_xin->set_wire_id(0, ac->PutADDGate(s_xin->get_wire_id(0), s_xin->get_wire_id(i)));
 	}
 
