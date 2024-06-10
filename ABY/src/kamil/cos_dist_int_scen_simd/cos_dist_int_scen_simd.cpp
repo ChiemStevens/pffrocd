@@ -225,6 +225,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	std::cout << "values set" << std::endl;
+	std::cout << "share vals: " << sharevals[0] << std::endl;
 	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
@@ -239,11 +240,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// // Input of the pre-computed shares of the face in the database
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	share *result = ac->PutOUTGate(s_xin, CLIENT);
-	uint32_t *result_vals = (uint32_t *)result->get_clear_value_ptr();
-	float trueresult = *((float *)result_vals);
-	std::cout << "true result: " << trueresult << std::endl;
-
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
