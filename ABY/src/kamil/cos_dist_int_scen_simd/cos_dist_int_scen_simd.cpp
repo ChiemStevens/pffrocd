@@ -242,12 +242,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	
-	share* add_out = ac->PutOUTGate(s_xin, ALL);
+	share* x_out = ac->PutOUTGate(s_xin, ALL);
 
 	party->ExecCircuit();
 	uint32_t out_bitlen_add, out_nvals;
 	uint64_t *out_vals_add;
-	add_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
+	x_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
 
 	// print every output
 	for (uint32_t i = 0; i < nvals; i++) {
