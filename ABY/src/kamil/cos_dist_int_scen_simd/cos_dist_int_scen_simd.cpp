@@ -206,12 +206,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	uint16_t x, y;
+	float x, y;
 
-	uint16_t output, v_sum = 0;
+	float output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(nvals);
-	std::vector<uint16_t> yvals(nvals);
+	std::vector<float> xvals(nvals);
+	std::vector<float> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -228,8 +228,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	for (i = 0; i < nvals; i++) {
 
-		x = rand();
-		y = rand();
+		x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
 		v_sum += x * y;
 
@@ -262,7 +262,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-	output = s_out->get_clear_value<uint16_t>();
+	output = s_out->get_clear_value<float>();
 
 	std::cout << "\nCircuit Result: " << output;
 	std::cout << "\nVerification Result: " << v_sum << std::endl;
