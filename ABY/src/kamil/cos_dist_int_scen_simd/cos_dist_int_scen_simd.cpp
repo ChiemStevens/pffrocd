@@ -183,7 +183,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// verification in plaintext
 	float ver_x_times_y[nvals];
+	float ver_x_times_x[nvals];
+	float ver_y_times_y[nvals];
 	float ver_x_dot_y = 0;
+	float ver_norm_x = 0;
+	float ver_norm_y = 0;
 	// std::cout << "here 1" << std::endl;
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
@@ -207,9 +211,19 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		ver_x_times_y[i] = current_x * current_y;
 		ver_x_dot_y += ver_x_times_y[i];
+
+		ver_x_times_x[i] = current_x * current_x;
+		ver_y_times_y[i] = current_y * current_y;
+		ver_norm_x += ver_x_times_x[i];
+		ver_norm_y += ver_y_times_y[i];
 	}
 
-	float ver_cos_sim = 1 - (ver_x_dot_y);
+	// std::cout << "here 1" << std::endl;
+	//std::cout << "Do we reach this part of the program?" << std::endl;
+	ver_norm_x = sqrt(ver_norm_x);
+	ver_norm_y = sqrt(ver_norm_y);
+
+	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
 
 
 	// INPUTS
