@@ -237,8 +237,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yvals[i] = y;
 	}
 
-	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 16, SERVER);
-	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 16, CLIENT);
+	s_x_vec = ac->PutSIMDINGate(nvals, xvals, 64, SERVER);
+	s_y_vec = ac->PutSIMDINGate(nvals, yvals, 64, CLIENT);
 
 	/**
 	 Step 7: Call the build method for building the circuit for the
