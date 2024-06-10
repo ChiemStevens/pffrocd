@@ -239,6 +239,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// // Input of the pre-computed shares of the face in the database
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	share *result = ac->PutSharedOUTGate(s_xin);
+	uint32_t *result_vals = (uint32_t *)result->get_clear_value_ptr();
+	float trueresult = *((float *)result_vals);
+	std::cout << "true result: " << trueresult << std::endl;
+
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
@@ -248,17 +253,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t posids[3] = {0, 0, 1};
 	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
 	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
-	// for (int i = 1; i < nvals; i++)
-	// {
-	// 	//uint32_t posids[3] = {i, i, 1};
+	for (int i = 1; i < nvals; i++)
+	{
+		//uint32_t posids[3] = {i, i, 1};
 
-	// 		posids[0] = i;
-	// 		posids[1] = i;
-	// 		posids[2] = 1;
+			posids[0] = i;
+			posids[1] = i;
+			posids[2] = 1;
 
-	// 	//s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
-    //     s_x_dot_y = ac->PutADDGate(s_x_dot_y, ac->PutSubsetGate(s_x_times_y,posids,1,true));
-	// }
+		//s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+        s_x_dot_y = ac->PutADDGate(s_x_dot_y, ac->PutSubsetGate(s_x_times_y,posids,1,true));
+	}
 
 	share *x_dot_y_out = ac->PutOUTGate(s_x_times_y, ALL);
 	
