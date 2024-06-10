@@ -232,16 +232,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// Input of the current face captured by the drone
 
 	// // Input of the pre-computed shares of the face in the database
-	s_xin = bc->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	s_yin = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
 
-	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+	share *s_x_times_y = ac->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
+	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
 	for (int i = 1; i < nvals; i++)
 	{
 		//uint32_t posids[3] = {i, i, 1};
@@ -250,10 +250,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 			posids[1] = i;
 			posids[2] = 1;
 
-		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+		s_x_dot_y = ac->PutFPGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
 	}
 
-	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+	share *x_dot_y_out = ac->PutOUTGate(s_x_dot_y, ALL);
 	
 	party->ExecCircuit();
 
