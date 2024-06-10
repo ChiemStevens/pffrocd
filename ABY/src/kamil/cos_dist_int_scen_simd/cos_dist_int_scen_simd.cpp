@@ -241,14 +241,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-	ac->PutPrintValueGate(s_xin, "s_xin");
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-
+	ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
 	// // computing x \dot y
-	// uint32_t posids[3] = {0, 0, 1};
+	uint32_t posids[3] = {0, 0, 1};
 	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	// share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
+	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
 	// for (int i = 1; i < nvals; i++)
 	// {
 	// 	//uint32_t posids[3] = {i, i, 1};
