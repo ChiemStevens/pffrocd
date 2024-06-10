@@ -152,7 +152,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	//std::cout<<"finished reading z" << std::endl;
-
+	std::cout << "share_embeddings size: " << share_embeddings.size() << std::endl;
+	std::cout << "share embedddings 0: " << share_embeddings[0] << std::endl;
 	assert(share_embeddings.size() == nvals);
 	assert(share_embeddings_prime.size() == nvals);
 
