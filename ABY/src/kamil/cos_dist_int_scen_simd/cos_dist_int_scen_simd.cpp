@@ -241,7 +241,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	ac->PutPrintValueGate(s_xin, "s_xin");
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-	
+	s_xin->set_bitlength(1);
 	share* x_out = ac->PutOUTGate(s_xin, ALL);
 
 	party->ExecCircuit();
@@ -250,13 +250,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	x_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
 
 	// print every output
-	for (uint32_t i = 0; i < nvals; i++) {
 
-		// dereference output value as double without casting the content
-		float val = *((float*) &out_vals_add[i]);
-
-		std::cout << "ADD RES: " << val << " | nv: " << out_nvals << " bitlen: " << out_bitlen_add << std::endl;
-	}
+	// dereference output value as double without casting the content
+	float val = *((float*) &out_vals_add[0]);
+	std::cout << "val: " << val << std::endl;
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 }
