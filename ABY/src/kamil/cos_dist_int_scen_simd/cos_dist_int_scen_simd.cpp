@@ -247,15 +247,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	
 	party->ExecCircuit();
 
-	uint32_t out_bitlen_x_times_y, out_nvals_x_times_y;
-	uint32_t *out_vals_x_times_y;
-
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
-
-	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
-	float x_dot_y = *((float *)x_dot_y_out_vals);
-
-	std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
 }
 
 int main(int argc, char **argv)
