@@ -128,59 +128,58 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// reading the non-xored embeddings, i.e. current face and database face
 
-	std::fstream infile(inputfile);
+	// std::fstream infile(inputfile);
 
-	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
+	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
-	//TODO: DONT FOGGET TO COMMENT OUT
-	//float x, y;
+	// float x, y;
 
-	std::cout << "starting reading x and y" << std::endl;
+	// std::cout << "starting reading x and y" << std::endl;
 
-	while (infile >> x >> y) {
-		// std::cout << "x: " << x << " | y: "<< y << std::endl;
-		xembeddings.push_back(x);
-		yembeddings.push_back(y);
-	}
+	// while (infile >> x >> y) {
+	// 	// std::cout << "x: " << x << " | y: "<< y << std::endl;
+	// 	xembeddings.push_back(x);
+	// 	yembeddings.push_back(y);
+	// }
 
-	std::cout<<"finished reading x and y" << std::endl;
+	// std::cout<<"finished reading x and y" << std::endl;
 
-	assert(xembeddings.size() == nvals);
-	assert(yembeddings.size() == nvals);
+	// assert(xembeddings.size() == nvals);
+	// assert(yembeddings.size() == nvals);
 
-	std::cout << "nvals" << nvals << std::endl;
-	std::cout << "xembeddings: " << xembeddings.size() << std::endl;
+	// std::cout << "nvals" << nvals << std::endl;
+	// std::cout << "xembeddings: " << xembeddings.size() << std::endl;
 
-	// reading the xored embedding, i.e. either Sy<0> or Sy<1> depending on the role
+	// // reading the xored embedding, i.e. either Sy<0> or Sy<1> depending on the role
 
-	// char *fname = (char *) malloc(150); // file name buffer 
-    // sprintf(fname, "/home/dietpi/pffrocd/ABY/build/bin/share%d.txt", role);
+	// // char *fname = (char *) malloc(150); // file name buffer 
+    // // sprintf(fname, "/home/dietpi/pffrocd/ABY/build/bin/share%d.txt", role);
 
-	std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
-	std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
-	//std::cout << "FNAME: " << fname << std::endl; 
+	// std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
+	// std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
+	// //std::cout << "FNAME: " << fname << std::endl; 
 
-	std::fstream infile_share(fname);
-	std::fstream infile_share_prime(fnameprime);
+	// std::fstream infile_share(fname);
+	// std::fstream infile_share_prime(fnameprime);
 
-	float z;
-	// std::cout << "starting reading z" << std::endl;
+	// float z;
+	// // std::cout << "starting reading z" << std::endl;
 
-	while(infile_share >> z) {
-		//std::cout << "z: " << z << std::endl;
-		share_embeddings.push_back(z);
-	}
-	z = 0;
-	while(infile_share_prime >> z) {
-		//std::cout << "z: " << z << std::endl;
-		share_embeddings_prime.push_back(z);
-	}
+	// while(infile_share >> z) {
+	// 	//std::cout << "z: " << z << std::endl;
+	// 	share_embeddings.push_back(z);
+	// }
+	// z = 0;
+	// while(infile_share_prime >> z) {
+	// 	//std::cout << "z: " << z << std::endl;
+	// 	share_embeddings_prime.push_back(z);
+	// }
 
-	//std::cout<<"finished reading z" << std::endl;
-	std::cout << "share_embeddings size: " << share_embeddings.size() << std::endl;
-	std::cout << "share embedddings 0: " << share_embeddings[0] << std::endl;
-	assert(share_embeddings.size() == nvals);
-	assert(share_embeddings_prime.size() == nvals);
+	// //std::cout<<"finished reading z" << std::endl;
+	// std::cout << "share_embeddings size: " << share_embeddings.size() << std::endl;
+	// std::cout << "share embedddings 0: " << share_embeddings[0] << std::endl;
+	// assert(share_embeddings.size() == nvals);
+	// assert(share_embeddings_prime.size() == nvals);
 
 	std::string circuit_dir = pffrocd_path + "/ABY/bin/circ/";
 
