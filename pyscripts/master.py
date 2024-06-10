@@ -119,7 +119,7 @@ def run_test():
             ver_ref_img_embedding = ver_ref_img_embedding / np.linalg.norm(ver_ref_img_embedding)
             share0prime, share1prime = pffrocd.create_shares(ver_ref_img_embedding, dtype=NUMPY_DTYPE)
             # The result of share0 and share1 should be ref_img_embedding
-            result = np.float32(share0+share1)
+            result = np.float32(share0*share1)
             logger.info(f"share0 (x - nonce): {share0}")
             logger.info(f"share1 (nonce): {share1}")
             logger.info(f"ref_img_embedding: {ref_img_embedding}")
