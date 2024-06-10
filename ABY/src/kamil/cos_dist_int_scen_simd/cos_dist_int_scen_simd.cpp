@@ -233,7 +233,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		v_sum += x * y;
 		// cast x to uint16_t
-
+		std::cout << "x: " << x << std::endl;
 		xvals[i] = static_cast<uint16_t>(x);
 		std::cout << "xvals: " << xvals[i] << std::endl;
 		yvals[i] = static_cast<uint16_t>(y);
