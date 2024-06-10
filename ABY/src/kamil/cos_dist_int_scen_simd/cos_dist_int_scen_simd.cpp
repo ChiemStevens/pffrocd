@@ -256,7 +256,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		// dereference output value as double without casting the content
 		double val = *((double*) &out_vals_add[i]);
 
-		std::cout << "ADD RES: " << val << " = " << *(double*) &avals[i] << " + " << *(double*) &bvals[i] << " | nv: " << out_nvals
+		std::cout << "ADD RES: " << val << " = " << *(double*) &xvals[i] << " + " << *(double*) &yvals[i] << " | nv: " << out_nvals
 		<< " bitlen: " << out_bitlen_add << std::endl;
 	}
 
