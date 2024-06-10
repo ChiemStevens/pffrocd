@@ -70,7 +70,7 @@ def run_test():
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
     # get the bandwidth and log it
-    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, master_key_path, server_pffrocd_path, current_datetime, master_key_path)
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, master_key_path, server_pffrocd_path, current_datetime)
     logger.info(f"Initial (tested with iperf3) bandwidth: {bandwidth:.2f} Mbits/sec")
 
     # get the list of people that have more than one image
