@@ -244,7 +244,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	share *s_out = ac->PutMULGate(s_xin, s_yin);
 	ac->PutPrintValueGate(s_out, "s_out: ");
-	s_out = circ->PutOUTGate(s_out, ALL);
+	s_out = ac->PutOUTGate(s_out, ALL);
 	
 	party->ExecCircuit();
 
