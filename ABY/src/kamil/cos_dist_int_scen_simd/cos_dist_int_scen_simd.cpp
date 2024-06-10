@@ -250,7 +250,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 			posids[1] = i;
 			posids[2] = 1;
 
-		//s_x_dot_y = ac->PutFPGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+		//s_x_dot_y = bc->PutFPGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
         s_x_dot_y = ac->PutADDGate(s_x_dot_y, ac->PutSubsetGate(s_x_times_y,posids,1,true));
 	}
 
