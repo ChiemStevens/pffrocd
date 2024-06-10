@@ -246,17 +246,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	party->ExecCircuit();
 	uint32_t out_bitlen_add, out_nvals;
-	uint64_t *out_vals_add;
+	uint32_t *out_vals_add;
 	x_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
 
 	// print every output
 	for (uint32_t i = 0; i < nvals; i++) {
 
 		// dereference output value as double without casting the content
-		double val = *((double*) &out_vals_add[i]);
+		double val = *((uint32_t*) &out_vals_add[i]);
 
-		std::cout << "ADD RES: " << val << " = " << *(double*) &xvals[i] << " + " << *(double*) &yvals[i] << " | nv: " << out_nvals
-		<< " bitlen: " << out_bitlen_add << std::endl;
+		std::cout << "ADD RES: " << val << " | nv: " << out_nvals << " bitlen: " << out_bitlen_add << std::endl;
 	}
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
