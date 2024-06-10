@@ -252,8 +252,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
 
-	share *s_x_vec, *s_y_vec, *s_out;
-
 	std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
 	// INPUTS
 	share *s_xin, *s_yin;
@@ -261,7 +259,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
-	*s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
+	share *s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
 			(ArithmeticCircuit*) ac);
 
 	party->ExecCircuit();
