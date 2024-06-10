@@ -238,26 +238,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
-	//share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
-	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-	ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
-	// // computing x \dot y
-	uint32_t posids[3] = {0, 0, 1};
-	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
-
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
-
-		//s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
-        s_x_dot_y = ac->PutADDGate(s_x_dot_y, ac->PutSubsetGate(s_x_times_y,posids,1,true));
-	}
-
-	share *x_dot_y_out = ac->PutOUTGate(s_x_times_y, ALL);
+	share *s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
+			(ArithmeticCircuit*) ac);
 
 	party->ExecCircuit();
 
@@ -293,4 +275,25 @@ int main(int argc, char **argv)
 	test_verilog_add64_SIMD(role, address, port, seclvl, nvals, nthreads, mt_alg, S_BOOL, debug, inputfile, pffrocd_path);
 
 	return 0;
+}
+
+share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, ArithmeticCircuit *ac) {
+	uint32_t i;
+
+	// pairwise multiplication of all input values
+	s_x = ac->PutMULGate(s_x, s_y);
+
+	// split SIMD gate to separate wires (size many)
+	s_x = ac->PutSplitterGate(s_x);
+
+	// add up the individual multiplication results and store result on wire 0
+	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
+	for (i = 1; i < numbers; i++) {
+		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+	}
+
+	// discard all wires, except the addition result
+	s_x->set_bitlength(1);
+
+	return s_x;
 }
