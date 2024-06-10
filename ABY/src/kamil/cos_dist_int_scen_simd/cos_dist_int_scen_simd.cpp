@@ -210,8 +210,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	uint16_t output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(numbers);
-	std::vector<uint16_t> yvals(numbers);
+	std::vector<uint16_t> xvals(nvals);
+	std::vector<uint16_t> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -226,7 +226,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 The values for the party different from role is ignored,
 	 but PutINGate() must always be called for both roles.
 	 */
-	for (i = 0; i < numbers; i++) {
+	for (i = 0; i < nvals; i++) {
 
 		x = rand();
 		y = rand();
@@ -237,16 +237,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yvals[i] = y;
 	}
 
-	s_x_vec = circ->PutSIMDINGate(numbers, xvals.data(), 16, SERVER);
-	s_y_vec = circ->PutSIMDINGate(numbers, yvals.data(), 16, CLIENT);
+	s_x_vec = circ->PutSIMDINGate(nvals, xvals.data(), 16, SERVER);
+	s_y_vec = circ->PutSIMDINGate(nvals, yvals.data(), 16, CLIENT);
 
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
 	 Don't forget to type cast the circuit object to type of share
 	 */
-	s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, numbers,
-			(ArithmeticCircuit*) circ);
+	s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, nvals,
+			(ArithmeticCircuit*) ac);
 
 	/**
 	 Step 8: Output the value of s_out (the computation result) to both parties
