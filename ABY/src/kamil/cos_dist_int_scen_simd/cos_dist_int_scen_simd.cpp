@@ -126,6 +126,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	assert(xembeddings.size() == nvals);
 	assert(yembeddings.size() == nvals);
 
+	std::cout << "nvals" << nvals << std::endl;
+	std::cout << "xembeddings: " << xembeddings.size() << std::endl;
+
 	// reading the xored embedding, i.e. either Sy<0> or Sy<1> depending on the role
 
 	// char *fname = (char *) malloc(150); // file name buffer 
