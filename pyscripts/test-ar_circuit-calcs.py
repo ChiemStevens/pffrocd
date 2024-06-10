@@ -13,15 +13,15 @@ import pffrocd # helper functions
 import numpy as np
 
 # get two random int vectors
-x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/German_Khan/German_Khan_0001.jpg")
-y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Gina_Centrello/Gina_Centrello_0001.jpg")
+x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/German_Khan/German_Khan_0001.jpg", np.float32)
+y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Gina_Centrello/Gina_Centrello_0001.jpg", np.float32)
 
 share0, share1 = pffrocd.create_shares(x, np.float32)
 share0prime, share1prime = pffrocd.create_shares(y, np.float32)
 
 # get the shares back
-result = share0 - share1
-result_prime = share0prime - share1prime
+result = np.float32(share0+share1)
+result_prime = np.float32(share0prime + share1prime)
 
 # cosine distance between the shares
 result_cosine = get_cos_dist_numpy(result, result_prime)
