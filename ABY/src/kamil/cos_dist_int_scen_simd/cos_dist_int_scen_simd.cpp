@@ -242,32 +242,44 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ac->PutPrintValueGate(s_xin, "s_xin");
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
-	share *s_x = ac->PutMULGate(s_xin, s_yin);
+	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 
-	// split SIMD gate to separate wires (size many)
-	s_x = ac->PutSplitterGate(s_x);
+	// std::cout << "multiplied" << std::endl;
+	ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
+	// share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
-	// add up the individual multiplication results and store result on wire 0
-	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (uint32_t i = 1; i < nvals; i++) {
-		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+	// computing x \dot y
+	uint32_t posids[3] = {0, 0, 1};
+	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
+	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
+	for (int i = 1; i < nvals; i++)
+	{
+		//uint32_t posids[3] = {i, i, 1};
+
+			posids[0] = i;
+			posids[1] = i;
+			posids[2] = 1;
+
+		ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
+
+		// share *s_product_split;
+		s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
 	}
 
-	// discard all wires, except the addition result
-	s_x->set_bitlength(1);
+	ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
+	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
-	share* x_out = ac->PutOUTGate(s_x, ALL);
+	// share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 
 	party->ExecCircuit();
-	double output = x_out->get_clear_value<double>();
-
-	// print every output
-
-	// dereference output value as double without casting the content
-	
-	std::cout << "val: " << output << std::endl;
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
+
+	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
+	float x_dot_y = *((float *)x_dot_y_out_vals);
+
+	std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
 }
 
 int main(int argc, char **argv)
