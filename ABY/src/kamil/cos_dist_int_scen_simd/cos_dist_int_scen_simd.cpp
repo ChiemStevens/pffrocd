@@ -86,6 +86,27 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 	std::cout << "Finished pre checks" << std::endl; 
 }
 
+share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, ArithmeticCircuit *ac) {
+	uint32_t i;
+
+	// pairwise multiplication of all input values
+	s_x = ac->PutMULGate(s_x, s_y);
+
+	// split SIMD gate to separate wires (size many)
+	s_x = ac->PutSplitterGate(s_x);
+
+	// add up the individual multiplication results and store result on wire 0
+	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
+	for (i = 1; i < numbers; i++) {
+		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+	}
+
+	// discard all wires, except the addition result
+	s_x->set_bitlength(1);
+
+	return s_x;
+}
+
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
 							 e_mt_gen_alg mt_alg, e_sharing sharing, uint32_t debug, std::string inputfile, std::string pffrocd_path)
 {
@@ -245,10 +266,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 
-	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
-	float x_dot_y = *((float *)x_dot_y_out_vals);
+	uint16_t output = s_out->get_clear_value<uint16_t>();
 
-	std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
+	std::cout << "\nCircuit Result: " << output;
+	//std::cout << "\nVerification Result: " << v_sum << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -277,23 +298,3 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, ArithmeticCircuit *ac) {
-	uint32_t i;
-
-	// pairwise multiplication of all input values
-	s_x = ac->PutMULGate(s_x, s_y);
-
-	// split SIMD gate to separate wires (size many)
-	s_x = ac->PutSplitterGate(s_x);
-
-	// add up the individual multiplication results and store result on wire 0
-	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (i = 1; i < numbers; i++) {
-		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
-	}
-
-	// discard all wires, except the addition result
-	s_x->set_bitlength(1);
-
-	return s_x;
-}
