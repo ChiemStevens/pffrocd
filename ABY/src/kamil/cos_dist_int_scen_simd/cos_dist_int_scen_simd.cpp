@@ -224,7 +224,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_norm_y += ver_y_times_y[i];
 	}
 
-	std::cout << "share vals: " << sharevals << std::endl;
+	std::cout << "share vals: " << sharevals[0] << std::endl;
 	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
@@ -253,7 +253,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 			posids[1] = i;
 			posids[2] = 1;
 
-		ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
+		//ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
 
 		// share *s_product_split;
 		s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
