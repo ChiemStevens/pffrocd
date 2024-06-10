@@ -259,7 +259,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share* x_out = ac->PutOUTGate(s_x, ALL);
 
 	party->ExecCircuit();
-	float output = x_out->get_clear_value<float>();
+	double output = x_out->get_clear_value<double>();
 
 	// print every output
 
