@@ -235,17 +235,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-	share *assert_val = ac->PutSIMDAssertGate(sharevals, nvals, xvals, bitlen);
-	ac->PutPrintValueGate(assert_val, "assert_val");
-
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-
+	share *x_times_y_out = ac->PutOUTGate(s_x_times_y, ALL);
+	uint32_t *x_dot_y_out_vals2 = (uint32_t *)x_times_y_out->get_clear_value_ptr();
+	float x_dot_y2 = *((float *)x_dot_y_out_vals2);
+	std::cout << "cos_dist: " << 1 - x_dot_y2 << std::endl;
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
 	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
-	ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	for (int i = 1; i < nvals; i++)
 	{
 		//uint32_t posids[3] = {i, i, 1};

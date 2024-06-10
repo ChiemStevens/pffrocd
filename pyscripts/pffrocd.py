@@ -224,6 +224,8 @@ def get_cos_dist_numpy(x, y):
     """
     return 1 - np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
 
+def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None):
+
 def run_sfe(x, y, y_0=None, y_1=None):
     """
     Write the vectors to files used by ABY executable

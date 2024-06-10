@@ -1,30 +1,32 @@
-# party_0 = {x0-r0, x1-r1, x2-r2};
-# party_1 = {r0, r1, r2};
-
-# output :
-# Result = x0 * x1 * x2;
-def get_cos_dist_numpy(x, y):
-    return 1 - np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
-
-def get_cos_dist_nom(x, y):
-    return 1 - np.dot(x, y)
-
+#!/usr/bin/env python3
+print("importing pffrocd...")
 import pffrocd # helper functions
+print("pffrocd imported!")
 import numpy as np
+import random
+import time
+import sys
 
-# get two random int vectors
-x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/German_Khan/German_Khan_0001.jpg", np.float32)
-y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Gina_Centrello/Gina_Centrello_0001.jpg", np.float32)
 
-share0, share1 = pffrocd.create_shares(x, np.float32)
-share0prime, share1prime = pffrocd.create_shares(y, np.float32)
+pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
+pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
+pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
+pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd/ABY/build/bin"
+NUMPY_DTYPE = np.float32
 
-# get the shares back
-result = np.float32(share0+share1)
-result_prime = np.float32(share0prime + share1prime)
+# get two embeddings of different people
+x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
+y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 
-# cosine distance between the shares
-result_cosine = get_cos_dist_numpy(result, result_prime)
-print(result_cosine)
+x = x / np.linalg.norm(x)
+share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
 
-print(get_cos_dist_numpy(x,y))
+y = y / np.linalg.norm(y)
+share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
+
+output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
+
+print(output.stdout)
+
+print("NUMPY COS_DIST:")
+print(pffrocd.get_cos_dist_numpy(x,y))
