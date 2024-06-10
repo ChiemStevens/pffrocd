@@ -210,8 +210,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	float output, v_sum = 0;
 
-	std::vector<float> xvals(nvals);
-	std::vector<float> yvals(nvals);
+	std::vector<uint16_t> xvals(nvals);
+	std::vector<uint16_t> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -226,6 +226,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 The values for the party different from role is ignored,
 	 but PutINGate() must always be called for both roles.
 	 */
+	float original_float = 123456789.123456789f; // An example float
+    uint64_t integer_representation = static_cast<uint64_t>(original_float);
+    float converted_back = static_cast<float>(integer_representation);
+
+    std::cout << "Original float: " << original_float << std::endl;
+    std::cout << "After casting to uint64_t: " << integer_representation << std::endl;
+    std::cout << "After casting back to float: " << converted_back << std::endl;
 	for (i = 0; i < nvals; i++) {
 
 		x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -233,8 +240,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		v_sum += x * y;
 		// cast x to uint16_t
-		xvals[i] = x;
-		yvals[i] = y;
+		std::cout << "x: " << x << std::endl;
+		xvals[i] = static_cast<uint16_t>(x);
+		std::cout << "xvals: " << xvals[i] << std::endl;
+		yvals[i] = static_cast<uint16_t>(y);
 	}
 
 	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
