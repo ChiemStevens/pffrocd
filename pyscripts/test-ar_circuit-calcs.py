@@ -9,7 +9,8 @@ import pffrocd # helper functions
 import numpy as np
 
 # get two random int vectors
-x, y = pffrocd.get_two_random_embeddings(False)
+x = pffrocd.get_embedding("/home/chiem/pffrocd/pfw/German_Khan/German_Khan_0001.jpg")
+y = pffrocd.get_embedding("/home/chiem/pffrocd/pfw/Gina_Centrello/Gina_Centrello_0001.jpg")
 
 share0, share1 = pffrocd.create_shares(x, np.float32)
 share0prime, share1prime = pffrocd.create_shares(y, np.float32)
