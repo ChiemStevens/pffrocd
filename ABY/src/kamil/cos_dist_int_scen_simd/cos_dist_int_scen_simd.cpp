@@ -210,8 +210,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	float output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(nvals);
-	std::vector<uint16_t> yvals(nvals);
+	std::vector<float> xvals(nvals);
+	std::vector<float> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -233,10 +233,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		v_sum += x * y;
 		// cast x to uint16_t
-		std::cout << "x: " << x << std::endl;
-		xvals[i] = static_cast<uint16_t>(x);
-		std::cout << "xvals: " << xvals[i] << std::endl;
-		yvals[i] = static_cast<uint16_t>(y);
+		xvals[i] = x;
+		yvals[i] = y;
 	}
 
 	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
