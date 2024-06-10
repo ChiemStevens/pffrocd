@@ -115,7 +115,8 @@ def run_test():
             logger.info(f"Running test for {img}")
 
             ver_ref_img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
-            cos_dist = pffrocd.get_cos_dist_numpy(ref_img_embedding, ver_ref_img_embedding)
+            ver_ref_img_embedding = ver_ref_img_embedding / np.linalg.norm(ver_ref_img_embedding)
+            cos_dist = 1-np.dot(ref_img_embedding, ver_ref_img_embedding)
             logger.info(f"cosine distance between the embeddings: {cos_dist}")
 
             # run the face embedding extraction script on the server
