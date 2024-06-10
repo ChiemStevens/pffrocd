@@ -225,6 +225,35 @@ def get_cos_dist_numpy(x, y):
     return 1 - np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
 
 def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None):
+    """
+    Write the vectors to files used by ABY executable
+    If y_0 and y_1 are provided run it as actual scenario (shared IN gates)
+    Otherwise run as test providing two vectors to be compared
+    """
+    with open(f"{EXECUTABLE_PATH}/{INPUT_FILE_NAME}", 'w') as f:
+        for x_i, y_i in zip(x, y):
+            f.write(f"{x_i} {y_i}\n")
+
+    if y_0 is not None and y_1 is not None:
+    # write the shares into separate files
+        with open(f"{EXECUTABLE_PATH}/share0.txt", 'w') as f:
+            for i in y_0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1.txt", 'w') as f:
+            for i in y_1:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share0prime.txt", 'w') as f:
+            for i in y_0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1prime.txt", 'w') as f:
+            for i in y_1:
+                f.write(f"{i}\n")
+
+    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
+    output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
+    assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
+    return output
+
 
 def run_sfe(x, y, y_0=None, y_1=None):
     """
