@@ -235,8 +235,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-
-	share *s_x_times_y = ac->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+    //share *s_x_times_y = bc->PutMULGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
@@ -250,7 +250,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 			posids[1] = i;
 			posids[2] = 1;
 
-		s_x_dot_y = ac->PutFPGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+		//s_x_dot_y = ac->PutFPGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+        s_x_dot_y = ac->PutADDGate(s_x_dot_y, ac->PutSubsetGate(s_x_times_y,posids,1,true));
 	}
 
 	share *x_dot_y_out = ac->PutOUTGate(s_x_dot_y, ALL);
