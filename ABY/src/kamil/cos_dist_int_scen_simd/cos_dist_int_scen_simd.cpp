@@ -171,6 +171,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ArithmeticCircuit *ac = (ArithmeticCircuit *)sharings[S_ARITH]->GetCircuitBuildRoutine();
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
+
+	std::cout << "circuit retrieved" << std::endl;
 	// std::cout << "circuit retrieved" << std::endl;
 	// std::cout << "here 1" << std::endl;
 
@@ -188,7 +190,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	float ver_x_dot_y = 0;
 	float ver_norm_x = 0;
 	float ver_norm_y = 0;
-	// std::cout << "here 1" << std::endl;
+	std::cout << "values created" << std::endl;
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
 
@@ -218,14 +220,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_norm_y += ver_y_times_y[i];
 	}
 
-	// std::cout << "here 1" << std::endl;
+	std::cout << "values set" << std::endl;
 	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
 
 	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
 
-
+	std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
 	// INPUTS
 	share *s_xin, *s_yin;
 
