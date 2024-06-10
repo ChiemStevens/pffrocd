@@ -241,7 +241,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-	std::cout << "s x in" << s_xin << std::endl;
+	ac->PutPrintValueGate(s_xin, "s_xin");
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 
