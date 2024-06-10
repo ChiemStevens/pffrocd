@@ -241,19 +241,31 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	ac->PutPrintValueGate(s_xin, "s_xin");
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-	s_xin->set_bitlength(1);
-	share* x_out = ac->PutOUTGate(s_xin, ALL);
+	// pairwise multiplication of all input values
+	share *s_x = ac->PutMULGate(s_xin, s_yin);
+
+	// split SIMD gate to separate wires (size many)
+	s_x = ac->PutSplitterGate(s_x);
+
+	// add up the individual multiplication results and store result on wire 0
+	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
+	for (uint32_t i = 1; i < nvals; i++) {
+		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+	}
+
+	// discard all wires, except the addition result
+	s_x->set_bitlength(1);
+
+	share* x_out = ac->PutOUTGate(s_x, ALL);
 
 	party->ExecCircuit();
-	uint32_t out_bitlen_add, out_nvals;
-	uint32_t *out_vals_add;
-	x_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
+	uint32_t output = s_out->get_clear_value<uint32_t>();
 
 	// print every output
 
 	// dereference output value as double without casting the content
-	float val = *((float*) &out_vals_add[0]);
-	std::cout << "val: " << val << std::endl;
+	
+	std::cout << "val: " << output << std::endl;
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 }
