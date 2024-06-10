@@ -234,19 +234,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
 	// INPUTS
 	share *s_xin, *s_yin;
-
-	// Input of the current face captured by the drone
-
 	// // Input of the pre-computed shares of the face in the database
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	ac->PutPrintValueGate(s_xin, "s_xin");
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
 	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-
-	// std::cout << "multiplied" << std::endl;
 	ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
-	// share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
