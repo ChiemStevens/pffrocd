@@ -224,7 +224,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_norm_y += ver_y_times_y[i];
 	}
 
-	std::cout << "share vals: " << sharevals[0] << std::endl;
+	std::cout << "share vals: " << *(float *)sharevals[0] << std::endl;
 	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
@@ -238,41 +238,41 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
-	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-	ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
+	// share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
+	// ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
 
-	// computing x \dot y
-	uint32_t posids[3] = {0, 0, 1};
-	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
+	// // computing x \dot y
+	// uint32_t posids[3] = {0, 0, 1};
+	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
+	// share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
+	// for (int i = 1; i < nvals; i++)
+	// {
+	// 	//uint32_t posids[3] = {i, i, 1};
 
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
+	// 		posids[0] = i;
+	// 		posids[1] = i;
+	// 		posids[2] = 1;
 
-		//ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
+	// 	//ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
 
-		// share *s_product_split;
-		s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
-	}
+	// 	// share *s_product_split;
+	// 	s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
+	// }
 
-	ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
-	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
+	// ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
+	// // share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
-	// share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
-	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+	// // share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	// share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 
 	party->ExecCircuit();
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 
-	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
-	float x_dot_y = *((float *)x_dot_y_out_vals);
+	// uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
+	// float x_dot_y = *((float *)x_dot_y_out_vals);
 
-	std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
+	// std::cout << "cos_dist: " << 1 - x_dot_y << std::endl;
 }
 
 int main(int argc, char **argv)
