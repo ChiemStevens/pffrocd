@@ -196,80 +196,156 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ArithmeticCircuit *ac = (ArithmeticCircuit *)sharings[S_ARITH]->GetCircuitBuildRoutine();
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
+	/**
+	 Step 4: Creating the share objects - s_x_vec, s_y_vec which
+	 are used as inputs to the computation. Also, s_out which stores the output.
+	 */
 
-	std::cout << "circuit retrieved" << std::endl;
-	// std::cout << "circuit retrieved" << std::endl;
-	// std::cout << "here 1" << std::endl;
+	share *s_x_vec, *s_y_vec, *s_out;
 
-	// arrays of integer pointers to doubles
-	uint32_t xvals[nvals];
-	uint32_t yvals[nvals];
-	uint32_t sharevals[nvals];
-	uint32_t sharevals_prime[nvals];
-	// std::cout << "here 1" << std::endl;
+	/**
+	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
+	 */
+	uint16_t x, y;
 
-	// verification in plaintext
-	float ver_x_times_y[nvals];
-	float ver_x_times_x[nvals];
-	float ver_y_times_y[nvals];
-	float ver_x_dot_y = 0;
-	float ver_norm_x = 0;
-	float ver_norm_y = 0;
-	std::cout << "values created" << std::endl;
+	uint16_t output, v_sum = 0;
 
-	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
+	std::vector<uint16_t> xvals(numbers);
+	std::vector<uint16_t> yvals(numbers);
 
-	for (uint32_t i = 0; i < nvals; i++)
-	{
-		float current_x = xembeddings[i];
-		float current_y = yembeddings[i];
-		float current_share = share_embeddings[i];
-		float current_share_prime = share_embeddings_prime[i];
+	uint32_t i;
+	srand(time(NULL));
 
-		uint32_t *xptr = (uint32_t *)&current_x;
-		uint32_t *yptr = (uint32_t *)&current_y;
-		uint32_t *shareptr = (uint32_t *)&current_share;
-		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
+	/**
+	 Step 6: Fill the arrays xvals and yvals with the generated random values.
+	 Both parties use the same seed, to be able to verify the
+	 result. In a real example each party would only supply
+	 one input value. Copy the randomly generated vector values into the respective
+	 share objects using the circuit object method PutINGate().
+	 Also mention who is sharing the object.
+	 The values for the party different from role is ignored,
+	 but PutINGate() must always be called for both roles.
+	 */
+	for (i = 0; i < numbers; i++) {
 
-		xvals[i] = *xptr;
-		yvals[i] = *yptr;
-		sharevals[i] = *shareptr;
-		sharevals_prime[i] = *shareptr_prime;
+		x = rand();
+		y = rand();
 
-		ver_x_times_y[i] = current_x * current_y;
-		ver_x_dot_y += ver_x_times_y[i];
+		v_sum += x * y;
 
-		ver_x_times_x[i] = current_x * current_x;
-		ver_y_times_y[i] = current_y * current_y;
-		ver_norm_x += ver_x_times_x[i];
-		ver_norm_y += ver_y_times_y[i];
+		xvals[i] = x;
+		yvals[i] = y;
 	}
 
-	std::cout << "share vals: " << sharevals[0] << std::endl;
-	//std::cout << "Do we reach this part of the program?" << std::endl;
-	ver_norm_x = sqrt(ver_norm_x);
-	ver_norm_y = sqrt(ver_norm_y);
+	s_x_vec = circ->PutSIMDINGate(numbers, xvals.data(), 16, SERVER);
+	s_y_vec = circ->PutSIMDINGate(numbers, yvals.data(), 16, CLIENT);
 
-	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
+	/**
+	 Step 7: Call the build method for building the circuit for the
+	 problem by passing the shared objects and circuit object.
+	 Don't forget to type cast the circuit object to type of share
+	 */
+	s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, numbers,
+			(ArithmeticCircuit*) circ);
 
-	std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
-	// INPUTS
-	share *s_xin, *s_yin;
-	// // Input of the pre-computed shares of the face in the database
-	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-	// pairwise multiplication of all input values
-	share *s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
-			(ArithmeticCircuit*) ac);
+	/**
+	 Step 8: Output the value of s_out (the computation result) to both parties
+	 */
+	s_out = circ->PutOUTGate(s_out, ALL);
 
+	/**
+	 Step 9: Executing the circuit using the ABYParty object evaluate the
+	 problem.
+	 */
 	party->ExecCircuit();
 
-	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
-
-	uint32_t output = s_out->get_clear_value<uint32_t>();
+	/**
+	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
+	 */
+	output = s_out->get_clear_value<uint16_t>();
 
 	std::cout << "\nCircuit Result: " << output;
-	//std::cout << "\nVerification Result: " << v_sum << std::endl;
+	std::cout << "\nVerification Result: " << v_sum << std::endl;
+
+
+
+
+
+
+
+	// std::cout << "circuit retrieved" << std::endl;
+	// // std::cout << "circuit retrieved" << std::endl;
+	// // std::cout << "here 1" << std::endl;
+
+	// // arrays of integer pointers to doubles
+	// uint32_t xvals[nvals];
+	// uint32_t yvals[nvals];
+	// uint32_t sharevals[nvals];
+	// uint32_t sharevals_prime[nvals];
+	// // std::cout << "here 1" << std::endl;
+
+	// // verification in plaintext
+	// float ver_x_times_y[nvals];
+	// float ver_x_times_x[nvals];
+	// float ver_y_times_y[nvals];
+	// float ver_x_dot_y = 0;
+	// float ver_norm_x = 0;
+	// float ver_norm_y = 0;
+	// std::cout << "values created" << std::endl;
+
+	// // S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
+
+	// for (uint32_t i = 0; i < nvals; i++)
+	// {
+	// 	float current_x = xembeddings[i];
+	// 	float current_y = yembeddings[i];
+	// 	float current_share = share_embeddings[i];
+	// 	float current_share_prime = share_embeddings_prime[i];
+
+	// 	uint32_t *xptr = (uint32_t *)&current_x;
+	// 	uint32_t *yptr = (uint32_t *)&current_y;
+	// 	uint32_t *shareptr = (uint32_t *)&current_share;
+	// 	uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
+
+	// 	xvals[i] = *xptr;
+	// 	yvals[i] = *yptr;
+	// 	sharevals[i] = *shareptr;
+	// 	sharevals_prime[i] = *shareptr_prime;
+
+	// 	ver_x_times_y[i] = current_x * current_y;
+	// 	ver_x_dot_y += ver_x_times_y[i];
+
+	// 	ver_x_times_x[i] = current_x * current_x;
+	// 	ver_y_times_y[i] = current_y * current_y;
+	// 	ver_norm_x += ver_x_times_x[i];
+	// 	ver_norm_y += ver_y_times_y[i];
+	// }
+
+	// std::cout << "share vals: " << sharevals[0] << std::endl;
+	// //std::cout << "Do we reach this part of the program?" << std::endl;
+	// ver_norm_x = sqrt(ver_norm_x);
+	// ver_norm_y = sqrt(ver_norm_y);
+
+	// float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
+
+	// std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
+	// // INPUTS
+	// share *s_xin, *s_yin;
+	// // // Input of the pre-computed shares of the face in the database
+	// s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	// s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+	// // pairwise multiplication of all input values
+	// share *s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
+	// 		(ArithmeticCircuit*) ac);
+
+	// party->ExecCircuit();
+
+	// std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
+
+	// uint32_t output = s_out->get_clear_value<uint32_t>();
+
+	// std::cout << "\nCircuit Result: " << output;
+	// //std::cout << "\nVerification Result: " << v_sum << std::endl;
 }
 
 int main(int argc, char **argv)
