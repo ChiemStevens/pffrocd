@@ -253,29 +253,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
 
 	share *s_x_vec, *s_y_vec, *s_out;
-	/**
-	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
-	 */
-	uint16_t x, y;
-
-	uint16_t output, v_sum = 0;
-
-	std::vector<uint16_t> xvals(nvals);
-	std::vector<uint16_t> yvals(nvals);
-
-	uint32_t i;
-	srand(time(NULL));
-
-	for (i = 0; i < nvals; i++) {
-
-		x = rand();
-		y = rand();
-
-		v_sum += x * y;
-
-		xvals[i] = x;
-		yvals[i] = y;
-	}
 
 	std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
 	// INPUTS
@@ -291,7 +268,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 
-	uint16_t output = s_out->get_clear_value<uint16_t>();
+	uint32_t output = s_out->get_clear_value<uint32_t>();
 
 	std::cout << "\nCircuit Result: " << output;
 	//std::cout << "\nVerification Result: " << v_sum << std::endl;
