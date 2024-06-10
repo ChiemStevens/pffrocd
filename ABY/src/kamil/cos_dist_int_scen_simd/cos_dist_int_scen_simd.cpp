@@ -256,6 +256,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// discard all wires, except the addition result
 	s_xin->set_bitlength(1);
+
+
+
+	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 	ac->PutPrintValueGate(s_xin, "x_times_y");
 	// // computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
