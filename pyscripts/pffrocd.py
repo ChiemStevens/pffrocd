@@ -373,6 +373,8 @@ def generate_nonce(a, dtype):
     """Generates random float nonces given a list of floats of size 128 (the face emedding)
     Checks for nan values after xoring, if that happens then it generates the nonces again
     """
+
+    #TODO: Add a parameter such that it is possible to switch between xor and minus...
     n = np.zeros(128)
     for i in range(len(a)):
         x = np.random.uniform(-3,3)
@@ -382,7 +384,7 @@ def generate_nonce(a, dtype):
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-        n_i = fxor(a[i], x, dtype)
+        n_i = fminus(a[i], x, dtype)
         while np.isnan(n_i):
             x = np.random.uniform(-3,3)
             if dtype == np.float32:
@@ -391,7 +393,7 @@ def generate_nonce(a, dtype):
                 x = np.float64(x)
             else:
                 raise Exception("Invalid dtype")
-            n_i = fxor(a[i], x, dtype)
+            n_i = fminus(a[i], x, dtype)
         n[i] = n_i
     return n.astype(dtype)
 
