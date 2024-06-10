@@ -242,8 +242,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-	// s_xin is a value that is available on server and client and we need to print it out as a float vector
-	share *output = ac->PutSharedOUTGate(s_xin, ALL);
+	share *s_out = ac->PutMULGate(s_xin, s_yin);
+	ac->PutPrintValueGate(s_out, "s_out: ");
+	s_out = circ->PutOUTGate(s_out, ALL);
 	
 	party->ExecCircuit();
 
