@@ -226,7 +226,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 The values for the party different from role is ignored,
 	 but PutINGate() must always be called for both roles.
 	 */
-	float original_float = 123456789.123456789f; // An example float
+	float original_float = 0.12023452; // An example float
     uint64_t integer_representation = static_cast<uint64_t>(original_float);
     float converted_back = static_cast<float>(integer_representation);
 
