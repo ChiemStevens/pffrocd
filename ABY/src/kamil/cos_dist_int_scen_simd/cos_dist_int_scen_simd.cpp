@@ -241,12 +241,24 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// // Input of the pre-computed shares of the face in the database
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-	ac->PutPrintValueGate(s_xin, "s_xin: ");
-	share *s_out = ac->PutMULGate(s_xin, s_yin);
-	ac->PutPrintValueGate(s_out, "s_out: ");
-	s_out = ac->PutOUTGate(s_out, ALL);
 	
+	share *s_xin_sq = ac->PutMULGate(s_xin, s_xin);
+	share* add_out = circ->PutOUTGate(s_xin_sq, ALL);
+
 	party->ExecCircuit();
+	uint32_t out_bitlen_add, out_nvals;
+	uint64_t *out_vals_add
+	add_out->get_clear_value_vec(&out_vals_add, &out_bitlen_add, &out_nvals);
+
+	// print every output
+	for (uint32_t i = 0; i < nvals; i++) {
+
+		// dereference output value as double without casting the content
+		double val = *((double*) &out_vals_add[i]);
+
+		std::cout << "ADD RES: " << val << " = " << *(double*) &avals[i] << " + " << *(double*) &bvals[i] << " | nv: " << out_nvals
+		<< " bitlen: " << out_bitlen_add << std::endl;
+	}
 
 	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 }
