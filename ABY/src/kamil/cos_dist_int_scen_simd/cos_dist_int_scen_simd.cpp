@@ -256,10 +256,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//ac->PutPrintValueGate(ac->PutSubsetGate(s_x_times_y,posids,1,false), "First wire");
 
 		// share *s_product_split;
-		s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
+		//s_x_dot_y = ac->PutADDGate(s_x_dot_y , ac->PutSubsetGate(s_x_times_y,posids,1,true));
 	}
 
-	ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
+	//ac->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
 	// share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
