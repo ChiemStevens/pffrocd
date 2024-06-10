@@ -15,8 +15,8 @@ pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd/ABY/build/bin"
 NUMPY_DTYPE = np.float32
 
 # get two embeddings of different people
-x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
-y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
+y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 
 x = x / np.linalg.norm(x)
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
