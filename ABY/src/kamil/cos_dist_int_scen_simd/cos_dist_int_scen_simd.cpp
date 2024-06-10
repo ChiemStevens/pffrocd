@@ -244,7 +244,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
+	//share *s_x_dot_y = ac->PutSubsetGate(s_x_times_y, posids, 1, true);
 	for (int i = 1; i < nvals; i++)
 	{
 		//uint32_t posids[3] = {i, i, 1};
@@ -263,7 +263,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
 	// share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
-	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+	//share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 
 	party->ExecCircuit();
 
