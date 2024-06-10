@@ -114,6 +114,10 @@ def run_test():
         for count_img,img in enumerate(imgs):
             logger.info(f"Running test for {img}")
 
+            ver_ref_img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
+            cos_dist = pffrocd.get_cos_dist_numpy(ref_img_embedding, ver_ref_img_embedding)
+            logger.info(f"cosine distance between the embeddings: {cos_dist}")
+
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt -n {True}", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
