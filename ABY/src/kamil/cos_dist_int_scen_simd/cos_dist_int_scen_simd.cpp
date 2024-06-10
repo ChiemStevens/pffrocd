@@ -224,7 +224,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_norm_y += ver_y_times_y[i];
 	}
 
-	std::cout << "share vals: " << std::bit_cast<float>(sharevals[0]) << std::endl;
+	std::cout << "share vals: " << sharevals[0] << std::endl;
 	//std::cout << "Do we reach this part of the program?" << std::endl;
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
@@ -238,7 +238,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	// pairwise multiplication of all input values
-	// share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
+	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
 	// ac->PutPrintValueGate(s_x_times_y, "s_x_times_y");
 
 	// // computing x \dot y
