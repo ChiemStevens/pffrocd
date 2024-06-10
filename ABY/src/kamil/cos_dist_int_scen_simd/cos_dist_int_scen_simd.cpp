@@ -132,7 +132,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
-	float x, y;
+	//TODO: DONT FOGGET TO COMMENT OUT
+	//float x, y;
 
 	std::cout << "starting reading x and y" << std::endl;
 
@@ -251,7 +252,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 8: Output the value of s_out (the computation result) to both parties
 	 */
-	s_out = circ->PutOUTGate(s_out, ALL);
+	s_out = ac->PutOUTGate(s_out, ALL);
 
 	/**
 	 Step 9: Executing the circuit using the ABYParty object evaluate the
