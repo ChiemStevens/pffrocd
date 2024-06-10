@@ -210,8 +210,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	float output, v_sum = 0;
 
-	std::vector<float> xvals(nvals);
-	std::vector<float> yvals(nvals);
+	std::vector<uint16_t> xvals(nvals);
+	std::vector<uint16_t> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -232,13 +232,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
 		v_sum += x * y;
+		// cast x to uint16_t
 
-		xvals[i] = x;
-		yvals[i] = y;
+		xvals[i] = static_cast<uint16_t>(x);
+		yvals[i] = static_cast<uint16_t>(y);
 	}
 
-	s_x_vec = ac->PutSIMDINGate(nvals, xvals, 64, SERVER);
-	s_y_vec = ac->PutSIMDINGate(nvals, yvals, 64, CLIENT);
+	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 16, SERVER);
+	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 16, CLIENT);
 
 	/**
 	 Step 7: Call the build method for building the circuit for the
@@ -262,7 +263,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-	output = s_out->get_clear_value<float>();
+	output = s_out->get_clear_value<uint16_t>();
 
 	std::cout << "\nCircuit Result: " << output;
 	std::cout << "\nVerification Result: " << v_sum << std::endl;
