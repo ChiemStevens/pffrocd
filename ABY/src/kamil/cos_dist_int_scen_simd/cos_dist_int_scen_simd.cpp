@@ -203,9 +203,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		float current_x = xembeddings[i];
 		float current_y = yembeddings[i];
 		float current_share = share_embeddings[i];
-		std::cout << "current_share: " << current_share << std::endl;
 		float current_share_prime = share_embeddings_prime[i];
-		std::cout << "current_share_prime: " << current_share_prime << std::endl;
 
 		uint32_t *xptr = (uint32_t *)&current_x;
 		uint32_t *yptr = (uint32_t *)&current_y;
@@ -245,10 +243,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
     //share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 	share *s_x_times_y = ac->PutMULGate(s_xin, s_yin);
-	share *x_times_y_out = ac->PutOUTGate(s_x_times_y, ALL);
-	uint32_t *x_dot_y_out_vals2 = (uint32_t *)x_times_y_out->get_clear_value_ptr();
-	float x_dot_y2 = *((float *)x_dot_y_out_vals2);
-	std::cout << "cos_dist: " << 1 - x_dot_y2 << std::endl;
+
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
