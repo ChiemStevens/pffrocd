@@ -128,24 +128,24 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// reading the non-xored embeddings, i.e. current face and database face
 
-	// std::fstream infile(inputfile);
+	std::fstream infile(inputfile);
 
 	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
-	// float x, y;
+	float x, y;
 
 	// std::cout << "starting reading x and y" << std::endl;
 
-	// while (infile >> x >> y) {
-	// 	// std::cout << "x: " << x << " | y: "<< y << std::endl;
-	// 	xembeddings.push_back(x);
-	// 	yembeddings.push_back(y);
-	// }
+	while (infile >> x >> y) {
+		// std::cout << "x: " << x << " | y: "<< y << std::endl;
+		xembeddings.push_back(x);
+		yembeddings.push_back(y);
+	}
 
 	// std::cout<<"finished reading x and y" << std::endl;
 
-	// assert(xembeddings.size() == nvals);
-	// assert(yembeddings.size() == nvals);
+	assert(xembeddings.size() == nvals);
+	assert(yembeddings.size() == nvals);
 
 	// std::cout << "nvals" << nvals << std::endl;
 	// std::cout << "xembeddings: " << xembeddings.size() << std::endl;
@@ -155,25 +155,25 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// // char *fname = (char *) malloc(150); // file name buffer 
     // // sprintf(fname, "/home/dietpi/pffrocd/ABY/build/bin/share%d.txt", role);
 
-	// std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
-	// std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
+	std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
+	std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
 	// //std::cout << "FNAME: " << fname << std::endl; 
 
-	// std::fstream infile_share(fname);
-	// std::fstream infile_share_prime(fnameprime);
+	std::fstream infile_share(fname);
+	std::fstream infile_share_prime(fnameprime);
 
-	// float z;
+	float z;
 	// // std::cout << "starting reading z" << std::endl;
 
-	// while(infile_share >> z) {
-	// 	//std::cout << "z: " << z << std::endl;
-	// 	share_embeddings.push_back(z);
-	// }
-	// z = 0;
-	// while(infile_share_prime >> z) {
-	// 	//std::cout << "z: " << z << std::endl;
-	// 	share_embeddings_prime.push_back(z);
-	// }
+	while(infile_share >> z) {
+		//std::cout << "z: " << z << std::endl;
+		share_embeddings.push_back(z);
+	}
+	z = 0;
+	while(infile_share_prime >> z) {
+		//std::cout << "z: " << z << std::endl;
+		share_embeddings_prime.push_back(z);
+	}
 
 	// //std::cout<<"finished reading z" << std::endl;
 	// std::cout << "share_embeddings size: " << share_embeddings.size() << std::endl;
@@ -206,40 +206,62 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	float x, y;
-
 	float output, v_sum = 0;
 
 	std::vector<uint16_t> xvals(nvals);
 	std::vector<uint16_t> yvals(nvals);
 
-	uint32_t i;
-	srand(time(NULL));
+	// arrays of integer pointers to doubles
+	uint32_t xvals[nvals];
+	uint32_t yvals[nvals];
+	uint32_t sharevals[nvals];
+	uint32_t sharevals_prime[nvals];
+	// std::cout << "here 1" << std::endl;
 
-	/**
-	 Step 6: Fill the arrays xvals and yvals with the generated random values.
-	 Both parties use the same seed, to be able to verify the
-	 result. In a real example each party would only supply
-	 one input value. Copy the randomly generated vector values into the respective
-	 share objects using the circuit object method PutINGate().
-	 Also mention who is sharing the object.
-	 The values for the party different from role is ignored,
-	 but PutINGate() must always be called for both roles.
-	 */
-	for (i = 0; i < nvals; i++) {
+	// verification in plaintext
+	float ver_x_times_y[nvals];
+	float ver_x_times_x[nvals];
+	float ver_y_times_y[nvals];
+	float ver_x_dot_y = 0;
+	float ver_norm_x = 0;
+	float ver_norm_y = 0;
+	// std::cout << "here 1" << std::endl;
 
-		x = rand();
-		y = rand();
+	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
+	for (uint32_t i = 0; i < nvals; i++)
+	{
+		float current_x = xembeddings[i];
+		float current_y = yembeddings[i];
+		float current_share = share_embeddings[i];
+		float current_share_prime = share_embeddings_prime[i];
 
-		v_sum += x * y;
+		uint32_t *xptr = (uint32_t *)&current_x;
+		uint32_t *yptr = (uint32_t *)&current_y;
+		uint32_t *shareptr = (uint32_t *)&current_share;
+		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
 
-		xvals[i] = x;
-		yvals[i] = y;
+		xvals[i] = *xptr;
+		yvals[i] = *yptr;
+		sharevals[i] = *shareptr;
+		sharevals_prime[i] = *shareptr_prime;
+
+		ver_x_times_y[i] = current_x * current_y;
+		ver_x_dot_y += ver_x_times_y[i];
+
+		ver_x_times_x[i] = current_x * current_x;
+		ver_y_times_y[i] = current_y * current_y;
+		ver_norm_x += ver_x_times_x[i];
+		ver_norm_y += ver_y_times_y[i];
 	}
 
-	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
-	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 64, CLIENT);
+	// std::cout << "here 1" << std::endl;
+	//std::cout << "Do we reach this part of the program?" << std::endl;
+	ver_norm_x = sqrt(ver_norm_x);
+	ver_norm_y = sqrt(ver_norm_y);
 
+	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
+	s_x_vec = bc->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	s_y_vec = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
