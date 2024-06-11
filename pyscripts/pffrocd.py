@@ -415,6 +415,7 @@ def generate_nonce(a, dtype):
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
+        print(x)
         n_i = fxor(a[i], x, dtype)
         while np.isnan(n_i):
             x = np.random.uniform(-3,3)
