@@ -384,10 +384,7 @@ def get_two_random_embeddings(same_person):
 
 fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
 fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
-ixor = lambda x,y:((x.astype('int32').view("int32"))^(y.astype('int32').view("int32"))).view("int32")
-def fxor(x,y, dtype, quantized=False):
-    if quantized:
-        return ixor(x,y)
+def fxor(x,y, dtype):
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
@@ -412,25 +409,36 @@ def generate_nonce(a, dtype, quantized=False):
     #TODO: Add a parameter such that it is possible to switch between xor and minus...
     n = np.zeros(128)
     for i in range(len(a)):
-        x = np.random.randint(-128,128)
+        if quantized:
+            x = np.random.randint(-128,128)
+        else:
+            x = np.random.uniform(-3,3)
         if dtype == np.float32:
             x = np.float32(x)
         elif dtype == np.float64:
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-
-        n_i = fxor(a[i], x, dtype, quantized)
+        if quantized:
+            n_i = fminus(a[i], x, dtype)
+        else:
+            n_i = fxor(a[i], x, dtype)  
 
         while np.isnan(n_i):
-            x = np.random.randint(-128,128)
+            if quantized:
+                x = np.random.randint(-128,128)
+            else:
+                x = np.random.uniform(-3,3)
             if dtype == np.float32:
                 x = np.float32(x)
             elif dtype == np.float64:
                 x = np.float64(x)
             else:
                 raise Exception("Invalid dtype")
-            n_i = fxor(a[i], x, dtype)
+            if quantized:
+                n_i = fminus(a[i], x, dtype)
+            else:
+                n_i = fxor(a[i], x, dtype)  
         n[i] = n_i
     return n.astype(dtype)
 
