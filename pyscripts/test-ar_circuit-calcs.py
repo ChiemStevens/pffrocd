@@ -10,7 +10,7 @@ import sys
 
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_float_scen_simd_32'
+pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
 pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
