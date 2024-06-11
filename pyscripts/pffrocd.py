@@ -387,6 +387,7 @@ fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
 ixor = lambda x,y:(x.view("int32")^y.view("int32")).view("int32")
 def fxor(x,y, dtype, quantized=False):
     if quantized:
+        print("ixor")
         return ixor(x,y)
     if dtype == np.float64:
         return fxor64(x,y)
@@ -418,7 +419,6 @@ def generate_nonce(a, dtype, quantized=False):
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-        print("generated x: ", x)
 
         n_i = fxor(a[i], x, dtype, quantized)
 
@@ -758,7 +758,6 @@ def create_shares(x: np.ndarray, dtype, quantized=False):
 
     # server's part is the nonces
     share1 = r
-    print("the noncnes: ", share1)
 
     # client's part is the nonces xored with the embedding
     #share0 = fxor(x, share1, dtype)
