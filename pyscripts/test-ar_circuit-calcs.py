@@ -21,12 +21,12 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 x = qt.scalar_quantisation_tensorrt(x)
 y = qt.scalar_quantisation_tensorrt(y)
 
-#x = x / np.linalg.norm(x)
+x = x / np.linalg.norm(x)
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
 print(share0)
 print(share1)
 
-#y = y / np.linalg.norm(y)
+y = y / np.linalg.norm(y)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
