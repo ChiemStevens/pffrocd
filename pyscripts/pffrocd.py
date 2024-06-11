@@ -421,6 +421,7 @@ def generate_nonce(a, dtype, quantized=False):
             raise Exception("Invalid dtype")
 
         n_i = fxor(a[i], x, dtype, quantized)
+        print("the result of the xor is: ", n_i)
 
         while np.isnan(n_i):
             x = np.random.randint(-128,128)
