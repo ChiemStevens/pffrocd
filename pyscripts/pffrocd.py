@@ -417,6 +417,7 @@ def generate_nonce(a, dtype):
             raise Exception("Invalid dtype")
         print("generated x: ", x)
         n_i = fxor(a[i], x, dtype)
+        print("n_i: ", n_i)
         while np.isnan(n_i):
             x = np.random.randint(-128,128)
             if dtype == np.float32:
