@@ -208,8 +208,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	float output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(nvals);
-	std::vector<uint16_t> yvals(nvals);
+	// std::vector<uint16_t> xvals(nvals);
+	// std::vector<uint16_t> yvals(nvals);
 
 	// arrays of integer pointers to doubles
 	uint32_t xvals[nvals];
