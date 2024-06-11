@@ -31,6 +31,8 @@ y = np.array(y, dtype=NUMPY_DTYPE)
 print(x)
 
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
+print("SHARES 0: ", share0)
+print("SHARES 1: ", share1)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
