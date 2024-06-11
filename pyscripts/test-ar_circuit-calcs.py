@@ -24,9 +24,11 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 # y = y / np.linalg.norm(y)
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
-
+print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
+
+print(x)
 
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
