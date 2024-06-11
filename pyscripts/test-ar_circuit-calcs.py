@@ -19,8 +19,8 @@ NUMPY_DTYPE = np.float32
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 print("embedding x: ", x)
-x = qt.scalar_quantisation_tensorrt(x)
-y = qt.scalar_quantisation_tensorrt(y)
+x = qt.scalar_quantisation_percentile(x)
+y = qt.scalar_quantisation_percentile(y)
 
 print("quantized x: ", x)
 x = x / np.linalg.norm(x)
