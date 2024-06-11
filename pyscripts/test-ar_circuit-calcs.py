@@ -21,6 +21,7 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 x = qt.scalar_quantisation_tensorrt(x)
 y = qt.scalar_quantisation_tensorrt(y)
 
+print("quantized x: ", x)
 x = x / np.linalg.norm(x)
 print("normalized x: ", x)
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
@@ -30,9 +31,9 @@ print("Share1: ",share1)
 y = y / np.linalg.norm(y)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
 
-output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
+#output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 
-print(output.stdout)
+#print(output.stdout)
 
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
