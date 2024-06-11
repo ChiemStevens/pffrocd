@@ -17,8 +17,8 @@ NUMPY_DTYPE = np.float32
 
 # get two embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
-#y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
-y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
+y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 same_person = False
 
@@ -30,7 +30,8 @@ y = qt.quantize_tensor(y)
 print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
-print(1 - np.dot(x, y))
+print("cosine distance x and y", pffrocd.get_cos_dist_numpy(x, y))
+print("cosine distance x and z", pffrocd.get_cos_dist_numpy(x, z))
 if same_person:
     if 1 - np.dot(x, y) >  0.593:
         print("Got wrong, should be different people")
