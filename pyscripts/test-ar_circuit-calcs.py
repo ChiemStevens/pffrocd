@@ -18,6 +18,7 @@ NUMPY_DTYPE = np.float32
 # get two embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+print("embedding x: ", x)
 x = qt.scalar_quantisation_tensorrt(x)
 y = qt.scalar_quantisation_tensorrt(y)
 
