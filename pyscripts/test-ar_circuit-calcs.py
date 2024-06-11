@@ -28,7 +28,7 @@ print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
 
-if pffrocd.get_cos_dist_numpy(x, y) >  0.593:
+if 1 - np.dot(x, y) >  0.593:
     print("Got wrong, should be different people")
 else:
     print("Got right, should be same people")
