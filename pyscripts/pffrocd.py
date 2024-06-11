@@ -243,10 +243,10 @@ def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None):
             for i in y_1:
                 f.write(f"{i}\n")
         with open(f"{EXECUTABLE_PATH}/share0prime.txt", 'w') as f:
-            for i in y_0:
+            for i in x_0:
                 f.write(f"{i}\n")
         with open(f"{EXECUTABLE_PATH}/share1prime.txt", 'w') as f:
-            for i in y_1:
+            for i in x_1:
                 f.write(f"{i}\n")
 
     CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
