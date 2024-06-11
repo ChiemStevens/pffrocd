@@ -1,7 +1,5 @@
 import numpy as np
 import tensorflow as tf
-import basics as bs
-import accuracy as ac
 
 def calibrate_percentile(embedding, calibration_percentage=99):
     """
