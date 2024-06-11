@@ -752,12 +752,13 @@ def create_shares(x: np.ndarray, dtype):
 
     # server's part is the nonces
     share1 = r
+    r = np.array(r, dtype=int)
 
     # client's part is the nonces xored with the embedding
     #share0 = fxor(x, share1, dtype)
     share0 = fxor(x, share1, dtype)
 
-    return share0.astype(dtype), share1.astype(dtype)
+    return share0.astype(dtype), share1.astype(int)
 
 def get_images_in_folder(folder_path):
     images = []
