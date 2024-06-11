@@ -26,6 +26,9 @@ y = qt.scalar_quantisation_percentile(y)
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 
+x = np.array(x, dtype=NUMPY_DTYPE)
+y = np.array(y, dtype=NUMPY_DTYPE)
+
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
 
