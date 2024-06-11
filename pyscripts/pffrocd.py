@@ -751,7 +751,8 @@ def create_shares(x: np.ndarray, dtype):
     r = generate_nonce(x, dtype)
 
     # server's part is the nonces
-    share1 = np.array(r, int)
+    share1 = r
+    print("the noncnes: ", share1)
 
     # client's part is the nonces xored with the embedding
     #share0 = fxor(x, share1, dtype)
