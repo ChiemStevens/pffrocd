@@ -235,8 +235,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
     std::cout << "After casting back to float: " << converted_back << std::endl;
 	for (i = 0; i < nvals; i++) {
 
-		x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		x = rand()
+		y = rand()
 
 		v_sum += x * y;
 		// cast x to uint16_t
