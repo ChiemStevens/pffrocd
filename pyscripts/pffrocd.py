@@ -385,8 +385,8 @@ def get_two_random_embeddings(same_person):
 fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
 fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
 def fxor(x,y, dtype):
-    print(x)
-    print(y)
+    print("a[i]: ", x)
+    print("x:", y)
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
@@ -417,7 +417,6 @@ def generate_nonce(a, dtype):
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-        print(x)
         n_i = fxor(a[i], x, dtype)
         while np.isnan(n_i):
             x = np.random.uniform(-3,3)
