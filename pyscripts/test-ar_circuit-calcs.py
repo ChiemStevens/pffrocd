@@ -5,6 +5,7 @@ print("pffrocd imported!")
 import numpy as np
 import random
 import time
+import quantization as qt
 import sys
 
 
@@ -17,6 +18,9 @@ NUMPY_DTYPE = np.float32
 # get two embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+print(x)
+quant_x = qt.scalar_quantisation_tensorrt(x)
+print(quant_x)
 
 x = x / np.linalg.norm(x)
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
