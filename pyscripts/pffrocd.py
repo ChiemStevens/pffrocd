@@ -387,7 +387,6 @@ fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
 ixor = lambda x,y:((x.astype('int32').view("int32"))^(y.astype('int32').view("int32"))).view("int32")
 def fxor(x,y, dtype, quantized=False):
     if quantized:
-        print(f"x : {x} y : {y}")
         return ixor(x,y)
     if dtype == np.float64:
         return fxor64(x,y)
@@ -422,7 +421,6 @@ def generate_nonce(a, dtype, quantized=False):
             raise Exception("Invalid dtype")
 
         n_i = fxor(a[i], x, dtype, quantized)
-        print("the result of the xor is: ", n_i)
 
         while np.isnan(n_i):
             x = np.random.randint(-128,128)
