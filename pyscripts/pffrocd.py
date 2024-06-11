@@ -388,10 +388,11 @@ ixor = lambda x,y:((x.astype('int32').view("int32"))^(y.astype('int32').view("in
 def fxor(x,y, dtype, quantized=False):
     if quantized:
         print(f"x : {x} y : {y}")
-        ixor(x,y)
+        return ixor(x,y)
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
+        print("using float32")
         return fxor32(x,y)
     else:
         raise Exception("Invalid dtype")
