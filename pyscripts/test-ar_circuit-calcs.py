@@ -20,6 +20,8 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 #y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
+same_person = False
+
 # now quantize before normalizing
 # x = x / np.linalg.norm(x)
 # y = y / np.linalg.norm(y)
@@ -29,10 +31,16 @@ print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
 
-if 1 - np.dot(x, y) >  0.593:
-    print("Got wrong, should be different people")
+if same_person:
+    if 1 - np.dot(x, y) >  0.593:
+        print("Got wrong, should be different people")
+    else:
+        print("Got right, should be same people")
 else:
-    print("Got right, should be same people")
+    if 1 - np.dot(x, y) > 0.593:
+        print("Got wrong, should be same people")
+    else:
+        print("Got right, should be different people")
 
 # SFace calculations
 
