@@ -20,8 +20,8 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-x = x / np.linalg.norm(x)
-y = y / np.linalg.norm(y)
+# x = x / np.linalg.norm(x)
+# y = y / np.linalg.norm(y)
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
 
