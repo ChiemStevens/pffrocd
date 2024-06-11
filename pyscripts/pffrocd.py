@@ -383,7 +383,7 @@ def get_two_random_embeddings(same_person):
     return np.array(embedding1), np.array(embedding2)
 
 fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
-fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
+fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("int32")
 def fxor(x,y, dtype):
     print("a[i]: ", x)
     print("x: ", y)
