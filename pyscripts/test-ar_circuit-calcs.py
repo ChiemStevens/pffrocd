@@ -30,7 +30,7 @@ y = qt.quantize_tensor(y)
 print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
-
+print(1 - np.dot(x, y))
 if same_person:
     if 1 - np.dot(x, y) >  0.593:
         print("Got wrong, should be different people")
