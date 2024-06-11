@@ -415,7 +415,7 @@ def generate_nonce(a, dtype):
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-        n_i = fminus(a[i], x, dtype)
+        n_i = fxor(a[i], x, dtype)
         while np.isnan(n_i):
             x = np.random.uniform(-3,3)
             if dtype == np.float32:
@@ -424,7 +424,7 @@ def generate_nonce(a, dtype):
                 x = np.float64(x)
             else:
                 raise Exception("Invalid dtype")
-            n_i = fminus(a[i], x, dtype)
+            n_i = fxor(a[i], x, dtype)
         n[i] = n_i
     return n.astype(dtype)
 
@@ -755,7 +755,7 @@ def create_shares(x: np.ndarray, dtype):
 
     # client's part is the nonces xored with the embedding
     #share0 = fxor(x, share1, dtype)
-    share0 = fminus(x, share1, dtype)
+    share0 = fxor(x, share1, dtype)
 
     return share0.astype(dtype), share1.astype(dtype)
 
