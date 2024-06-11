@@ -22,13 +22,18 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 # now quantize before normalizing
 # x = x / np.linalg.norm(x)
 # y = y / np.linalg.norm(y)
-x = qt.scalar_quantisation_percentile(x)
-y = qt.scalar_quantisation_percentile(y)
+x = qt.quantize_tensor(x)
+y = qt.quantize_tensor(y)
 print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
 
-print(x)
+if pffrocd.get_cos_dist_numpy(x, y) >  0.593:
+    print("Got wrong, should be different people")
+else:
+    print("Got right, should be same people")
+
+# SFace calculations
 
 share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, True)
 print("SHARES 0: ", share0)
