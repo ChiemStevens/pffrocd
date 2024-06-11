@@ -19,6 +19,7 @@ NUMPY_DTYPE = np.float32
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 print("embedding x: ", x)
+print("cos dist numpy: ",pffrocd.get_cos_dist_numpy(x,y))
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
 
