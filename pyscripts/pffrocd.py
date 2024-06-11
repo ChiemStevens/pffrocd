@@ -384,7 +384,10 @@ def get_two_random_embeddings(same_person):
 
 fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
 fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
-def fxor(x,y, dtype):
+ixor = lambda x,y:(x.view("int32")^y.view("int32")).view("int32")
+def fxor(x,y, dtype, quantized=False):
+    if quantized:
+        return ixor(x,y)
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
@@ -400,7 +403,7 @@ def fminus(x,y, dtype):
     else:
         raise Exception("Invalid dtype")
 
-def generate_nonce(a, dtype):
+def generate_nonce(a, dtype, quantized=False):
     """Generates random float nonces given a list of floats of size 128 (the face emedding)
     Checks for nan values after xoring, if that happens then it generates the nonces again
     """
@@ -416,8 +419,9 @@ def generate_nonce(a, dtype):
         else:
             raise Exception("Invalid dtype")
         print("generated x: ", x)
-        n_i = fxor(a[i], x, dtype)
-        print("n_i: ", n_i)
+
+        n_i = fxor(a[i], x, dtype, quantized)
+
         while np.isnan(n_i):
             x = np.random.randint(-128,128)
             if dtype == np.float32:
@@ -746,11 +750,11 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         return bandwidth
 
 
-def create_shares(x: np.ndarray, dtype):
+def create_shares(x: np.ndarray, dtype, quantized=False):
     """Create shares for the client and server from an image"""
 
     # generate nonces
-    r = generate_nonce(x, dtype)
+    r = generate_nonce(x, dtype, quantized)
 
     # server's part is the nonces
     share1 = r
