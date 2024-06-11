@@ -19,15 +19,12 @@ NUMPY_DTYPE = np.float32
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 
-x = x / np.linalg.norm(x)
-print(x.size)
-y = y / np.linalg.norm(y)
-
-# now quantize after normalizing
+# now quantize before normalizing
 x = qt.scalar_quantisation_percentile(x)
-print(x.size)
 y = qt.scalar_quantisation_percentile(y)
 
+x = x / np.linalg.norm(x)
+y = y / np.linalg.norm(y)
 
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
