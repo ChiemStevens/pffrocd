@@ -22,9 +22,10 @@ x = qt.scalar_quantisation_tensorrt(x)
 y = qt.scalar_quantisation_tensorrt(y)
 
 x = x / np.linalg.norm(x)
+print("normalized x: ", x)
 share0, share1 = pffrocd.create_shares(x, dtype=NUMPY_DTYPE)
-print(share0)
-print(share1)
+print("share0: ", share0)
+print("Share1: ",share1)
 
 y = y / np.linalg.norm(y)
 share0prime, share1prime = pffrocd.create_shares(y, dtype=NUMPY_DTYPE)
