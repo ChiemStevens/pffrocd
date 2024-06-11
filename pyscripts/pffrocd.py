@@ -408,7 +408,7 @@ def generate_nonce(a, dtype):
     #TODO: Add a parameter such that it is possible to switch between xor and minus...
     n = np.zeros(128)
     for i in range(len(a)):
-        x = np.random.uniform(-3,3)
+        x = np.random.randint(-128,128)
         if dtype == np.float32:
             x = np.float32(x)
         elif dtype == np.float64:
@@ -417,7 +417,7 @@ def generate_nonce(a, dtype):
             raise Exception("Invalid dtype")
         n_i = fxor(a[i], x, dtype)
         while np.isnan(n_i):
-            x = np.random.uniform(-3,3)
+            x = np.random.randint(-128,128)
             if dtype == np.float32:
                 x = np.float32(x)
             elif dtype == np.float64:
