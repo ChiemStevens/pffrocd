@@ -10,10 +10,12 @@ import sys
 
 def cosine_similarity(v1, v2):
     # Compute the cosine similarity
-    return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
+    return 1- np.dot(v1, v2)
 
 def evaluate_quantization(vector1, vector2, quantization_func):
     # Compute the cosine similarity before quantization
+    vector1 = np.linalg.norm(vector1)
+    vector2 = np.linalg.norm(vector2)
     before_quantization = cosine_similarity(vector1, vector2)
 
     # Quantize the vectors
