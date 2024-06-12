@@ -216,6 +216,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t i;
 	srand(time(NULL));
 
+	uint32_t sharevals[nvals];
+	uint32_t sharevals_prime[nvals];
+
 	/**
 	 Step 6: Fill the arrays xvals and yvals with the generated random values.
 	 Both parties use the same seed, to be able to verify the
@@ -231,6 +234,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		x1 = rand() % 100;
 		y1 = rand() % 100;
 
+	    float current_share = share_embeddings[i];
+		float current_share_prime = share_embeddings_prime[i];
+
+		uint32_t *shareptr = (uint32_t *)&current_share;
+		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
+
+		sharevals[i] = *shareptr;
+		sharevals_prime[i] = *shareptr_prime;
+
+
 		v_sum += x1 * y1;
 		std::cout << "x1: " << x1 << " | y1: " << y1 << std::endl;
 		std::cout << "v_sum: " << x1 * y1 << std::endl;
@@ -239,10 +252,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yvals[i] = y1;
 	}
 
-	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
-	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
-	// s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	// s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+	//s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
+	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
+	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
