@@ -50,6 +50,7 @@ x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 print("x: ", x)
 print("y: ", y)
+print(pffrocd.get_cos_dist_numpy(x,y))
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
 
