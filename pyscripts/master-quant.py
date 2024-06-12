@@ -221,6 +221,7 @@ def run_test():
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = np.dot(ref_img_embedding, img_embedding)
+            logger.info(f"cosine distance between embeddings: {cos_dist_np}")
             server_list_of_sfe_values = list(server_parsed_sfe_output.values())
             client_list_of_sfe_values = list(client_parsed_sfe_output.values())
             logger.debug(f"{server_parsed_sfe_output=}")
