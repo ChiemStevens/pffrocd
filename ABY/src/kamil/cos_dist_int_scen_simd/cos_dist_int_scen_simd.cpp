@@ -287,88 +287,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	output = s_out->get_clear_value<uint32_t>();
 
-	std::cout << "\nCircuit Result: " << output;
-	std::cout << "\nVerification Result: " << v_sum << std::endl;
+	std::cout << std::endl << "cos_dist_ver: " << v_sum << std::endl;
 
-
-
-
-
-
-
-	// std::cout << "circuit retrieved" << std::endl;
-	// // std::cout << "circuit retrieved" << std::endl;
-	// // std::cout << "here 1" << std::endl;
-
-	// // arrays of integer pointers to doubles
-	// uint32_t xvals[nvals];
-	// uint32_t yvals[nvals];
-	// uint32_t sharevals[nvals];
-	// uint32_t sharevals_prime[nvals];
-	// // std::cout << "here 1" << std::endl;
-
-	// // verification in plaintext
-	// float ver_x_times_y[nvals];
-	// float ver_x_times_x[nvals];
-	// float ver_y_times_y[nvals];
-	// float ver_x_dot_y = 0;
-	// float ver_norm_x = 0;
-	// float ver_norm_y = 0;
-	// std::cout << "values created" << std::endl;
-
-	// // S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
-
-	// for (uint32_t i = 0; i < nvals; i++)
-	// {
-	// 	float current_x = xembeddings[i];
-	// 	float current_y = yembeddings[i];
-	// 	float current_share = share_embeddings[i];
-	// 	float current_share_prime = share_embeddings_prime[i];
-
-	// 	uint32_t *xptr = (uint32_t *)&current_x;
-	// 	uint32_t *yptr = (uint32_t *)&current_y;
-	// 	uint32_t *shareptr = (uint32_t *)&current_share;
-	// 	uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
-
-	// 	xvals[i] = *xptr;
-	// 	yvals[i] = *yptr;
-	// 	sharevals[i] = *shareptr;
-	// 	sharevals_prime[i] = *shareptr_prime;
-
-	// 	ver_x_times_y[i] = current_x * current_y;
-	// 	ver_x_dot_y += ver_x_times_y[i];
-
-	// 	ver_x_times_x[i] = current_x * current_x;
-	// 	ver_y_times_y[i] = current_y * current_y;
-	// 	ver_norm_x += ver_x_times_x[i];
-	// 	ver_norm_y += ver_y_times_y[i];
-	// }
-
-	// std::cout << "share vals: " << sharevals[0] << std::endl;
-	// //std::cout << "Do we reach this part of the program?" << std::endl;
-	// ver_norm_x = sqrt(ver_norm_x);
-	// ver_norm_y = sqrt(ver_norm_y);
-
-	// float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
-
-	// std::cout << "cos_dist_ver: " << ver_cos_sim << std::endl;
-	// // INPUTS
-	// share *s_xin, *s_yin;
-	// // // Input of the pre-computed shares of the face in the database
-	// s_xin = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	// s_yin = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-	// // pairwise multiplication of all input values
-	// share *s_out = BuildInnerProductCircuit(s_xin, s_yin, nvals,
-	// 		(ArithmeticCircuit*) ac);
-
-	// party->ExecCircuit();
-
-	// std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
-
-	// uint32_t output = s_out->get_clear_value<uint32_t>();
-
-	// std::cout << "\nCircuit Result: " << output;
-	// //std::cout << "\nVerification Result: " << v_sum << std::endl;
+	std::cout << "cos_dist: " << 1 - output << std::endl;
 }
 
 int main(int argc, char **argv)

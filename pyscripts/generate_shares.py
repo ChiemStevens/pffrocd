@@ -37,7 +37,9 @@ with open(input_file, 'r') as f:
 
 ref_img_embedding = np.array(ref_img_embedding, dtype=NUMPY_DTYPE)
 share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=quantize)
-
+if quantize:
+    share0 = np.array(share0, dtype=np.uint32)
+    share1 = np.array(share1, dtype=np.uint32)
 # Write the share to the output file
 output_file = args.output
 with open(output_file, 'w') as f:

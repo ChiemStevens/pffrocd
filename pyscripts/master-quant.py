@@ -103,6 +103,8 @@ def run_test():
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
 
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=True)
+        share0 = np.array(share0, dtype=np.uint32)
+        share1 = np.array(share1, dtype=np.uint32)
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here
@@ -143,6 +145,8 @@ def run_test():
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
+            ref_img_embedding = np.array(ref_img_embedding, dtype=np.uint32)
+            img_embedding = np.array(img_embedding, dtype=np.uint32)
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
@@ -216,7 +220,7 @@ def run_test():
             cos_dist_sfe = float(server_parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
-            cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
+            cos_dist_np = 1 - np.dot(ref_img_embedding, img_embedding)
             server_list_of_sfe_values = list(server_parsed_sfe_output.values())
             client_list_of_sfe_values = list(client_parsed_sfe_output.values())
             logger.debug(f"{server_parsed_sfe_output=}")
