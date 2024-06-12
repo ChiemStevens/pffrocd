@@ -39,13 +39,7 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
-val = [10, -10, -3, -2, 5]
-# for each value in val, convert to np.uint32 and add to numpy array
-array = []
-for i in range(len(val)):
-    x = np.uint32(val[i])
-    array.append(x)
-print(array)
+
 
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
