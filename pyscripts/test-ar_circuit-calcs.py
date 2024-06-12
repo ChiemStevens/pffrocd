@@ -68,6 +68,6 @@ print(np.dot(x,y))
 # the dot product written out
 sum = 0
 for i in range(0, len(x)):
-    print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
+    #print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
     sum+=x[i]*y[i]
 print(sum)
