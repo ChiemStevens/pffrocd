@@ -28,8 +28,8 @@ print(1-np.dot(x,y))
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
 
-x = qt.quantize_to_uint32(x)
-y = qt.quantize_to_uint32(y)
+x = qt.quantize_to_int32(x)
+y = qt.quantize_to_int32(y)
 print(1-np.dot(x,y))
 # SFace calculations
 print(x)

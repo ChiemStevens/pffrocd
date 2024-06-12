@@ -31,7 +31,7 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     
     return quantized_values
 
-def quantize(vector):
+def quantize_to_uint32(vector):
     # Scale the vector to the range of 32-bit integers
     scaled_vector = vector * (2**31 - 1)
 
