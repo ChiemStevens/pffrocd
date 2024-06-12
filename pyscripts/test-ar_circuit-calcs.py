@@ -53,6 +53,7 @@ y = qt.scalar_quantisation_percentile(y)
 share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
+print("og share1 prime", share0prime)
 share0 = np.array(share0, dtype=np.uint32)
 share1 = np.array(share1, dtype=np.uint32)
 share0prime = np.array(share0prime, dtype=np.uint32)
