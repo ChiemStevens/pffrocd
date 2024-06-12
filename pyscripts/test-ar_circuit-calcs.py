@@ -36,6 +36,15 @@ print("SHARES 0: ", share0)
 print("SHARES 1: ", share1)
 share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
 
+# loop over x and y to get the shares
+sum = 0
+for i in range(0, len(x)):
+    print(x[i])
+    print(y[i])
+
+    sum+=x[i]*y[i]
+print(sum)
+
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
 
