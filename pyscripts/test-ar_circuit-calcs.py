@@ -43,15 +43,15 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 
-before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
-print("BEFORE QUANTIZATION: ", before)
-print("AFTER QUANTIZATION: ", after)
+# before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
+# print("BEFORE QUANTIZATION: ", before)
+# print("AFTER QUANTIZATION: ", after)
 
 # x = qt.scalar_quantisation_percentile(x)
 # y = qt.scalar_quantisation_percentile(y)
 
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
+share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE)
+share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE)
 
 # share0 = np.array(share0, dtype=np.uint32)
 # share1 = np.array(share1, dtype=np.uint32)
