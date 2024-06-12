@@ -14,8 +14,9 @@ def cosine_similarity(v1, v2):
 
 def evaluate_quantization(vector1, vector2, quantization_func):
     # Compute the cosine similarity before quantization
-    vector1 = np.linalg.norm(vector1)
-    vector2 = np.linalg.norm(vector2)
+    #x = x / np.linalg.norm(x)
+    vector1 = vector1 / np.linalg.norm(vector1)
+    vector2 = vector2 / np.linalg.norm(vector2)
     before_quantization = cosine_similarity(vector1, vector2)
     print(vector1, vector2)
     # Quantize the vectors
