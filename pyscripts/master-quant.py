@@ -137,7 +137,7 @@ def run_test():
             # Remove the brackets and split the string into a list of strings
             s = stdout.strip('[]').split()
             # Convert the list of strings into a list of floats
-            s = [float(i) for i in s]
+            s = [np.uint32(i) for i in s]
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=np.uint32)
             logger.info(f"Share prime looks like: {shareprime}")
