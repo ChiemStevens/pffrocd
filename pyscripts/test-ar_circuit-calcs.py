@@ -21,8 +21,8 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-# x = x / np.linalg.norm(x)
-# y = y / np.linalg.norm(y)
+x = x / np.linalg.norm(x)
+y = y / np.linalg.norm(y)
 print(pffrocd.get_cos_dist_numpy(x,y))
 x1 = qt.scalar_quantisation_percentile_og(x)
 y1 = qt.scalar_quantisation_percentile_og(y)

@@ -116,9 +116,9 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 		dot_xx->set_wire_id(0, ac->PutADDGate(dot_xx->get_wire_id(0), dot_xx->get_wire_id(i)));
 	}
 
-	dot_xx->PutSQRTGate(dot_xx);
+	// dot_xx->PutSQRTGate(dot_xx);
 
-	return dot_xx;
+	return dot_xy;
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
