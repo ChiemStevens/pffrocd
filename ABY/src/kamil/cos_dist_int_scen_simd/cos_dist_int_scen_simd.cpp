@@ -102,7 +102,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	}
 
 	// discard all wires, except the addition result
-	s_x->set_bitlength(0);
+	s_x->set_bitlength(1);
 
 	return s_x;
 }
