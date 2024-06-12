@@ -51,7 +51,7 @@ def quantize(v, precision=1000):
     return np.round(v * precision).astype(int)
 
 def cosine_distance(x, y):
-    return 1 - np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y))
+    return 1 - np.dot(x, y)
 
 # Normalize vectors
 x_norm = normalize(x)
