@@ -23,10 +23,11 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 # now quantize before normalizing
 # x = x / np.linalg.norm(x)
 # y = y / np.linalg.norm(y)
-x = qt.scalar_quantisation_percentile(x, 100, 256)
-y = qt.scalar_quantisation_percentile(y, 100, 256)
-# I want to add 128 to every value in x to make it positive
-print(x)
+print(pffrocd.get_cos_dist_numpy(x,y))
+x = qt.scalar_quantisation_percentile(x)
+y = qt.scalar_quantisation_percentile(y)
+print(pffrocd.get_cos_dist_numpy(x,y))
+
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
 
