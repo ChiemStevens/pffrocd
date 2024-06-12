@@ -31,7 +31,8 @@ print(pffrocd.get_cos_dist_numpy(x1,y1))
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
 # SFace calculations
-
+print(x)
+print(y)
 share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
@@ -49,5 +50,6 @@ print(1-np.dot(x,y))
 # the dot product written out
 sum = 0
 for i in range(0, len(x)):
+    print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
     sum+=x[i]*y[i]
 print(sum)
