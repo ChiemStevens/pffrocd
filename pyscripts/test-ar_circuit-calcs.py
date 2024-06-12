@@ -41,6 +41,8 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
+import numpy as np
+
 def normalize(v):
     norm = np.linalg.norm(v)
     if norm == 0: 
@@ -50,8 +52,12 @@ def normalize(v):
 def quantize(v, precision=1000):
     return np.round(v * precision).astype(int)
 
-def cosine_distance(x, y):
-    return 1 - np.dot(x, y)
+def euclidean_distance(x, y):
+    return np.linalg.norm(x - y)
+
+# Example vectors
+x = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+y = np.array([0.5, 0.4, 0.3, 0.2, 0.1])
 
 # Normalize vectors
 x_norm = normalize(x)
@@ -61,14 +67,12 @@ y_norm = normalize(y)
 x_quant = quantize(x_norm)
 y_quant = quantize(y_norm)
 
-print(x_quant)
+# Calculate Euclidean distances
+euc_dist_norm = euclidean_distance(x_norm, y_norm)
+euc_dist_quant = euclidean_distance(x_quant, y_quant)
 
-# Calculate cosine distances
-cos_dist_norm = cosine_distance(x_norm, y_norm)
-cos_dist_quant = cosine_distance(x_quant, y_quant)
-
-print(f'Cosine distance (normalized): {cos_dist_norm}')
-print(f'Cosine distance (quantized): {cos_dist_quant}')
+print(f'Euclidean distance (normalized): {euc_dist_norm}')
+print(f'Euclidean distance (quantized): {euc_dist_quant}')
 
 # now quantize before normalizing
 # before, after = evaluate_quantization(x,y,qt.quantize)
