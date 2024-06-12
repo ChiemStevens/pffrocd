@@ -56,6 +56,7 @@ share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE),
 share0 = np.array(share0, dtype=np.uint32)
 share1 = np.array(share1, dtype=np.uint32)
 share0prime = np.array(share0prime, dtype=np.uint32)
+print(share0prime)
 share1prime = np.array(share1prime, dtype=np.uint32)
 print("share1prime", share1prime)
 x = np.array(x, dtype=np.uint32)
