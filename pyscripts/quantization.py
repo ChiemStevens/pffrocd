@@ -31,25 +31,16 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     
     return quantized_values
 
-def quantize_to_uint32(values):
-    """
-    Quantize the values to uint32 using the calibrated range.
-    """
-    # Ensure the input is a numpy array
-    values = np.array(values, dtype=np.float32)
-    
-    # Since the input vectors are normalized, the lower and upper bounds are -1 and 1
-    lower_bound, upper_bound = -1, 1
-    
-    # Calculate the scale factor and zero point
-    qmin, qmax = 0, 2**32 - 1
-    scale = (upper_bound - lower_bound) / (qmax - qmin)
-    zero_point = qmin - round(lower_bound / scale)
-    
-    # Quantize the values
-    quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.uint32)
-    
-    return quantized_values
+def quantize_to_uint32(vector):
+    # Multiply by the maximum value of a 32-bit unsigned integer
+    vector = vector * np.iinfo(np.uint32).max
+    # Round to the nearest integer
+    vector = np.round(vector)
+    # Clip values to ensure they are within the valid range
+    vector = np.clip(vector, 0, np.iinfo(np.uint32).max)
+    # Convert to unsigned 32-bit integers
+    vector = vector.astype(np.uint32)
+    return vector
 
 
 def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
