@@ -31,12 +31,20 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     
     return quantized_values
 
-def quantize_to_int32(vector):
-    # Scale the vector to the range of 32-bit integers
-    scaled_vector = vector * (2**31 - 1)
+from scipy.cluster.vq import vq, kmeans
 
-    # Round to the nearest integer
-    quantized_vector = np.round(scaled_vector).astype(np.int32)
+def vector_quantize(vector, num_clusters):
+    # Reshape the vector to 2D (required for kmeans)
+    vector = np.reshape(vector, (-1, 1))
+
+    # Perform k-means clustering to find the centroids
+    centroids, _ = kmeans(vector, num_clusters)
+
+    # Quantize the vector by assigning each component to the nearest centroid
+    quantized_vector, _ = vq(vector, centroids)
+
+    # Reshape the quantized vector back to 1D
+    quantized_vector = np.reshape(quantized_vector, -1)
 
     return quantized_vector
 
