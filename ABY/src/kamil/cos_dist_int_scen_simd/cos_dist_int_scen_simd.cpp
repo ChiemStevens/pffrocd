@@ -231,8 +231,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	for (i = 0; i < nvals; i++) {
 
-		x1 = rand() % 100;
-		y1 = rand() % 100;
+		uint32_t current_x = xembeddings[i];
+		uint32_t current_y = yembeddings[i];
+
+		uint32_t *xptr = (uint32_t *)&current_x;
+		uint32_t *yptr = (uint32_t *)&current_y;
+
+		xvals[i] = *xptr;
+		yvals[i] = *yptr;
 
 	    uint32_t current_share = share_embeddings[i];
 		uint32_t current_share_prime = share_embeddings_prime[i];
@@ -243,15 +249,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		sharevals[i] = *shareptr;
 		sharevals_prime[i] = *shareptr_prime;
 
-
-		v_sum += x1 * y1;
-		std::cout << "x1: " << x1 << " | y1: " << y1 << std::endl;
-		std::cout << "v_sum: " << x1 * y1 << std::endl;
-
-		xvals[i] = x1;
-		yvals[i] = y1;
+		v_sum += xvals[i] * yvals[i];
 	}
-
+	std::cout << "v_sum: " << v_sum << std::endl;
 	//s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
 	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
