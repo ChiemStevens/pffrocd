@@ -34,15 +34,10 @@ print("x: ", x)
 print("y: ", y)
 print(pffrocd.get_cos_dist_numpy(x,y))
 
-x = np.array(x, dtype=NUMPY_DTYPE)
-y = np.array(y, dtype=NUMPY_DTYPE)
-print("x: ", x)
-print("y: ", y)
-print(pffrocd.get_cos_dist_numpy(x,y))
 # SFace calculations
 
-share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, True)
-share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
+share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
 share0 = np.array(share0, dtype=np.uint32)
 share1 = np.array(share1, dtype=np.uint32)
