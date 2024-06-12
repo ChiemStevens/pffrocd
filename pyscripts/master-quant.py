@@ -136,9 +136,9 @@ def run_test():
         share0 = np.array(share0, dtype=np.uint32)
         share1 = np.array(share1, dtype=np.uint32)
         logger.info(f"Share 0 looks like: {share0}")
-        logger.info(f"Share 1 looks like: {share1}")
+        #logger.info(f"Share 1 looks like: {share1}")
         logger.info(f"Share 0 debug looks like: {share0debug}")
-        logger.info(f"Share 1 debug looks like: {share1debug}")
+        #logger.info(f"Share 1 debug looks like: {share1debug}")
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here
