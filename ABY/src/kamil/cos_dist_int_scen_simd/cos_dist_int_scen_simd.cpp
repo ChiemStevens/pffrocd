@@ -248,7 +248,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_x_times_y[i] = current_x * current_y;
 		ver_x_dot_y += ver_x_times_y[i];
 
-		v_sum = sharevals[i] * sharevals_prime[i];
+		v_sum = xvals[i] * yvals[i];
 
 		ver_x_times_x[i] = current_x * current_x;
 		ver_y_times_y[i] = current_y * current_y;
