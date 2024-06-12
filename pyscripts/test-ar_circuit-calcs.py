@@ -40,10 +40,16 @@ share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
 sum = 0
 for i in range(0, len(x)):
     print(x[i])
-    print(y[i])
+    print(share0[i]-share1[i])
 
     sum+=x[i]*y[i]
 print(sum)
+
+share0 = np.array(share0, dtype=int)
+share1 = np.array(share1, dtype=int)
+share0prime = np.array(share0prime, dtype=int)
+share1prime = np.array(share1prime, dtype=int)
+print("SHARES 0: ", share0)
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
