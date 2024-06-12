@@ -49,5 +49,5 @@ print(1-np.dot(x,y))
 # the dot product written out
 sum = 0
 for i in range(0, len(x)):
-    sum+=np.uint32(x[i])*np.uint32(y[i])
+    sum+=x[i]*y[i]
 print(sum)
