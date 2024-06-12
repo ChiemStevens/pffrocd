@@ -228,8 +228,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	for (i = 0; i < nvals; i++) {
 
-		x1 = rand();
-		y1 = rand();
+		x1 = rand() % 100;
+		y1 = rand() % 100;
 
 		v_sum += x1 * y1;
 		std::cout << "x1: " << x1 << " | y1: " << y1 << std::endl;
