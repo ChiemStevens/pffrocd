@@ -38,7 +38,9 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-evaluate_quantization(x,y,qt.scalar_quantisation_percentile_og)
+before, after = evaluate_quantization(x,y,qt.quantize)
+print("BEFORE QUANTIZATION: ", before)
+print("AFTER QUANTIZATION: ", after)
 # x1 = qt.scalar_quantisation_percentile_og(x)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
