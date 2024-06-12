@@ -118,12 +118,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t bitlen = 32;
 
 	// two arrays of real-world embeddings
-	std::vector<float> xembeddings;
-	std::vector<float> yembeddings;
+	std::vector<uint32_t> xembeddings;
+	std::vector<uint32_t> yembeddings;
 
 	// array for the Sy<role> share
-	std::vector<float> share_embeddings;
-	std::vector<float> share_embeddings_prime;
+	std::vector<uint32_t> share_embeddings;
+	std::vector<uint32_t> share_embeddings_prime;
 
 
 	// reading the non-xored embeddings, i.e. current face and database face
@@ -132,7 +132,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
-	float x, y;
+	uint32_t x, y;
 
 	// std::cout << "starting reading x and y" << std::endl;
 
@@ -162,7 +162,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::fstream infile_share(fname);
 	std::fstream infile_share_prime(fnameprime);
 
-	float z;
+	uint32_t z;
 	// // std::cout << "starting reading z" << std::endl;
 
 	while(infile_share >> z) {
@@ -234,8 +234,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		x1 = rand() % 100;
 		y1 = rand() % 100;
 
-	    float current_share = share_embeddings[i];
-		float current_share_prime = share_embeddings_prime[i];
+	    uint32_t current_share = share_embeddings[i];
+		uint32_t current_share_prime = share_embeddings_prime[i];
 
 		uint32_t *shareptr = (uint32_t *)&current_share;
 		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
