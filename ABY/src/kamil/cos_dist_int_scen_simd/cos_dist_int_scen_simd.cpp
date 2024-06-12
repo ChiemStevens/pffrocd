@@ -103,7 +103,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 
 	// discard all wires, except the addition result
 	dot_xy->set_bitlength(1);
-	
+
 	return dot_xy;
 }
 
@@ -275,7 +275,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << std::endl << "cos_dist_ver: " << v_sum << std::endl;
 
-	std::cout << "cos_dist: " << 1 - output << std::endl;
+	std::cout << "cos_dist: " << output << std::endl;
 }
 
 int main(int argc, char **argv)
