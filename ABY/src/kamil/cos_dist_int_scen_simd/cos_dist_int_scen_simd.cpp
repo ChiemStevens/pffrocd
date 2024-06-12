@@ -104,21 +104,21 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	// discard all wires, except the addition result
 	dot_xy->set_bitlength(1);
 
-	return dot_xy;
+	// pairwise multiplication of all x values
+	share *dot_xx = ac->PutMULGate(s_x, s_x);
 
-	// // pairwise multiplication of all x values
-	// s_x = ac->PutMULGate(s_x, s_x);
+	// split SIMD gate to separate wires (size many)
+	dot_xx = ac->PutSplitterGate(dot_xx);
 
-	// // split SIMD gate to separate wires (size many)
-	// s_x = ac->PutSplitterGate(s_x);
+	// add up the individual multiplication results and store result on wire 0
+	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
+	for (i = 1; i < numbers; i++) {
+		dot_xx->set_wire_id(0, ac->PutADDGate(dot_xx->get_wire_id(0), dot_xx->get_wire_id(i)));
+	}
 
-	// // add up the individual multiplication results and store result on wire 0
-	// // in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	// for (i = 1; i < numbers; i++) {
-	// 	s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
-	// }
+	dot_xx->PutSQRTGate(dot_xx);
 
-	// return s_x;
+	return dot_xx;
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
