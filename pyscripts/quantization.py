@@ -31,17 +31,17 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     
     return quantized_values
 
-def quantize_to_uint32(vector):
-    # Multiply by the maximum value of a 32-bit unsigned integer
-    vector = vector * np.iinfo(np.uint32).max
-    # Round to the nearest integer
-    vector = np.round(vector)
-    # Clip values to ensure they are within the valid range
-    vector = np.clip(vector, 0, np.iinfo(np.uint32).max)
-    # Convert to unsigned 32-bit integers
-    vector = vector.astype(np.uint32)
-    return vector
+def quantize(vector):
+    # Scale the vector to the range of 32-bit integers
+    scaled_vector = vector * (2**31 - 1)
 
+    # Round to the nearest integer
+    quantized_vector = np.round(scaled_vector).astype(np.int32)
+
+    # Normalize the quantized vector
+    normalized_quantized_vector = quantized_vector / np.linalg.norm(quantized_vector)
+
+    return normalized_quantized_vector
 
 def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
     """
