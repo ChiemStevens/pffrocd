@@ -206,12 +206,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	uint16_t x, y;
+	uint16_t x1, y1;
 
 	uint16_t output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(numbers);
-	std::vector<uint16_t> yvals(numbers);
+	std::vector<uint16_t> xvals(nvals);
+	std::vector<uint16_t> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
@@ -228,17 +228,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	for (i = 0; i < nvals; i++) {
 
-		x = rand();
-		y = rand();
+		x1 = rand();
+		y1 = rand();
 
-		v_sum += x * y;
+		v_sum += x1 * y1;
 
-		xvals[i] = x;
-		yvals[i] = y;
+		xvals[i] = x1;
+		yvals[i] = y1;
 	}
 
-	s_x_vec = circ->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
-	s_y_vec = circ->PutSIMDINGate(nvals, yvals.data(), 64, CLIENT);
+	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
+	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 64, CLIENT);
 	// s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	// s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
