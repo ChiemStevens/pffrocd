@@ -46,9 +46,9 @@ y = y / np.linalg.norm(y)
 before, after = evaluate_quantization(x,y,qt.quantize)
 print("BEFORE QUANTIZATION: ", before)
 print("AFTER QUANTIZATION: ", after)
-# x1 = qt.scalar_quantisation_percentile_og(x)
-# y1 = qt.scalar_quantisation_percentile_og(y)
-# print(pffrocd.get_cos_dist_numpy(x1,y1))
+
+x = qt.quantize(x)
+y = qt.quantize(y)
 
 share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
