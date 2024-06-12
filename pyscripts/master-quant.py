@@ -99,7 +99,9 @@ def run_test():
         imgs = imgs + other_imgs
 
         # create shares of the reference image
-        ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
+        #ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
+        ref_img_embedding = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
+        
         # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
         ref_img_embedding = qt.scalar_quantisation_percentile(ref_img_embedding)

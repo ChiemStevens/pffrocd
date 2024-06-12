@@ -20,8 +20,8 @@ args = parser.parse_args()
 input_image = args.input
 
 # Extract the face embedding
-embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=False)[0]["embedding"]
-
+#embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=False)[0]["embedding"]
+embedding = DeepFace.represent("/home/kamil/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", model_name='SFace', enforce_detection=False)[0]["embedding"]
 should_normalize = args.normalize
 if should_normalize:
     embedding = embedding / np.linalg.norm(embedding)
