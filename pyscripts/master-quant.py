@@ -98,32 +98,6 @@ def run_test():
         # join the two list of images together
         imgs = imgs + other_imgs
 
-
-        x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
-        y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
-
-        # now quantize before normalizing
-        x = x / np.linalg.norm(x)
-        y = y / np.linalg.norm(y)
-
-        # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
-        # print("BEFORE QUANTIZATION: ", before)
-        # print("AFTER QUANTIZATION: ", after)
-
-        x = qt.scalar_quantisation_percentile(x)
-        y = qt.scalar_quantisation_percentile(y)
-
-        share0debug, share1debug = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-        share0primedebug, share1primedebug = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-
-        share0debug = np.array(share0debug, dtype=np.uint32)
-        share1debug = np.array(share1debug, dtype=np.uint32)
-        share0primedebug = np.array(share0primedebug, dtype=np.uint32)
-        share1primedebug = np.array(share1primedebug, dtype=np.uint32)
-        x = np.array(x, dtype=np.uint32)
-        y = np.array(y, dtype=np.uint32)
-
-
         # create shares of the reference image
         #ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
         ref_img_embedding = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
@@ -132,13 +106,9 @@ def run_test():
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
         ref_img_embedding = qt.scalar_quantisation_percentile(ref_img_embedding)
         
-        share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=True)
+        share0, share1 = pffrocd.create_shares(np.array(ref_img_embedding, dtype=NUMPY_DTYPE), dtype=NUMPY_DTYPE, quantized=True)
         share0 = np.array(share0, dtype=np.uint32)
         share1 = np.array(share1, dtype=np.uint32)
-        logger.info(f"Share 0 looks like: {share0}")
-        #logger.info(f"Share 1 looks like: {share1}")
-        logger.info(f"Share 0 debug looks like: {share0debug}")
-        #logger.info(f"Share 1 debug looks like: {share1debug}")
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here

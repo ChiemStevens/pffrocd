@@ -37,10 +37,11 @@ with open(input_file, 'r') as f:
     ref_img_embedding = [float(line.strip()) for line in f]
 
 ref_img_embedding = np.array(ref_img_embedding, dtype=NUMPY_DTYPE)
+
 if quantize:
     ref_img_embedding = qt.scalar_quantisation_percentile(ref_img_embedding)
 
-share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=quantize)
+share0, share1 = pffrocd.create_shares(np.array(ref_img_embedding, dtype=NUMPY_DTYPE), dtype=NUMPY_DTYPE, quantized=quantize)
 if quantize:
     share0 = np.array(share0, dtype=np.uint32)
     share1 = np.array(share1, dtype=np.uint32)
