@@ -39,6 +39,12 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
+val = [10, -10, -3, -2, 5]
+array = np.array(val, dtype=NUMPY_DTYPE)
+print(array)
+array = np.array(array, dtype=np.uint32)
+print(array)
+
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
@@ -59,7 +65,6 @@ share1 = np.array(share1, dtype=np.uint32)
 share0prime = np.array(share0prime, dtype=np.uint32)
 print(share0prime)
 share1prime = np.array(share1prime, dtype=np.uint32)
-print("share1prime", share1prime)
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
