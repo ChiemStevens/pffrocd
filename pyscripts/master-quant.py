@@ -135,7 +135,7 @@ def run_test():
             # Convert the list of strings into a list of floats
             s = [float(i) for i in s]
             # Convert the list of floats into a numpy array
-            shareprime = np.array(s, dtype=NUMPY_DTYPE)
+            shareprime = np.array(s, dtype=np.uint32)
             logger.info(f"Share prime looks like: {shareprime}")
 
             if stderr != '':
