@@ -53,10 +53,6 @@ def quantize(v, precision=1000):
 def cosine_distance(x, y):
     return 1 - np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y))
 
-# Example vectors
-x = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
-y = np.array([0.5, 0.4, 0.3, 0.2, 0.1])
-
 # Normalize vectors
 x_norm = normalize(x)
 y_norm = normalize(y)
