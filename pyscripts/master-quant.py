@@ -99,8 +99,7 @@ def run_test():
         imgs = imgs + other_imgs
 
         # create shares of the reference image
-        #ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
-        ref_img_embedding = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
+        ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
         
         # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
@@ -149,7 +148,7 @@ def run_test():
             pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
-            img_embedding = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+            img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
             ref_img_embedding = np.array(ref_img_embedding, dtype=np.uint32)
             img_embedding = np.array(img_embedding, dtype=np.uint32)
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
