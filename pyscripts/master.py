@@ -55,10 +55,8 @@ elif bit_length == 16:
 else:
     raise Exception("Invalid bit length")
 
-# client_exec_name += f"_{bit_length}"
-# server_exec_name += f"_{bit_length}"
-
-
+client_exec_name += f"_{bit_length}"
+server_exec_name += f"_{bit_length}"
 
 def run_test():
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -113,20 +111,6 @@ def run_test():
         # run the test for each image
         for count_img,img in enumerate(imgs):
             logger.info(f"Running test for {img}")
-
-            # DEBUG
-            ver_ref_img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
-            ver_ref_img_embedding = ver_ref_img_embedding / np.linalg.norm(ver_ref_img_embedding)
-            share0prime, share1prime = pffrocd.create_shares(ver_ref_img_embedding, dtype=NUMPY_DTYPE)
-            # The result of share0 and share1 should be ref_img_embedding
-            result = np.float32(share0+share1)
-            logger.info(f"share0 (x - nonce): {share0}")
-            logger.info(f"share1 (nonce): {share1}")
-            logger.info(f"ref_img_embedding: {ref_img_embedding}")
-            logger.info(f"The result of share0 * share1: {result}")
-            
-            cos_dist = 1-np.dot(ref_img_embedding, ver_ref_img_embedding)
-            logger.info(f"cosine distance between the embeddings: {cos_dist}")
 
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt -n {True}", master_key_path)
