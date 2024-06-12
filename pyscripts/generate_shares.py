@@ -14,10 +14,12 @@ import numpy as np
 parser = argparse.ArgumentParser(description='Extract face embedding from an image')
 parser.add_argument('-i', '--input', type=str, help='Input shares file path', required=True)
 parser.add_argument('-b', '--byte', type=int, help='The big length', required=True)
+parser.add_argument('-q', '--quantize', type=bool, help='Quantize the embeddings', default=False, required=False)
 parser.add_argument('-o', '--output', type=str, help='Output file path', required=True)
 args = parser.parse_args()
 
 bit_length = args.byte
+quantize = args.quantize
 
 if bit_length == 64:
     NUMPY_DTYPE = np.float64
@@ -34,7 +36,7 @@ with open(input_file, 'r') as f:
     ref_img_embedding = [float(line.strip()) for line in f]
 
 ref_img_embedding = np.array(ref_img_embedding, dtype=NUMPY_DTYPE)
-share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
+share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=quantize)
 
 # Write the share to the output file
 output_file = args.output

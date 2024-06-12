@@ -55,8 +55,8 @@ elif bit_length == 16:
 else:
     raise Exception("Invalid bit length")
 
-client_exec_name += f"_{bit_length}"
-server_exec_name += f"_{bit_length}"
+# client_exec_name += f"_{bit_length}"
+# server_exec_name += f"_{bit_length}"
 
 def run_test():
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -102,7 +102,7 @@ def run_test():
         # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
 
-        share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
+        share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=True)
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here
@@ -125,7 +125,7 @@ def run_test():
             logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
 
             # Let the server create two shares from the embeddings
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt -q {True}", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             # Remove the brackets and split the string into a list of strings
