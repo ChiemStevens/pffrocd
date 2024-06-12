@@ -237,8 +237,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yvals[i] = y1;
 	}
 
-	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
-	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 64, CLIENT);
+	s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
+	s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	// s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	// s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
