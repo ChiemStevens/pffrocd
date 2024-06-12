@@ -251,6 +251,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// // Input of the pre-computed shares of the face in the database
 	s_xin = bc->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	bc->PutPrintValueGate(s_xin, "s_xin");
 	s_yin = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
 

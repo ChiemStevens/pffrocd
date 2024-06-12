@@ -10,7 +10,7 @@ import sys
 
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
+pffrocd.EXECUTABLE_NAME = 'cos_dist_float_scen_simd_32'
 pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
@@ -21,20 +21,20 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-# x = x / np.linalg.norm(x)
-# y = y / np.linalg.norm(y)
-x = qt.quantize_tensor(x)
-y = qt.quantize_tensor(y)
-print(x)
-x = np.array(x, dtype=NUMPY_DTYPE)
-y = np.array(y, dtype=NUMPY_DTYPE)
+x = x / np.linalg.norm(x)
+y = y / np.linalg.norm(y)
+# x = qt.quantize_tensor(x)
+# y = qt.quantize_tensor(y)
+# print(x)
+# x = np.array(x, dtype=NUMPY_DTYPE)
+# y = np.array(y, dtype=NUMPY_DTYPE)
 
 # SFace calculations
 
-share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, True)
+share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, False)
 print("SHARES 0: ", share0)
 print("SHARES 1: ", share1)
-share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
+share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, False)
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
