@@ -32,7 +32,7 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     return quantized_values
 
 def quantize(v, precision=1000):
-    return np.round(v * precision).astype(int)
+    return np.round(v * precision).astype(np.uint_32)
 
 def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
     """
