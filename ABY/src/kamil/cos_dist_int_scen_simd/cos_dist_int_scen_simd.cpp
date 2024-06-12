@@ -103,21 +103,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 
 	// discard all wires, except the addition result
 	dot_xy->set_bitlength(1);
-
-	// pairwise multiplication of all x values
-	share *dot_xx = ac->PutMULGate(s_x, s_x);
-
-	// split SIMD gate to separate wires (size many)
-	dot_xx = ac->PutSplitterGate(dot_xx);
-
-	// add up the individual multiplication results and store result on wire 0
-	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (i = 1; i < numbers; i++) {
-		dot_xx->set_wire_id(0, ac->PutADDGate(dot_xx->get_wire_id(0), dot_xx->get_wire_id(i)));
-	}
-
-	// dot_xx->PutSQRTGate(dot_xx);
-
+	
 	return dot_xy;
 }
 
