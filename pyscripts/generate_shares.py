@@ -9,6 +9,7 @@ import argparse
 from deepface import DeepFace
 import pffrocd
 import numpy as np
+import quantization as qt
 
 # Create the argument parser
 parser = argparse.ArgumentParser(description='Extract face embedding from an image')
@@ -36,6 +37,9 @@ with open(input_file, 'r') as f:
     ref_img_embedding = [float(line.strip()) for line in f]
 
 ref_img_embedding = np.array(ref_img_embedding, dtype=NUMPY_DTYPE)
+if quantize:
+    ref_img_embedding = qt.scalar_quantisation_percentile(ref_img_embedding)
+
 share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=quantize)
 if quantize:
     share0 = np.array(share0, dtype=np.uint32)

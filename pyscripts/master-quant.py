@@ -8,6 +8,7 @@ import configparser
 import time
 import pandas as pd
 import numpy as np
+import quantization as qt
 
 sec_lvl = None
 mt_alg = None
@@ -101,7 +102,8 @@ def run_test():
         ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
         # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
         ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
-
+        ref_img_embedding = qt.scalar_quantisation_percentile(ref_img_embedding)
+        
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE, quantized=True)
         share0 = np.array(share0, dtype=np.uint32)
         share1 = np.array(share1, dtype=np.uint32)
