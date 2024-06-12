@@ -25,6 +25,8 @@ def scalar_quantisation_percentile(values, qmin=0, qmax=256, lower_bound=None, u
     # qmax = 127
     scale = (upper_bound - lower_bound) / (qmax - qmin)
     zero_point = qmin - round(lower_bound / scale)
+    print("scale: ", scale)
+    print("zero_point: ", zero_point)
     
     # Quantize the values
     quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.int8)
