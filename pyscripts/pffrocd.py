@@ -388,7 +388,6 @@ def fxor(x,y, dtype):
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
-        print("using float32")
         return fxor32(x,y)
     else:
         raise Exception("Invalid dtype")

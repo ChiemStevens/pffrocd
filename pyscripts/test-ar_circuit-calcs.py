@@ -29,7 +29,7 @@ def evaluate_quantization(vector1, vector2, quantization_func):
     return before_quantization, after_quantization
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
+pffrocd.EXECUTABLE_NAME = 'cos_dist_float_scen_simd_32'
 pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
@@ -47,11 +47,11 @@ before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 print("BEFORE QUANTIZATION: ", before)
 print("AFTER QUANTIZATION: ", after)
 
-x = qt.scalar_quantisation_percentile(x)
-y = qt.scalar_quantisation_percentile(y)
+# x = qt.scalar_quantisation_percentile(x)
+# y = qt.scalar_quantisation_percentile(y)
 
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
+share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 
 share0 = np.array(share0, dtype=np.uint32)
 share1 = np.array(share1, dtype=np.uint32)
@@ -65,9 +65,9 @@ print(output.stdout)
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
 print(np.dot(x,y))
-# the dot product written out
-sum = 0
-for i in range(0, len(x)):
-    #print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
-    sum+=x[i]*y[i]
-print(sum)
+# # the dot product written out
+# sum = 0
+# for i in range(0, len(x)):
+#     #print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
+#     sum+=x[i]*y[i]
+# print(sum)
