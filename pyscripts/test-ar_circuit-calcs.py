@@ -8,6 +8,23 @@ import time
 import quantization as qt
 import sys
 
+def cosine_similarity(v1, v2):
+    # Compute the cosine similarity
+    return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
+
+def evaluate_quantization(vector1, vector2, quantization_func):
+    # Compute the cosine similarity before quantization
+    before_quantization = cosine_similarity(vector1, vector2)
+
+    # Quantize the vectors
+    quantized_vector1 = quantization_func(vector1)
+    quantized_vector2 = quantization_func(vector2)
+
+    # Compute the cosine similarity after quantization
+    after_quantization = cosine_similarity(quantized_vector1, quantized_vector2)
+
+    # Return the cosine similarities before and after quantization
+    return before_quantization, after_quantization
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
 pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
@@ -21,9 +38,7 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-x = x / np.linalg.norm(x)
-y = y / np.linalg.norm(y)
-print(1-np.dot(x,y))
+evaluate_quantization(x,y,qt.scalar_quantisation_percentile_og)
 # x1 = qt.scalar_quantisation_percentile_og(x)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
