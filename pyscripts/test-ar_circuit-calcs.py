@@ -26,8 +26,6 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 x = qt.quantize_tensor(x)
 y = qt.quantize_tensor(y)
 # I want to add 128 to every value in x to make it positive
-x = x + 128
-y = y + 128
 print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
