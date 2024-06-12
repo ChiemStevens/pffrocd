@@ -232,6 +232,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		y1 = rand();
 
 		v_sum += x1 * y1;
+		std::cout << "x1: " << x1 << " | y1: " << y1 << std::endl;
+		std::cout << "v_sum: " << x1 * y1 << std::endl;
 
 		xvals[i] = x1;
 		yvals[i] = y1;
