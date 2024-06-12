@@ -206,7 +206,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	float output, v_sum = 0;
+	uint32_t output, v_sum = 0;
 
 	// std::vector<uint16_t> xvals(nvals);
 	// std::vector<uint16_t> yvals(nvals);
@@ -249,6 +249,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_x_dot_y += ver_x_times_y[i];
 
 		v_sum = xvals[i] * yvals[i];
+		std::cout << "v_sum: " << xvals[i] * yvals[i] << std::endl;
 		std::cout << "v_sum: " << v_sum << std::endl;
 		std::cout << "xvals: " << xvals[i] << std::endl;
 		std::cout << "yvals: " << yvals[i] << std::endl;	
