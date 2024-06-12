@@ -262,8 +262,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ver_norm_y = sqrt(ver_norm_y);
 
 	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
-	s_x_vec = bc->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	s_y_vec = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	ac->PutPrintValueGate(s_x_vec, "s_x_vec");
+	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
