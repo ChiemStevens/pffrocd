@@ -30,10 +30,6 @@ print(pffrocd.get_cos_dist_numpy(x1,y1))
 
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
-print("x: ", x)
-print("y: ", y)
-print(pffrocd.get_cos_dist_numpy(x,y))
-
 # SFace calculations
 
 share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
@@ -44,12 +40,14 @@ share1 = np.array(share1, dtype=np.uint32)
 share0prime = np.array(share0prime, dtype=np.uint32)
 share1prime = np.array(share1prime, dtype=np.uint32)
 
-print(pffrocd.get_cos_dist_numpy(x,y))
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
 
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
+print(np.lingalg.norm(x))
+print(np.linalg.norm(y))
+print(np.linalg.norm(x)*np.linalg.norm(y))
 print(1-np.dot(x,y))
 # the dot product written out
 sum = 0
