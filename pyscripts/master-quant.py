@@ -149,6 +149,10 @@ def run_test():
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
+            img_embedding = img_embedding / np.linalg.norm(img_embedding)
+            img_embedding = qt.scalar_quantisation_percentile(img_embedding)
+            logger.info(f"ref_img_embedding before uint32: {ref_img_embedding}")
+            logger.info(f"img_embedding before uint32: {img_embedding}")
             ref_img_embedding = np.array(ref_img_embedding, dtype=np.uint32)
             img_embedding = np.array(img_embedding, dtype=np.uint32)
             logger.info(f"ref_img_embedding: {ref_img_embedding}")
