@@ -41,10 +41,41 @@ x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
+def normalize(v):
+    norm = np.linalg.norm(v)
+    if norm == 0: 
+       return v
+    return v / norm
+
+def quantize(v):
+    return np.round(v).astype(int)
+
+def cosine_distance(x, y):
+    return 1 - np.dot(x, y)
+
+# Example vectors
+x = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+y = np.array([0.5, 0.4, 0.3, 0.2, 0.1])
+
+# Normalize vectors
+x_norm = normalize(x)
+y_norm = normalize(y)
+
+# Quantize vectors
+x_quant = quantize(x_norm)
+y_quant = quantize(y_norm)
+
+# Calculate cosine distances
+cos_dist_norm = cosine_distance(x_norm, y_norm)
+cos_dist_quant = cosine_distance(x_quant, y_quant)
+
+print(f'Cosine distance (normalized): {cos_dist_norm}')
+print(f'Cosine distance (quantized): {cos_dist_quant}')
+
 # now quantize before normalizing
-before, after = evaluate_quantization(x,y,qt.quantize)
-print("BEFORE QUANTIZATION: ", before)
-print("AFTER QUANTIZATION: ", after)
+# before, after = evaluate_quantization(x,y,qt.quantize)
+# print("BEFORE QUANTIZATION: ", before)
+# print("AFTER QUANTIZATION: ", after)
 # x1 = qt.scalar_quantisation_percentile_og(x)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
