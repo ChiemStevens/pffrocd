@@ -65,6 +65,8 @@ y_norm = normalize(y)
 x_quant = quantize(x_norm)
 y_quant = quantize(y_norm)
 
+print(x_quant)
+
 # Calculate cosine distances
 cos_dist_norm = cosine_distance(x_norm, y_norm)
 cos_dist_quant = cosine_distance(x_quant, y_quant)
