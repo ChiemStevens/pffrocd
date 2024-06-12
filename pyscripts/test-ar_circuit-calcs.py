@@ -33,15 +33,16 @@ y = np.array(y, dtype=NUMPY_DTYPE)
 # SFace calculations
 
 share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, True)
-print("SHARES 0: ", share0)
-print("SHARES 1: ", share1)
 share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
 
-# share0 = np.array(share0, dtype=np.uintc)
-# share1 = np.array(share1, dtype=np.uintc)
-# share0prime = np.array(share0prime, dtype=np.uintc)
-# share1prime = np.array(share1prime, dtype=np.uintc)
-
+share0 = np.array(share0, dtype=np.uintc)
+share1 = np.array(share1, dtype=np.uintc)
+share0prime = np.array(share0prime, dtype=np.uintc)
+share1prime = np.array(share1prime, dtype=np.uintc)
+x = np.array(x, dtype=np.uintc)
+y = np.array(y, dtype=np.uintc)
+print("x: ", x)
+print("y: ", y)
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
 
