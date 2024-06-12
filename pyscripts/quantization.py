@@ -32,11 +32,11 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
     return quantized_values
 
 def quantize(vector):
-    # Find the smallest number in the vector
-    min_val = np.min(np.abs(vector[np.nonzero(vector)]))
+    # Scale the vector to the range of 32-bit integers
+    scaled_vector = vector * (2**31 - 1)
 
-    # Multiply by a large number and round to the nearest multiple of the smallest number
-    quantized_vector = np.round(vector / min_val) * min_val
+    # Round to the nearest integer
+    quantized_vector = np.round(scaled_vector)
 
     # Convert to 32-bit integers
     quantized_vector = quantized_vector.astype(np.int32)
