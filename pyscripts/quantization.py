@@ -38,10 +38,7 @@ def quantize_to_int32(vector):
     # Round to the nearest integer
     quantized_vector = np.round(scaled_vector).astype(np.int32)
 
-    # Normalize the quantized vector
-    normalized_quantized_vector = quantized_vector / np.linalg.norm(quantized_vector)
-
-    return normalized_quantized_vector
+    return quantized_vector
 
 def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
     """
