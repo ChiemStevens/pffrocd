@@ -45,7 +45,7 @@ print(output.stdout)
 
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
-print(np.lingalg.norm(x))
+print(np.linalg.norm(x))
 print(np.linalg.norm(y))
 print(np.linalg.norm(x)*np.linalg.norm(y))
 print(1-np.dot(x,y))
