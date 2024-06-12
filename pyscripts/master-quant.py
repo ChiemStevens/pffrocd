@@ -136,6 +136,7 @@ def run_test():
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             # Remove the brackets and split the string into a list of strings
             s = stdout.strip('[]').split()
+            logger.info(f"S looks like {s}")
             # Convert the list of strings into a list of floats
             s = [np.uint32(i) for i in s]
             # Convert the list of floats into a numpy array
