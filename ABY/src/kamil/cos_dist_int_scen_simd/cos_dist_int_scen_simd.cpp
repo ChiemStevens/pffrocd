@@ -232,8 +232,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		uint32_t current_share = share_embeddings[i];
 		uint32_t current_share_prime = share_embeddings_prime[i];
 
-		// uint32_t *xptr = (uint32_t *)&current_x;
-		// uint32_t *yptr = (uint32_t *)&current_y;
+		uint32_t *xptr = (uint32_t *)&current_x;
+		uint32_t *yptr = (uint32_t *)&current_y;
 		uint32_t *shareptr = (uint32_t *)&current_share;
 		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
 

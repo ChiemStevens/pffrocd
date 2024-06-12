@@ -51,5 +51,5 @@ print(1-np.dot(x,y))
 # the dot product written out
 sum = 0
 for i in range(0, len(x)):
-    sum+=x[i]*y[i]
+    sum+=np.uintc(x[i])*np.uintc(y[i])
 print(sum)
