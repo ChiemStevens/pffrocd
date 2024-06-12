@@ -206,68 +206,41 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	uint32_t output, v_sum = 0;
+	uint16_t x, y;
 
-	// std::vector<uint16_t> xvals(nvals);
-	// std::vector<uint16_t> yvals(nvals);
+	uint16_t output, v_sum = 0;
 
-	// arrays of integer pointers to doubles
-	uint32_t xvals[nvals];
-	uint32_t yvals[nvals];
-	uint32_t sharevals[nvals];
-	uint32_t sharevals_prime[nvals];
-	// std::cout << "here 1" << std::endl;
+	std::vector<uint16_t> xvals(numbers);
+	std::vector<uint16_t> yvals(numbers);
 
-	// verification in plaintext
-	float ver_x_times_y[nvals];
-	float ver_x_times_x[nvals];
-	float ver_y_times_y[nvals];
-	float ver_x_dot_y = 0;
-	float ver_norm_x = 0;
-	float ver_norm_y = 0;
-	// std::cout << "here 1" << std::endl;
+	uint32_t i;
+	srand(time(NULL));
 
-	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
-	for (uint32_t i = 0; i < nvals; i++)
-	{
-		float current_x = xembeddings[i];
-		float current_y = yembeddings[i];
-		float current_share = share_embeddings[i];
-		float current_share_prime = share_embeddings_prime[i];
+	/**
+	 Step 6: Fill the arrays xvals and yvals with the generated random values.
+	 Both parties use the same seed, to be able to verify the
+	 result. In a real example each party would only supply
+	 one input value. Copy the randomly generated vector values into the respective
+	 share objects using the circuit object method PutINGate().
+	 Also mention who is sharing the object.
+	 The values for the party different from role is ignored,
+	 but PutINGate() must always be called for both roles.
+	 */
+	for (i = 0; i < nvals; i++) {
 
-		uint32_t *xptr = (uint32_t *)&current_x;
-		uint32_t *yptr = (uint32_t *)&current_y;
-		uint32_t *shareptr = (uint32_t *)&current_share;
-		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
+		x = rand();
+		y = rand();
 
-		xvals[i] = *xptr;
-		yvals[i] = *yptr;
-		sharevals[i] = *shareptr;
-		sharevals_prime[i] = *shareptr_prime;
+		v_sum += x * y;
 
-		ver_x_times_y[i] = current_x * current_y;
-		ver_x_dot_y += ver_x_times_y[i];
-
-		v_sum = xvals[i] * yvals[i];
-		std::cout << "v_sum: " << xvals[i] * yvals[i] << std::endl;
-		std::cout << "v_sum: " << v_sum << std::endl;
-		std::cout << "xvals: " << xvals[i] << std::endl;
-		std::cout << "yvals: " << yvals[i] << std::endl;	
-
-		ver_x_times_x[i] = current_x * current_x;
-		ver_y_times_y[i] = current_y * current_y;
-		ver_norm_x += ver_x_times_x[i];
-		ver_norm_y += ver_y_times_y[i];
+		xvals[i] = x;
+		yvals[i] = y;
 	}
 
-	// std::cout << "here 1" << std::endl;
-	//std::cout << "Do we reach this part of the program?" << std::endl;
-	ver_norm_x = sqrt(ver_norm_x);
-	ver_norm_y = sqrt(ver_norm_y);
-
-	float ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
-	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
-	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+	s_x_vec = circ->PutSIMDINGate(nvals, xvals.data(), 64, SERVER);
+	s_y_vec = circ->PutSIMDINGate(nvals, yvals.data(), 64, CLIENT);
+	// s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
+	// s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
