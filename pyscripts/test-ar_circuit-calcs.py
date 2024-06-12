@@ -21,36 +21,37 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-# x = x / np.linalg.norm(x)
-# y = y / np.linalg.norm(y)
-# print(pffrocd.get_cos_dist_numpy(x,y))
+x = x / np.linalg.norm(x)
+y = y / np.linalg.norm(y)
+print(pffrocd.get_cos_dist_numpy(x,y))
 # x1 = qt.scalar_quantisation_percentile_og(x)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
 
-x = qt.scalar_quantisation_percentile(x)
-y = qt.scalar_quantisation_percentile(y)
+x = qt.quantize_to_uint32(x)
+y = qt.quantize_to_uint32(y)
+print(pffrocd.get_cos_dist_numpy(x,y))
 # SFace calculations
 print(x)
 print(y)
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+# share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+# share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
-share0 = np.array(share0, dtype=np.uint32)
-share1 = np.array(share1, dtype=np.uint32)
-share0prime = np.array(share0prime, dtype=np.uint32)
-share1prime = np.array(share1prime, dtype=np.uint32)
-x = np.array(x, dtype=np.uint32)
-y = np.array(y, dtype=np.uint32)
-output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
-print(output.stdout)
+# share0 = np.array(share0, dtype=np.uint32)
+# share1 = np.array(share1, dtype=np.uint32)
+# share0prime = np.array(share0prime, dtype=np.uint32)
+# share1prime = np.array(share1prime, dtype=np.uint32)
+# x = np.array(x, dtype=np.uint32)
+# y = np.array(y, dtype=np.uint32)
+# output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
+# print(output.stdout)
 
-print("NUMPY COS_DIST:")
-print(pffrocd.get_cos_dist_numpy(x,y))
-print(np.dot(x,y))
-# the dot product written out
-sum = 0
-for i in range(0, len(x)):
-    print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
-    sum+=x[i]*y[i]
-print(sum)
+# print("NUMPY COS_DIST:")
+# print(pffrocd.get_cos_dist_numpy(x,y))
+# print(np.dot(x,y))
+# # the dot product written out
+# sum = 0
+# for i in range(0, len(x)):
+#     print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
+#     sum+=x[i]*y[i]
+# print(sum)
