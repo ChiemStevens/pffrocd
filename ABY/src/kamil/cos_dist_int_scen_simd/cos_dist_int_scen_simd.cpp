@@ -265,7 +265,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-	output = s_out->get_clear_value<uint16_t>();
+	output = s_out->get_clear_value<uint32_t>();
 
 	std::cout << "\nCircuit Result: " << output;
 	std::cout << "\nVerification Result: " << v_sum << std::endl;
