@@ -23,14 +23,14 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
-print(pffrocd.get_cos_dist_numpy(x,y))
+print(1-np.dot(x,y))
 # x1 = qt.scalar_quantisation_percentile_og(x)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
 
 x = qt.quantize_to_uint32(x)
 y = qt.quantize_to_uint32(y)
-print(pffrocd.get_cos_dist_numpy(x,y))
+print(1-np.dot(x,y))
 # SFace calculations
 print(x)
 print(y)
