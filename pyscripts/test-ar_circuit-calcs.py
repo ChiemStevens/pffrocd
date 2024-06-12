@@ -45,12 +45,6 @@ print("AFTER QUANTIZATION: ", after)
 # y1 = qt.scalar_quantisation_percentile_og(y)
 # print(pffrocd.get_cos_dist_numpy(x1,y1))
 
-x = qt.vector_quantize(x, 256)
-y = qt.vector_quantize(y, 256)
-print(1-np.dot(x,y))
-# SFace calculations
-print(x)
-print(y)
 # share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 # share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
