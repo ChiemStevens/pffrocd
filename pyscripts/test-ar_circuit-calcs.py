@@ -38,6 +38,7 @@ x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
 print("x: ", x)
 print("y: ", y)
+print(pffrocd.get_cos_dist_numpy(x,y))
 # SFace calculations
 
 share0, share1 = pffrocd.create_shares(x, NUMPY_DTYPE, True)
