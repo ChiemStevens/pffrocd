@@ -206,12 +206,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	uint16_t x1, y1;
+	uint32_t x1, y1;
 
-	uint16_t output, v_sum = 0;
+	uint32_t output, v_sum = 0;
 
-	std::vector<uint16_t> xvals(nvals);
-	std::vector<uint16_t> yvals(nvals);
+	std::vector<uint32_t> xvals(nvals);
+	std::vector<uint32_t> yvals(nvals);
 
 	uint32_t i;
 	srand(time(NULL));
