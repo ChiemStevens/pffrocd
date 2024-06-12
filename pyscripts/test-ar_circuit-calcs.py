@@ -21,12 +21,12 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 # now quantize before normalizing
-x = x / np.linalg.norm(x)
-y = y / np.linalg.norm(y)
-print(pffrocd.get_cos_dist_numpy(x,y))
-x1 = qt.scalar_quantisation_percentile_og(x)
-y1 = qt.scalar_quantisation_percentile_og(y)
-print(pffrocd.get_cos_dist_numpy(x1,y1))
+# x = x / np.linalg.norm(x)
+# y = y / np.linalg.norm(y)
+# print(pffrocd.get_cos_dist_numpy(x,y))
+# x1 = qt.scalar_quantisation_percentile_og(x)
+# y1 = qt.scalar_quantisation_percentile_og(y)
+# print(pffrocd.get_cos_dist_numpy(x1,y1))
 
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
@@ -46,7 +46,7 @@ print(output.stdout)
 
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
-print(1-np.dot(x,y))
+print(np.dot(x,y))
 # the dot product written out
 sum = 0
 for i in range(0, len(x)):
