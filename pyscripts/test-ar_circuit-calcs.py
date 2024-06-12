@@ -42,6 +42,9 @@ share1 = np.array(share1, dtype=np.uintc)
 share0prime = np.array(share0prime, dtype=np.uintc)
 share1prime = np.array(share1prime, dtype=np.uintc)
 print("SHARES 0: ", share0)
+for i in range(0, len(x)):
+    print(share0[i]+share1[i])
+
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
