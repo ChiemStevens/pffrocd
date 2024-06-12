@@ -37,19 +37,10 @@ print("SHARES 0: ", share0)
 print("SHARES 1: ", share1)
 share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
 
-# loop over x and y to get the shares
-sum = 0
-for i in range(0, len(x)):
-    print(x[i])
-    print(share0[i]+share1[i])
-
-    sum+=x[i]*y[i]
-print(sum)
-
-share0 = np.array(share0, dtype=int)
-share1 = np.array(share1, dtype=int)
-share0prime = np.array(share0prime, dtype=int)
-share1prime = np.array(share1prime, dtype=int)
+share0 = np.array(share0, dtype=np.uintc)
+share1 = np.array(share1, dtype=np.uintc)
+share0prime = np.array(share0prime, dtype=np.uintc)
+share1prime = np.array(share1prime, dtype=np.uintc)
 print("SHARES 0: ", share0)
 
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
@@ -58,3 +49,8 @@ print(output.stdout)
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
 print(1-np.dot(x,y))
+# the dot product written out
+sum = 0
+for i in range(0, len(x)):
+    sum+=x[i]*y[i]
+print(sum)
