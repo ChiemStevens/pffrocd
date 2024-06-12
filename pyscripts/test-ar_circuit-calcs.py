@@ -41,7 +41,7 @@ share0prime, share1prime = pffrocd.create_shares(y, NUMPY_DTYPE, True)
 sum = 0
 for i in range(0, len(x)):
     print(x[i])
-    print(share0[i]-share1[i])
+    print(share0[i]+share1[i])
 
     sum+=x[i]*y[i]
 print(sum)
