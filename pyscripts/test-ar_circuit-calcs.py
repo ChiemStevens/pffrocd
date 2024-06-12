@@ -30,18 +30,6 @@ y = qt.quantize_tensor(y)
 print(x)
 x = np.array(x, dtype=NUMPY_DTYPE)
 y = np.array(y, dtype=NUMPY_DTYPE)
-print("cosine distance x and y", 1 - np.dot(x, y))
-print("cosine distance x and z", 1 - np.dot(x, z))
-if same_person:
-    if 1 - np.dot(x, y) >  0.593:
-        print("Got wrong, should be different people")
-    else:
-        print("Got right, should be same people")
-else:
-    if 1 - np.dot(x, y) > 0.593:
-        print("Got wrong, should be same people")
-    else:
-        print("Got right, should be different people")
 
 # SFace calculations
 
