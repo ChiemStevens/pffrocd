@@ -232,17 +232,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		uint32_t current_share = share_embeddings[i];
 		uint32_t current_share_prime = share_embeddings_prime[i];
 
-		uint32_t *xptr = (uint32_t *)&current_x;
-		uint32_t *yptr = (uint32_t *)&current_y;
+		// uint32_t *xptr = (uint32_t *)&current_x;
+		// uint32_t *yptr = (uint32_t *)&current_y;
 		uint32_t *shareptr = (uint32_t *)&current_share;
 		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
 
-		xvals[i] = *xptr;
-		yvals[i] = *yptr;
+		// xvals[i] = *xptr;
+		// yvals[i] = *yptr;
 		sharevals[i] = *shareptr;
 		sharevals_prime[i] = *shareptr_prime;
 
-		v_sum += xvals[i] * yvals[i];
+		//v_sum += xvals[i] * yvals[i];
 	}
 	std::cout << "v_sum: " << v_sum << std::endl;
 	//s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
