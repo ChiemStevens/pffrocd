@@ -9,6 +9,29 @@ def calibrate_percentile(embedding, calibration_percentage=99):
     upper_bound = np.percentile(embedding, 100 - (100 - calibration_percentage) / 2)
     return lower_bound, upper_bound
 
+def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=None, upper_bound=None):
+    """
+    Quantize the values to int8 using the calibrated range.
+    """
+    # Ensure the input is a numpy array
+    values = np.array(values, dtype=np.float32)
+    
+    # If no calibration bounds are provided, calculate them
+    if lower_bound is None or upper_bound is None:
+        lower_bound, upper_bound = calibrate_percentile(values)
+    
+    # Calculate the scale factor and zero point
+    # qmin = -128
+    # qmax = 127
+    scale = (upper_bound - lower_bound) / (qmax - qmin)
+    zero_point = qmin - round(lower_bound / scale)
+    
+    # Quantize the values
+    quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.int8)
+    
+    return quantized_values
+
+
 def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
     """
     Quantize the values to uint8 using the calibrated range.
@@ -23,8 +46,6 @@ def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, u
     # Calculate the scale factor and zero point
     scale = (upper_bound - lower_bound) / (qmax - qmin)
     zero_point = qmin - round(lower_bound / scale)
-    print("scale: ", scale)
-    print("zero_point: ", zero_point)
     
     # Quantize the values
     quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.uint8)
