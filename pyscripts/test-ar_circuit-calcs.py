@@ -29,7 +29,7 @@ def evaluate_quantization(vector1, vector2, quantization_func):
     return before_quantization, after_quantization
 
 pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_float_scen_simd_32'
+pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
 pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
@@ -47,18 +47,18 @@ y = y / np.linalg.norm(y)
 # print("BEFORE QUANTIZATION: ", before)
 # print("AFTER QUANTIZATION: ", after)
 
-# x = qt.scalar_quantisation_percentile(x)
-# y = qt.scalar_quantisation_percentile(y)
+x = qt.scalar_quantisation_percentile(x)
+y = qt.scalar_quantisation_percentile(y)
 
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE)
+share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 
-# share0 = np.array(share0, dtype=np.uint32)
-# share1 = np.array(share1, dtype=np.uint32)
-# share0prime = np.array(share0prime, dtype=np.uint32)
-# share1prime = np.array(share1prime, dtype=np.uint32)
-# x = np.array(x, dtype=np.uint32)
-# y = np.array(y, dtype=np.uint32)
+share0 = np.array(share0, dtype=np.uint32)
+share1 = np.array(share1, dtype=np.uint32)
+share0prime = np.array(share0prime, dtype=np.uint32)
+share1prime = np.array(share1prime, dtype=np.uint32)
+x = np.array(x, dtype=np.uint32)
+y = np.array(y, dtype=np.uint32)
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
 print(output.stdout)
 
