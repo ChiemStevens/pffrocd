@@ -56,14 +56,14 @@ def cosine_similarity(v1, v2):
     return 1 - (np.dot(v1, v2) / 10000000000)
 
 print("cosine distance: ", cosine_similarity(x, y))
-print("cosine distance: ", cosine_similarity(x, y))
+print("cosine distance: ", cosine_similarity(x, z))
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 
 print("cosine distance uint32: ", cosine_similarity(x, y))
-print("cosine distance uint32: ", cosine_similarity(x, y))
+print("cosine distance uint32: ", cosine_similarity(x, z))
 
 
 # get two embeddings of different people
