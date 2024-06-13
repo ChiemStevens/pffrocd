@@ -80,18 +80,16 @@ print("cosine distance x and z: ", cosine_similarity(x, z))
 x = x * 1000
 y = y * 1000
 z = z * 1000
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
-print("before convert to int16")
-x = np.array(x, dtype=np.int16)
-y = np.array(y, dtype=np.int16)
-z = np.array(z, dtype=np.int16)
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
-print(np.dot(x, y))
-print(np.dot(x, z))
+
+for i in range(len(x)):
+    print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
+    a = np.uint16(x[i])
+    b = np.uint16(y[i])
+    print(f"x[{i}]: {a} * y[{i}]: {b} = {a*b}")
+
+x = np.array(x, dtype=np.uint16)
+y = np.array(y, dtype=np.uint16)
+
 print("cosine distance x and y int16: ", 1-(np.dot(x, y)/1000))
 print("cosine distance x and z int16: ", 1-(np.dot(x, z)/1000))
 
