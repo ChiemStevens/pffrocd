@@ -55,12 +55,14 @@ print(y)
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
 
 # now convert x and y to int32
-x = np.array(x, dtype=np.int32)
-y = np.array(y, dtype=np.int32)
+x = np.array(x, dtype=np.int8)
+y = np.array(y, dtype=np.int8)
 print(x)
 print(y)
 
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
+
+
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 # print("BEFORE QUANTIZATION: ", before)
