@@ -82,10 +82,14 @@ y = y * 1000
 z = z * 1000
 
 for i in range(len(x)):
-    print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
+    val = x[i]*y[i]
+    #print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
     a = np.int16(x[i])
     b = np.int16(y[i])
-    print(f"x[{i}]: {a} * y[{i}]: {b} = {a*b}")
+    val2 = a*b
+    #print(f"x[{i}]: {a} * y[{i}]: {b} = {a*b}")
+    # print the difference between val and val2
+    print(f"diff: {val-val2}")
 
 x = np.array(x, dtype=np.int16)
 y = np.array(y, dtype=np.int16)
