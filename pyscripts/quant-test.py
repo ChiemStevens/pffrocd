@@ -79,27 +79,20 @@ def find_best_result(x,y):
     y = y * 1000
     x = np.array(x, dtype=np.uint8)
     y = np.array(y, dtype=np.uint8)
-    print("wanted: ", wanted)
     foundI = 0
     for i in range(1000):
         result = 1 - (np.dot(x, y) / i)
-        print("result: ", result)
-        print("is result closer: ", closer_to_c(best, result, wanted))
         if closer_to_c(best, result, wanted):
             best = result
             foundI = i
-        # check which values between a and b are closest to wanted
 
-
-    print(best)
-    print(foundI)
-
-    return best,foundI
+    return foundI
 
 cos_sim = []
 cos_sim_uint32 = []
 cos_sim_uint16 = []
 cos_sim_uint8 = []
+bestI = []
 for i in range(100):
     img1, img2 = get_two_random_images(True)
     x = pffrocd.get_embedding(img1, dtype=np.float32)
@@ -110,12 +103,14 @@ for i in range(100):
     #print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
     #print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
     print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
-    find_best_result(x,y)
+    bestI.append(find_best_result(x,y))
     cos_sim.append(cosine_similarity(x, y))
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
     cos_sim_uint16.append(quant_uint16_cos_sim(x, y))
     cos_sim_uint8.append(quant_uint8_cos_sim(x, y))
-    break
+
+# take the average value of bestI
+print("average bestI: ", sum(bestI) / len(bestI))
 
 df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
 # save the dataframe to a csv file
