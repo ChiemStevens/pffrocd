@@ -44,6 +44,7 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
+desired = cosine_similarity(x, y)
 print("cosine distance: ", cosine_similarity(x, y))
 
 # multiply each item in x and y (which are np arrays) by 1000
@@ -79,6 +80,17 @@ x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 z = np.array(z, dtype=np.uint16)
 
+bestResult = 0
+for i in range(1, 100000):
+    val = 1-(np.dot(x, y)/i)
+    # lets desired = 0.7
+    # best result = 0.8
+    # val = 0.75
+    # then val needs to take the place of best result since it is closer to desired
+    if abs(val - desired) < abs(bestResult - desired):
+        bestResult = val
+        print(i)
+        print("best result: ", bestResult)
 
 print("cosine distance: ", 1-(np.dot(x, y)/60000))
 print("cosine distance: ", 1-(np.dot(x, z)/60000))
