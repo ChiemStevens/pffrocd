@@ -80,8 +80,8 @@ y = np.array(y, dtype=np.uint16)
 z = np.array(z, dtype=np.uint16)
 
 
-print("cosine distance: ", 1-(np.dot(x, y)/10000))
-print("cosine distance: ", 1-(np.dot(x, z)/10000))
+print("cosine distance: ", 1-(np.dot(x, y)/60000))
+print("cosine distance: ", 1-(np.dot(x, z)/60000))
 
 
 
