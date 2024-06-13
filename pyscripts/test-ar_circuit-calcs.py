@@ -58,6 +58,7 @@ print("after max: ", x[0])
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
+print("after max uint: ", x[0])
 
 def cosine_similarity(v1, v2):
     return 1 - (np.dot(v1, v2) / 10000000000)
@@ -88,6 +89,7 @@ print("after max: ", x[0])
 x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 z = np.array(z, dtype=np.uint16)
+print("after max uint: ", x[0])
 
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
@@ -122,7 +124,7 @@ print("after max: ", x[0])
 x = np.array(x, dtype=np.uint8)
 y = np.array(y, dtype=np.uint8)
 z = np.array(z, dtype=np.uint8)
-
+print("after max uint: ", x[0])
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
     return 1 - (np.dot(v1, v2) / 1000)
