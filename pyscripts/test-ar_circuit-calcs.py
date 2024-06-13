@@ -47,12 +47,11 @@ y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
 desired = cosine_similarity(x, z)
 print("cosine distance: ", cosine_similarity(x, y))
+print("cosine distance: ", cosine_similarity(x, z))
 
 # multiply each item in x and y (which are np arrays) by 1000
 x = x * 1000
 y = y * 1000
-print(x)
-print(y)
 
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
 print("this is before converting to uint32")
@@ -92,9 +91,9 @@ print("x[0] ", x[0])
 print("y[0] ", y[0])
 print("mul result", x[0]*y[0])
 print(np.dot(x, y))
-print(np.dot(x,z))
-print("cosine distance x and y int16: ", 1-(np.dot(x, y)/1000000))
-print("cosine distance x and z int16: ", 1-(np.dot(x, z)/1000000))
+print(np.dot(x, z))
+print("cosine distance x and y int16: ", 1-(np.dot(x, y)/1000))
+print("cosine distance x and z int16: ", 1-(np.dot(x, z)/1000))
 
 
 
