@@ -54,11 +54,11 @@ def quant_uint16_cos_sim(x,y):
     return 1 - (np.dot(x, y) / 10000)
 
 def quant_uint8_cos_sim(x,y):
-    x = x * 10
-    y = y * 10
+    x = x * 1000
+    y = y * 1000
     x = np.array(x, dtype=np.uint8)
     y = np.array(y, dtype=np.uint8)
-    return 1 - (np.dot(x, y) / 100)
+    return 1 - (np.dot(x, y) / 200)
 
 cos_sim = []
 cos_sim_uint32 = []
@@ -81,4 +81,4 @@ for i in range(100):
 
 df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
 # save the dataframe to a csv file
-df.to_csv('cosine_similarity.csv')
+#df.to_csv('cosine_similarity.csv')
