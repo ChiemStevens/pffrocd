@@ -55,12 +55,14 @@ print(y)
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
 
 # now convert x and y to int32
-x = np.array(x, dtype=np.int8)
-y = np.array(y, dtype=np.int8)
+x = np.array(x, dtype=np.uint32)
+y = np.array(y, dtype=np.uint32)
 print(x)
 print(y)
 
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
+
+
 
 
 
