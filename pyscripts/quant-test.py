@@ -60,6 +60,21 @@ def quant_uint8_cos_sim(x,y):
     y = np.array(y, dtype=np.uint8)
     return 1 - (np.dot(x, y) / 200)
 
+def find_best_result(x,y):
+    best = 0
+    wanted = cosine_similarity(x,y)
+    foundI = 0
+    for i in range(1000):
+        result = quant_uint8_cos_sim(x,y)
+        if abs(result - wanted) < abs(best - wanted):
+            best = result
+            foundI = i
+
+    print(best)
+    print(foundI)
+
+    return best,foundI
+
 cos_sim = []
 cos_sim_uint32 = []
 cos_sim_uint16 = []
@@ -74,6 +89,7 @@ for i in range(100):
     #print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
     #print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
     print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
+    find_best_result(x,y)
     cos_sim.append(cosine_similarity(x, y))
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
     cos_sim_uint16.append(quant_uint16_cos_sim(x, y))
