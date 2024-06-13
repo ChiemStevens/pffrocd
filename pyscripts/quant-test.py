@@ -54,8 +54,8 @@ def quant_uint16_cos_sim(x,y):
     return 1 - (np.dot(x, y) / 10000)
 
 def quant_uint8_cos_sim(x,y):
-    x = x * 1000
-    y = y * 1000
+    x = x * 10
+    y = y * 10
     x = np.array(x, dtype=np.uint8)
     y = np.array(y, dtype=np.uint8)
     return 1 - (np.dot(x, y) / 1000)
@@ -71,8 +71,8 @@ for i in range(100):
     x = x / np.linalg.norm(x)
     y = y / np.linalg.norm(y)
     print("cosine distance: ", cosine_similarity(x, y))
-    print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
-    print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
+    #print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
+    #print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
     print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
     cos_sim.append(cosine_similarity(x, y))
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
