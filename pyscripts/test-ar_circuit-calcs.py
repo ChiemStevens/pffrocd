@@ -55,9 +55,9 @@ z = z * 100000000000
 print("after max: ", x[0])
 
 # now convert x and y to int32
-x = np.array(x, dtype=np.uint32)
-y = np.array(y, dtype=np.uint32)
-z = np.array(z, dtype=np.uint32)
+x = np.array(x, dtype=np.int32)
+y = np.array(y, dtype=np.int32)
+z = np.array(z, dtype=np.int32)
 print("after max uint: ", x[0])
 
 def cosine_similarity(v1, v2):
@@ -80,15 +80,15 @@ z = z / np.linalg.norm(z)
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint16).max
 print("before max: ", x[0])
-x = x * 100000
-y = y * 100000
-z = z * 100000
+x = x * 1000000
+y = y * 1000000
+z = z * 1000000
 print("after max: ", x[0])
 
 # now convert x and y to uint16
-x = np.array(x, dtype=np.uint16)
-y = np.array(y, dtype=np.uint16)
-z = np.array(z, dtype=np.uint16)
+x = np.array(x, dtype=np.int16)
+y = np.array(y, dtype=np.int16)
+z = np.array(z, dtype=np.int16)
 print("after max uint: ", x[0])
 
 # Compute the cosine similarity
@@ -115,15 +115,15 @@ z = z / np.linalg.norm(z)
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint8).max
 print("before max: ", x[0])
-x = x * 1000
-y = y * 1000
-z = z * 1000
+x = x * 10000
+y = y * 10000
+z = z * 10000
 print("after max: ", x[0])
 
 # now convert x and y to uint16
-x = np.array(x, dtype=np.uint8)
-y = np.array(y, dtype=np.uint8)
-z = np.array(z, dtype=np.uint8)
+x = np.array(x, dtype=np.int8)
+y = np.array(y, dtype=np.int8)
+z = np.array(z, dtype=np.int8)
 print("after max uint: ", x[0])
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
