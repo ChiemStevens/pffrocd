@@ -60,7 +60,7 @@ def get_two_random_images(same_person):
 
     return img1,img2
 
-img1, img2 = get_two_random_images(True)
+img1, img2 = get_two_random_images(False)
 x = pffrocd.get_embedding(img1, dtype=np.float32)
 y = pffrocd.get_embedding(img2, dtype=np.float32)
 x = x / np.linalg.norm(x)
