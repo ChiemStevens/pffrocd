@@ -101,6 +101,7 @@ y = np.array(y, dtype=np.uint16)
 print("x[0] ", x[0])
 print("y[0] ", y[0])
 print("mul result", x[0]*y[0])
+print("dot product", np.dot(x, y))
 print("cosine distance uint16: ", 1-(np.dot(x, y)/1000000))
 
 
