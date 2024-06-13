@@ -47,9 +47,9 @@ z = z / np.linalg.norm(z)
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint8).max
 print("before max: ", x[0])
-x = x * 1000
-y = y * 1000
-z = z * 1000
+x = x * 100
+y = y * 100
+z = z * 100
 print("after max: ", x[0])
 
 # now convert x and y to uint16

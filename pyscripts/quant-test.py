@@ -58,7 +58,7 @@ def quant_uint8_cos_sim(x,y):
     y = y * 10
     x = np.array(x, dtype=np.uint8)
     y = np.array(y, dtype=np.uint8)
-    return 1 - (np.dot(x, y) / 1000)
+    return 1 - (np.dot(x, y) / 100)
 
 cos_sim = []
 cos_sim_uint32 = []
