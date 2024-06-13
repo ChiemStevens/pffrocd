@@ -77,9 +77,9 @@ x = x * 1000
 y = y * 1000
 z = z * 1000
 
-x = np.array(x, dtype=np.uint16)
-y = np.array(y, dtype=np.uint16)
-z = np.array(z, dtype=np.uint16)
+x = np.array(x, dtype=np.int16)
+y = np.array(y, dtype=np.int16)
+z = np.array(z, dtype=np.int16)
 
 bestResult = 0
 desiredI = 0
