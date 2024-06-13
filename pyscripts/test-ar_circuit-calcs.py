@@ -62,7 +62,7 @@ y = np.array(y, dtype=np.uint32)
 print(x)
 print(y)
 
-print("cosine distance: ", 1-(np.dot(x, y)/1000000))
+print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
 
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
@@ -81,23 +81,8 @@ x = np.array(x, dtype=np.int16)
 y = np.array(y, dtype=np.int16)
 z = np.array(z, dtype=np.int16)
 
-bestResult = 0
-desiredI = 0
-for i in range(1, 1000000):
-    val = 1-(np.dot(x, z)/i)
-    # lets desired = 0.7
-    # best result = 0.8
-    # val = 0.75
-    # then val needs to take the place of best result since it is closer to desired
-    if abs(val - desired) < abs(bestResult - desired):
-        bestResult = val
-        desiredI = i
-
-print("best result: ", bestResult)
-print("desired i: ", desiredI)
-
-print("cosine distance: ", 1-(np.dot(x, y)/37785))
-print("cosine distance: ", 1-(np.dot(x, z)/985173))
+print("cosine distance x and y int16: ", 1-(np.dot(x, y)/1000000))
+print("cosine distance x and z int16: ", 1-(np.dot(x, z)/1000000))
 
 
 
