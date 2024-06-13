@@ -86,6 +86,7 @@ y = y * 65535
 z = z * 65535
 
 max_value = np.iinfo(np.uint16).max
+print(max_value)
 
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint16)
