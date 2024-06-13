@@ -53,15 +53,15 @@ x = x * 1000000000
 y = y * 1000000000
 z = z * 1000000000
 
-print("cosine distance: ", 1-(np.dot(x, y)/1000000000))
-print("cosine distance: ", 1-(np.dot(x, z)/1000000000))
+print("cosine distance: ", 1-(np.dot(x, y)/10000000000))
+print("cosine distance: ", 1-(np.dot(x, z)/10000000000))
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 
-print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
-print("cosine distance uint32: ", 1-(np.dot(x, z)/1000000))
+print("cosine distance uint32: ", 1-(np.dot(x, y)/10000000000))
+print("cosine distance uint32: ", 1-(np.dot(x, z)/10000000000))
 
 
 # get two embeddings of different people
@@ -75,11 +75,11 @@ y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
 
 # multiply each item in x and y (which are np arrays) by 65535
-x = x * 65535
-y = y * 65535
-z = z * 65535
-
 max_value = np.iinfo(np.uint16).max
+x = x * max_value
+y = y * max_value
+z = z * max_value
+
 print(max_value)
 
 # now convert x and y to uint16
