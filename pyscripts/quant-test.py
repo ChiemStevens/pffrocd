@@ -60,8 +60,10 @@ def quant_uint8_cos_sim(x,y):
     y = np.array(y, dtype=np.uint8)
     return 1 - (np.dot(x, y) / 1000)
 
-# create a dataframe with pandas with columns for each cosine similarity
-df = pd.DataFrame(columns=['cosine_numpy', 'cosine_uint32', 'cosine_uint16', 'cosine_uint8'])
+cos_sim = []
+cos_sim_uint32 = []
+cos_sim_uint16 = []
+cos_sim_uint8 = []
 for i in range(100):
     img1, img2 = get_two_random_images(True)
     x = pffrocd.get_embedding(img1, dtype=np.float32)
@@ -72,9 +74,11 @@ for i in range(100):
     print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
     print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
     print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
+    cos_sim.append(cosine_similarity(x, y))
+    cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
+    cos_sim_uint16.append(quant_uint16_cos_sim(x, y))
+    cos_sim_uint8.append(quant_uint8_cos_sim(x, y))
 
-    # append values to the dataframe
-    df = df.append({'cosine_numpy': cosine_similarity(x, y), 'cosine_uint32': quant_uint32_cos_sim(x, y), 'cosine_uint16': quant_uint16_cos_sim(x, y), 'cosine_uint8': quant_uint8_cos_sim(x, y)}, ignore_index=True)
-
+df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
 # save the dataframe to a csv file
 df.to_csv('cosine_similarity.csv')
