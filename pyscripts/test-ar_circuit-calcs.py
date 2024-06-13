@@ -82,7 +82,7 @@ z = np.array(z, dtype=np.uint16)
 
 bestResult = 0
 for i in range(1, 100000):
-    val = 1-(np.dot(x, y)/i)
+    val = 1-(np.dot(x, z)/i)
     # lets desired = 0.7
     # best result = 0.8
     # val = 0.75
