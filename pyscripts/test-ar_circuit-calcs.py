@@ -43,25 +43,27 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
-desired = cosine_similarity(x, z)
 print("cosine distance: ", cosine_similarity(x, y))
 print("cosine distance: ", cosine_similarity(x, z))
 
 # multiply each item in x and y (which are np arrays) by 1000
 max_value = np.iinfo(np.uint32).max
-x = x * 1000000000
-y = y * 1000000000
-z = z * 1000000000
+x = x * max_value
+y = y * max_value
+z = z * max_value
 
-print("cosine distance: ", 1-(np.dot(x, y)/10000000000))
-print("cosine distance: ", 1-(np.dot(x, z)/10000000000))
+def cosine_similarity(v1, v2):
+    return 1 - (np.dot(v1, v2) / 10000000000)
+
+print("cosine distance: ", cosine_similarity(x, y))
+print("cosine distance: ", cosine_similarity(x, y))
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 
-print("cosine distance uint32: ", 1-(np.dot(x, y)/10000000000))
-print("cosine distance uint32: ", 1-(np.dot(x, z)/10000000000))
+print("cosine distance uint32: ", cosine_similarity(x, y))
+print("cosine distance uint32: ", cosine_similarity(x, y))
 
 
 # get two embeddings of different people
