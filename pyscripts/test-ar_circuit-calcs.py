@@ -64,20 +64,24 @@ print("cosine distance: ", 1-(np.dot(x, y)/1000000))
 
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
-print("cosine distance: ", cosine_similarity(x, y))
+z = z / np.linalg.norm(z)
+print("cosine distance x and y: ", cosine_similarity(x, y))
+print("cosine distance x and z: ", cosine_similarity(x, z))
 x = x * 1000
 y = y * 1000
-print(x)
-print(y)
+z = z * 1000
+
 x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
-print(x)
-print(y)
+z = np.array(z, dtype=np.uint16)
+
 
 print("cosine distance: ", 1-(np.dot(x, y)/65535))
+print("cosine distance: ", 1-(np.dot(x, z)/65535))
 
 
 
