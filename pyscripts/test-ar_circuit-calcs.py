@@ -8,10 +8,6 @@ import time
 import quantization as qt
 import sys
 
-def cosine_similarity(v1, v2):
-    # Compute the cosine similarity
-    return 1- np.dot(v1, v2)
-
 def evaluate_quantization(vector1, vector2, quantization_func):
     # Compute the cosine similarity before quantization
     #x = x / np.linalg.norm(x)
@@ -34,12 +30,14 @@ pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
 
+def cosine_similarity(v1, v2):
+    # Compute the cosine similarity
+    return 1- np.dot(v1, v2)
+
 # get two embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
-
-
 
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
@@ -52,6 +50,7 @@ print("cosine distance: ", cosine_similarity(x, z))
 # multiply each item in x and y (which are np arrays) by 1000
 x = x * 1000
 y = y * 1000
+z = z * 1000
 
 print("cosine distance: ", 1-(np.dot(x, y)/1000000))
 print("this is before converting to uint32")
@@ -61,42 +60,42 @@ print("mul result", x[0]*y[0])
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
+z = np.array(z, dtype=np.uint32)
 # print(x)
 # print(y)
 print("x[0] ", x[0])
 print("y[0] ", y[0])
 print("mul result", x[0]*y[0])
 print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
+print("cosine distance uint32: ", 1-(np.dot(x, z)/1000000))
 
 
-# get three embeddings of different people
-def euclidean_distance(x, y):
-    return np.sqrt(np.sum((x - y) ** 2))
-
-# get three embeddings of different people
+# get two embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
-# normalize the embeddings
+# now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
 
-# print the Euclidean distance
-print("Euclidean distance: ", euclidean_distance(x, y))
-print("Euclidean distance: ", euclidean_distance(x, z))
+# multiply each item in x and y (which are np arrays) by 65535
+x = x * 65535
+y = y * 65535
+z = z * 65535
 
-x = x * 1000
-y = y * 1000
-z = z * 1000
-# convert the embeddings to int16
-x = np.array(x, dtype=np.int16)
-y = np.array(y, dtype=np.int16)
+# now convert x and y to uint16
+x = np.array(x, dtype=np.uint16)
+y = np.array(y, dtype=np.uint16)
+z = np.array(z, dtype=np.uint16)
 
-# print the Euclidean distance between the converted embeddings
-print("Euclidean distance int16: ", euclidean_distance(x, y))
+# Compute the cosine similarity
+def cosine_similarity(v1, v2):
+    return 1 - (np.dot(v1, v2) / (65535 * 65535))
 
+print("cosine distance uint16: ", cosine_similarity(x, y))
+print("cosine distance uint16: ", cosine_similarity(x, z))
 
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
