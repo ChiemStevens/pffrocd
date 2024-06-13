@@ -34,36 +34,53 @@ def cosine_similarity(v1, v2):
     # Compute the cosine similarity
     return 1- np.dot(v1, v2)
 
-# get two embeddings of different people
-x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
-y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
-z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
+def get_two_random_images(same_person):
+    """Get two random embeddings of either the same person or two different people out of all the images available"""
+    people = [p for p in os.listdir('lfw') if os.path.isdir(os.path.join('lfw', p))] # list of all people that have images
+    people_with_multiple_images = [p for p in people if len([img for img in os.listdir(os.path.join("lfw", p)) if img != '.DS_Store']) > 1]  # list of people with more than one image in folder
+    img1, img2 = None, None # face embeddings
+    while img1 is None or img2 is None: # try until the chosen images have detectable faces
+        try:
+            if same_person:
+                # same person should have more than one image (we might still end up choosing the same image of that person with prob 1/n, but that's ok)
+                person1 = random.choice(people_with_multiple_images)
+                person2 = person1
+            else:
+                # two persons chosen should be different
+                person1 = random.choice(people)
+                person2 = random.choice([p for p in people if p != person1])
+            # get two random images
+            img1 = f"lfw/{person1}/{random.choice(os.listdir(f'lfw/{person1}'))}"
+            img2 = f"lfw/{person2}/{random.choice(os.listdir(f'lfw/{person2}'))}"
+        except Exception as e:
+            # failed to detect faces in images, try again
+            # print(e)
+            pass
 
-# now quantize before normalizing
+    return img1,img2
+
+img1, img2 = get_two_random_images(True)
+x = pffrocd.get_embedding(img1, dtype=np.float32)
+y = pffrocd.get_embedding(img2, dtype=np.float32)
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
-z = z / np.linalg.norm(z)
-
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint8).max
 print("before max: ", x[0])
-x = x * 100
-y = y * 100
-z = z * 100
+x = x * 1000
+y = y * 1000
 print("after max: ", x[0])
 
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint8)
 y = np.array(y, dtype=np.uint8)
-z = np.array(z, dtype=np.uint8)
 print("after max uint: ", x[0])
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
     print(np.dot(v1, v2))
-    return 1 - (np.dot(v1, v2) / 1000)
+    return 1 - (np.dot(v1, v2) / 100)
 
 print("cosine distance uint8: ", cosine_similarity(x, y))
-print("cosine distance uint8: ", cosine_similarity(x, z))
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 # print("BEFORE QUANTIZATION: ", before)
