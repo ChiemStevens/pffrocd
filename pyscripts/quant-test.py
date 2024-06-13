@@ -60,6 +60,16 @@ def quant_uint8_cos_sim(x,y):
     y = np.array(y, dtype=np.uint8)
     return 1 - (np.dot(x, y) / 200)
 
+def closer_to_c(a, b, c):
+    diff_a = abs(c - a)
+    diff_b = abs(c - b)
+    if diff_a < diff_b:
+        return False
+    elif diff_b < diff_a:
+        return True
+    else:
+        return False
+
 def find_best_result(x,y):
     best = 0
     wanted = cosine_similarity(x,y)
@@ -70,9 +80,11 @@ def find_best_result(x,y):
         x = np.array(x, dtype=np.uint8)
         y = np.array(y, dtype=np.uint8)
         result = 1 - (np.dot(x, y) / i)
-        if abs(result - wanted) < abs(best - wanted):
+        if closer_to_c(best, result, wanted):
             best = result
             foundI = i
+        # check which values between a and b are closest to wanted
+
 
     print(best)
     print(foundI)
