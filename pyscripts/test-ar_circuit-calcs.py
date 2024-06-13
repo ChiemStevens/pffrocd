@@ -68,34 +68,40 @@ print("y[0] ", y[0])
 print("mul result", x[0]*y[0])
 print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
 
+# get three embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
 
+# normalize the embeddings
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
-print("cosine distance x and y: ", cosine_similarity(x, y))
-print("cosine distance x and z: ", cosine_similarity(x, z))
+
+# print the cosine similarity
+print("cosine distance: ", cosine_similarity(x, y))
+print("cosine distance: ", cosine_similarity(x, z))
+
+# multiply each item in x and y by 1000
 x = x * 1000
 y = y * 1000
-z = z * 1000
 
-for i in range(len(x)):
-    val = x[i]*y[i]
-    #print(f"x[{i}]: {x[i]} * y[{i}]: {y[i]} = {x[i]*y[i]}")
-    a = np.int16(x[i])
-    b = np.int16(y[i])
-    val2 = a*b
-    #print(f"x[{i}]: {a} * y[{i}]: {b} = {a*b}")
-    # print the difference between val and val2
-    print(f"diff: {val-val2}")
+# print the cosine distance before converting to uint16
+print("cosine distance: ", 1-(np.dot(x, y)/1000000))
+print("this is before converting to uint16")
+print("x[0] ", x[0])
+print("y[0] ", y[0])
+print("mul result", x[0]*y[0])
 
-x = np.array(x, dtype=np.int16)
-y = np.array(y, dtype=np.int16)
+# convert x and y to uint16
+x = np.array(x, dtype=np.uint16)
+y = np.array(y, dtype=np.uint16)
 
-print("cosine distance x and y int16: ", 1-(np.dot(x, y)/1000))
-print("cosine distance x and z int16: ", 1-(np.dot(x, z)/1000))
+# print the cosine distance after converting to uint16
+print("x[0] ", x[0])
+print("y[0] ", y[0])
+print("mul result", x[0]*y[0])
+print("cosine distance uint16: ", 1-(np.dot(x, y)/1000000))
 
 
 
