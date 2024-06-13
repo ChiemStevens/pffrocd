@@ -97,7 +97,7 @@ print("best result: ", bestResult)
 print("desired i: ", desiredI)
 
 print("cosine distance: ", 1-(np.dot(x, y)/37785))
-print("cosine distance: ", 1-(np.dot(x, z)/276799))
+print("cosine distance: ", 1-(np.dot(x, z)/985173))
 
 
 
