@@ -52,7 +52,7 @@ y = y * 1000
 print(x)
 print(y)
 
-print("cosine distance: ", cosine_similarity(x, y))
+print("cosine distance: ", 1-(np.dot(x, y)/1000))
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 # print("BEFORE QUANTIZATION: ", before)
