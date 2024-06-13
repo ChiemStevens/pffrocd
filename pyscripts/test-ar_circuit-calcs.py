@@ -80,23 +80,23 @@ x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 z = np.array(z, dtype=np.uint16)
 
-bestResult = 0
-desiredI = 0
-for i in range(1, 1000000):
-    val = 1-(np.dot(x, z)/i)
-    # lets desired = 0.7
-    # best result = 0.8
-    # val = 0.75
-    # then val needs to take the place of best result since it is closer to desired
-    if abs(val - desired) < abs(bestResult - desired):
-        bestResult = val
-        desiredI = i
+# bestResult = 0
+# desiredI = 0
+# for i in range(1, 1000000):
+#     val = 1-(np.dot(x, z)/i)
+#     # lets desired = 0.7
+#     # best result = 0.8
+#     # val = 0.75
+#     # then val needs to take the place of best result since it is closer to desired
+#     if abs(val - desired) < abs(bestResult - desired):
+#         bestResult = val
+#         desiredI = i
 
-print("best result: ", bestResult)
-print("desired i: ", desiredI)
+# print("best result: ", bestResult)
+# print("desired i: ", desiredI)
 
 print("cosine distance: ", 1-(np.dot(x, y)/37785))
-print("cosine distance: ", 1-(np.dot(x, z)/37785))
+print("cosine distance: ", 1-(np.dot(x, z)/276799))
 
 
 
