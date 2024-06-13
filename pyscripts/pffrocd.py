@@ -771,7 +771,6 @@ def create_shares(x: np.ndarray, dtype, quantized=False):
     if quantized:
         share0 = fminus(x, share1, dtype)
     else:
-        print("Share created with xor")
         share0 = fxor(x, share1, dtype)
 
     return share0.astype(dtype), share1.astype(dtype)
