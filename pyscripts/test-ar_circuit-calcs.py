@@ -8,26 +8,26 @@ import time
 import quantization as qt
 import sys
 
-def evaluate_quantization(vector1, vector2, quantization_func):
-    # Compute the cosine similarity before quantization
-    #x = x / np.linalg.norm(x)
-    before_quantization = cosine_similarity(vector1, vector2)
+# def evaluate_quantization(vector1, vector2, quantization_func):
+#     # Compute the cosine similarity before quantization
+#     #x = x / np.linalg.norm(x)
+#     before_quantization = cosine_similarity(vector1, vector2)
 
-    # Quantize the vectors
-    quantized_vector1 = quantization_func(vector1)
-    quantized_vector2 = quantization_func(vector2)
-    print(quantized_vector1)
+#     # Quantize the vectors
+#     quantized_vector1 = quantization_func(vector1)
+#     quantized_vector2 = quantization_func(vector2)
+#     print(quantized_vector1)
 
-    # Compute the cosine similarity after quantization
-    after_quantization = cosine_similarity(quantized_vector1, quantized_vector2)
+#     # Compute the cosine similarity after quantization
+#     after_quantization = cosine_similarity(quantized_vector1, quantized_vector2)
 
-    # Return the cosine similarities before and after quantization
-    return before_quantization, after_quantization
+#     # Return the cosine similarities before and after quantization
+#     return before_quantization, after_quantization
 
-pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
-pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
-pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
-pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
+# pffrocd.EXECUTABLE_PATH = "ABY/build/bin"
+# pffrocd.EXECUTABLE_NAME = 'cos_dist_int_scen_simd'
+# pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
+# pffrocd.OUTPUT_FILE_NAME = f"/home/chiem/pffrocd"
 NUMPY_DTYPE = np.float32
 
 def cosine_similarity(v1, v2):
