@@ -58,7 +58,7 @@ def quant_uint8_cos_sim(x,y):
     y = y * 1000
     x = np.array(x, dtype=np.uint8)
     y = np.array(y, dtype=np.uint8)
-    return 1 - (np.dot(x, y) / 230)
+    return 1 - (np.dot(x, y) / 220)
 
 def closer_to_c(a, b, c):
     diff_a = abs(c - a)
