@@ -44,6 +44,7 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
+z = z / np.linalg.norm(z)
 desired = cosine_similarity(x, z)
 print("cosine distance: ", cosine_similarity(x, y))
 
