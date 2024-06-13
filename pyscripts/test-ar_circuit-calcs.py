@@ -70,6 +70,8 @@ y = y / np.linalg.norm(y)
 print("cosine distance: ", cosine_similarity(x, y))
 x = x * 1000
 y = y * 1000
+print(x)
+print(y)
 x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 print(x)
