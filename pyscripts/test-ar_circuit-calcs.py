@@ -48,24 +48,17 @@ print("cosine distance: ", cosine_similarity(x, y))
 print("cosine distance: ", cosine_similarity(x, z))
 
 # multiply each item in x and y (which are np arrays) by 1000
-x = x * 1000
-y = y * 1000
-z = z * 1000
+max_value = np.iinfo(np.uint32).max
+x = x * max_value
+y = y * max_value
+z = z * max_value
 
-print("cosine distance: ", 1-(np.dot(x, y)/1000000))
-print("this is before converting to uint32")
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 # print(x)
 # print(y)
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
 print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
 print("cosine distance uint32: ", 1-(np.dot(x, z)/1000000))
 
