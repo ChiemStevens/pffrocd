@@ -119,7 +119,7 @@ z = np.array(z, dtype=np.uint8)
 
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
-    return 1 - (np.dot(v1, v2) / 100000)
+    return 1 - (np.dot(v1, v2) / 1000)
 
 print("cosine distance uint8: ", cosine_similarity(x, y))
 print("cosine distance uint8: ", cosine_similarity(x, z))
