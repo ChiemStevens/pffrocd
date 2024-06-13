@@ -59,8 +59,8 @@ y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 # print(x)
 # print(y)
-print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000000))
-print("cosine distance uint32: ", 1-(np.dot(x, z)/1000000000))
+print("cosine distance uint32: ", 1-(np.dot(x, y)/10000000000))
+print("cosine distance uint32: ", 1-(np.dot(x, z)/10000000000))
 
 
 # get two embeddings of different people
