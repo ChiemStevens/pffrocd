@@ -75,13 +75,13 @@ def closer_to_c(a, b, c):
 def find_best_result(x,y):
     best = 0
     wanted = cosine_similarity(x,y)
+    x = x * 1000
+    y = y * 1000
+    x = np.array(x, dtype=np.uint8)
+    y = np.array(y, dtype=np.uint8)
     print("wanted: ", wanted)
     foundI = 0
     for i in range(1000):
-        x = x * 1000
-        y = y * 1000
-        x = np.array(x, dtype=np.uint8)
-        y = np.array(y, dtype=np.uint8)
         result = 1 - (np.dot(x, y) / i)
         print("result: ", result)
         print("is result closer: ", closer_to_c(best, result, wanted))
