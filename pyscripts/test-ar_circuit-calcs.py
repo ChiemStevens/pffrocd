@@ -81,9 +81,9 @@ z = z / np.linalg.norm(z)
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint16).max
 print("before max: ", x[0])
-x = x * 10000
-y = y * 10000
-z = z * 10000
+x = x * 100000
+y = y * 100000
+z = z * 100000
 print("after max: ", x[0])
 
 # now convert x and y to uint16
