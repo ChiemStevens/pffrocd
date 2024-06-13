@@ -67,7 +67,7 @@ y = np.array(y, dtype=np.uint16)
 print(x)
 print(y)
 
-print("cosine distance: ", 1-(np.dot(x, y)/1000))
+print("cosine distance: ", 1-(np.dot(x, y)/10000))
 
 
 
