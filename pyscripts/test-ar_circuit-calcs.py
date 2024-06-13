@@ -74,8 +74,8 @@ y = y * 1000
 print("after max: ", x[0])
 print("test")
 # now convert x and y to uint16
-x = np.array(x, dtype=np.uint8)
-y = np.array(y, dtype=np.uint8)
+x = np.array(x, dtype=np.int8)
+y = np.array(y, dtype=np.int8)
 print("after max uint: ", x[0])
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
