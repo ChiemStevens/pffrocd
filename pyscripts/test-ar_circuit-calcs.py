@@ -70,6 +70,10 @@ print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
 
 
 # get three embeddings of different people
+def euclidean_distance(x, y):
+    return np.sqrt(np.sum((x - y) ** 2))
+
+# get three embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
 z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
@@ -79,23 +83,16 @@ x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
 
-# print the cosine similarity
-print("cosine distance: ", cosine_similarity(x, y))
-print("cosine distance: ", cosine_similarity(x, z))
-
-# find the maximum absolute value in the embeddings
-max_val = max(np.max(np.abs(x)), np.max(np.abs(y)))
-
-# scale the embeddings
-x = x / max_val * 32767  # for int16
-y = y / max_val * 32767  # for int16
+# print the Euclidean distance
+print("Euclidean distance: ", euclidean_distance(x, y))
+print("Euclidean distance: ", euclidean_distance(x, z))
 
 # convert the embeddings to int16
 x = np.array(x, dtype=np.int16)
 y = np.array(y, dtype=np.int16)
 
-# print the cosine similarity between the converted embeddings
-print("cosine distance int16: ", cosine_similarity(x, y))
+# print the Euclidean distance between the converted embeddings
+print("Euclidean distance int16: ", euclidean_distance(x, y))
 
 
 
