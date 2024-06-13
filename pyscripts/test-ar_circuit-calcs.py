@@ -81,9 +81,9 @@ z = z / np.linalg.norm(z)
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint16).max
 print("before max: ", x[0])
-x = x * 1000
-y = y * 1000
-z = z * 1000
+x = x * 100
+y = y * 100
+z = z * 100
 print("after max: ", x[0])
 
 # now convert x and y to uint16
@@ -91,7 +91,6 @@ x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 z = np.array(z, dtype=np.uint16)
 print("after max uint: ", x[0])
-
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
     print(np.dot(v1, v2))
