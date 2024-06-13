@@ -92,8 +92,8 @@ for i in range(1, 100000):
         print(i)
         print("best result: ", bestResult)
 
-print("cosine distance: ", 1-(np.dot(x, y)/60000))
-print("cosine distance: ", 1-(np.dot(x, z)/60000))
+print("cosine distance: ", 1-(np.dot(x, y)/37785))
+print("cosine distance: ", 1-(np.dot(x, z)/37785))
 
 
 
