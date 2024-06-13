@@ -68,7 +68,8 @@ y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPhe
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 print("cosine distance: ", cosine_similarity(x, y))
-
+x = x * 1000
+y = y * 1000
 x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
 print(x)
