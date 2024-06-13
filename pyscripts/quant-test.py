@@ -63,8 +63,6 @@ def quant_uint8_cos_sim(x,y):
 def closer_to_c(a, b, c):
     diff_a = abs(c - a)
     diff_b = abs(c - b)
-    print("diff_a: ", diff_a)
-    print("diff_b: ", diff_b)
     if diff_a < diff_b:
         return False
     elif diff_b < diff_a:
