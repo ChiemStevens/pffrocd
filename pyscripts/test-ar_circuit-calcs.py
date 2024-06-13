@@ -87,6 +87,9 @@ z = z / np.linalg.norm(z)
 print("Euclidean distance: ", euclidean_distance(x, y))
 print("Euclidean distance: ", euclidean_distance(x, z))
 
+x = x * 1000
+y = y * 1000
+z = z * 1000
 # convert the embeddings to int16
 x = np.array(x, dtype=np.int16)
 y = np.array(y, dtype=np.int16)
