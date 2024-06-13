@@ -62,7 +62,7 @@ print("after max uint: ", x[0])
 
 def cosine_similarity(v1, v2):
     print(np.dot(v1, v2))
-    return 1 - (np.dot(v1, v2) / 10000000000)
+    return 1 - (np.dot(v1, v2) / 100000)
 
 print("cosine distance uint32: ", cosine_similarity(x, y))
 print("cosine distance uint32: ", cosine_similarity(x, z))
