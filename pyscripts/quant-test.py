@@ -63,6 +63,8 @@ def quant_uint8_cos_sim(x,y):
 def closer_to_c(a, b, c):
     diff_a = abs(c - a)
     diff_b = abs(c - b)
+    print("diff_a: ", diff_a)
+    print("diff_b: ", diff_b)
     if diff_a < diff_b:
         return False
     elif diff_b < diff_a:
@@ -73,6 +75,7 @@ def closer_to_c(a, b, c):
 def find_best_result(x,y):
     best = 0
     wanted = cosine_similarity(x,y)
+    print("wanted: ", wanted)
     foundI = 0
     for i in range(1000):
         x = x * 1000
@@ -80,6 +83,8 @@ def find_best_result(x,y):
         x = np.array(x, dtype=np.uint8)
         y = np.array(y, dtype=np.uint8)
         result = 1 - (np.dot(x, y) / i)
+        print("result: ", result)
+        print("is result closer: ", closer_to_c(best, result, wanted))
         if closer_to_c(best, result, wanted):
             best = result
             foundI = i
@@ -110,6 +115,7 @@ for i in range(100):
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
     cos_sim_uint16.append(quant_uint16_cos_sim(x, y))
     cos_sim_uint8.append(quant_uint8_cos_sim(x, y))
+    break
 
 df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
 # save the dataframe to a csv file
