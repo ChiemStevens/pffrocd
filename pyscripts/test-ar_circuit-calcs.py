@@ -68,6 +68,7 @@ print("y[0] ", y[0])
 print("mul result", x[0]*y[0])
 print("cosine distance uint32: ", 1-(np.dot(x, y)/1000000))
 
+
 # get three embeddings of different people
 x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
 y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
@@ -82,27 +83,19 @@ z = z / np.linalg.norm(z)
 print("cosine distance: ", cosine_similarity(x, y))
 print("cosine distance: ", cosine_similarity(x, z))
 
-# multiply each item in x and y by 1000
-x = x * 1000
-y = y * 1000
+# find the maximum absolute value in the embeddings
+max_val = max(np.max(np.abs(x)), np.max(np.abs(y)))
 
-# print the cosine distance before converting to uint16
-print("cosine distance: ", 1-(np.dot(x, y)/1000000))
-print("this is before converting to uint16")
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
+# scale the embeddings
+x = x / max_val * 32767  # for int16
+y = y / max_val * 32767  # for int16
 
-# convert x and y to uint16
-x = np.array(x, dtype=np.uint16)
-y = np.array(y, dtype=np.uint16)
+# convert the embeddings to int16
+x = np.array(x, dtype=np.int16)
+y = np.array(y, dtype=np.int16)
 
-# print the cosine distance after converting to uint16
-print("x[0] ", x[0])
-print("y[0] ", y[0])
-print("mul result", x[0]*y[0])
-print("dot product", np.dot(x, y))
-print("cosine distance uint16: ", 1-(np.dot(x, y)/1000000))
+# print the cosine similarity between the converted embeddings
+print("cosine distance int16: ", cosine_similarity(x, y))
 
 
 
