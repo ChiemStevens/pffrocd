@@ -7,6 +7,7 @@ import random
 import time
 import quantization as qt
 import sys
+import os
 
 # def evaluate_quantization(vector1, vector2, quantization_func):
 #     # Compute the cosine similarity before quantization
