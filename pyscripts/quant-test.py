@@ -65,7 +65,11 @@ def find_best_result(x,y):
     wanted = cosine_similarity(x,y)
     foundI = 0
     for i in range(1000):
-        result = quant_uint8_cos_sim(x,y)
+        x = x * 1000
+        y = y * 1000
+        x = np.array(x, dtype=np.uint8)
+        y = np.array(y, dtype=np.uint8)
+        result = 1 - (np.dot(x, y) / i)
         if abs(result - wanted) < abs(best - wanted):
             best = result
             foundI = i
