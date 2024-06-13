@@ -48,9 +48,9 @@ print("cosine distance: ", cosine_similarity(x, z))
 
 # multiply each item in x and y (which are np arrays) by 1000
 max_value = np.iinfo(np.uint32).max
-x = x * max_value
-y = y * max_value
-z = z * max_value
+x = x * 10000000000
+y = y * 10000000000
+z = z * 10000000000
 
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
@@ -76,9 +76,9 @@ z = z / np.linalg.norm(z)
 
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint16).max
-x = x * max_value
-y = y * max_value
-z = z * max_value
+x = x * 100000
+y = y * 100000
+z = z * 100000
 
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint16)
@@ -108,9 +108,9 @@ z = z / np.linalg.norm(z)
 
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint8).max
-x = x * max_value
-y = y * max_value
-z = z * max_value
+x = x * 1000
+y = y * 1000
+z = z * 1000
 
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint8)
