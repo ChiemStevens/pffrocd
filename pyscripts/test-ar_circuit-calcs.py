@@ -72,7 +72,7 @@ print("before max: ", x[0])
 x = x * 1000
 y = y * 1000
 print("after max: ", x[0])
-
+print("test")
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint8)
 y = np.array(y, dtype=np.uint8)
