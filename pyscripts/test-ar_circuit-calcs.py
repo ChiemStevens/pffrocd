@@ -59,8 +59,8 @@ y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
 # print(x)
 # print(y)
-print("cosine distance uint32: ", 1-(np.dot(x, y)/10000000000))
-print("cosine distance uint32: ", 1-(np.dot(x, z)/10000000000))
+print("cosine distance uint32: ", 1-(np.dot(x, y)/max_value))
+print("cosine distance uint32: ", 1-(np.dot(x, z)/max_value))
 
 
 # get two embeddings of different people
@@ -74,12 +74,11 @@ y = y / np.linalg.norm(y)
 z = z / np.linalg.norm(z)
 
 # multiply each item in x and y (which are np arrays) by 65535
-x = x * 65535
-y = y * 65535
-z = z * 65535
-
 max_value = np.iinfo(np.uint16).max
-print(max_value)
+x = x * max_value
+y = y * max_value
+z = z * max_value
+
 
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint16)
@@ -88,7 +87,7 @@ z = np.array(z, dtype=np.uint16)
 
 # Compute the cosine similarity
 def cosine_similarity(v1, v2):
-    return 1 - (np.dot(v1, v2) / 100000)
+    return 1 - (np.dot(v1, v2) / max_value)
 
 print(np.dot(x, y))
 print(np.dot(x, z))
