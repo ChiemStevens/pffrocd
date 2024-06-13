@@ -44,12 +44,15 @@ z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0
 # now quantize before normalizing
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
+print("cosine distance: ", cosine_similarity(x, y))
 
 # multiply each item in x and y (which are np arrays) by 1000
 x = x * 1000
 y = y * 1000
 print(x)
 print(y)
+
+print("cosine distance: ", cosine_similarity(x, y))
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 # print("BEFORE QUANTIZATION: ", before)
