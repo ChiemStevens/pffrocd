@@ -52,15 +52,13 @@ x = x * max_value
 y = y * max_value
 z = z * max_value
 
-def cosine_similarity(v1, v2):
-    return 1 - (np.dot(v1, v2) / 10000000000)
-
-print("cosine distance: ", cosine_similarity(x, y))
-print("cosine distance: ", cosine_similarity(x, z))
 # now convert x and y to int32
 x = np.array(x, dtype=np.uint32)
 y = np.array(y, dtype=np.uint32)
 z = np.array(z, dtype=np.uint32)
+
+def cosine_similarity(v1, v2):
+    return 1 - (np.dot(v1, v2) / 10000000000)
 
 print("cosine distance uint32: ", cosine_similarity(x, y))
 print("cosine distance uint32: ", cosine_similarity(x, z))
@@ -82,8 +80,6 @@ x = x * max_value
 y = y * max_value
 z = z * max_value
 
-print(max_value)
-
 # now convert x and y to uint16
 x = np.array(x, dtype=np.uint16)
 y = np.array(y, dtype=np.uint16)
@@ -93,12 +89,40 @@ z = np.array(z, dtype=np.uint16)
 def cosine_similarity(v1, v2):
     return 1 - (np.dot(v1, v2) / 100000)
 
-print(np.dot(x, y))
-print(np.dot(x, z))
-
 print("cosine distance uint16: ", cosine_similarity(x, y))
 print("cosine distance uint16: ", cosine_similarity(x, z))
 
+
+
+
+
+# get two embeddings of different people
+x = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg", dtype=NUMPY_DTYPE)
+y = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Adrian_McPherson/Adrian_McPherson_0002.jpg", dtype=NUMPY_DTYPE)
+z = pffrocd.get_embedding("/home/chiem/pffrocd/lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg", dtype=NUMPY_DTYPE)
+
+# now quantize before normalizing
+x = x / np.linalg.norm(x)
+y = y / np.linalg.norm(y)
+z = z / np.linalg.norm(z)
+
+# multiply each item in x and y (which are np arrays) by 65535
+max_value = np.iinfo(np.uint8).max
+x = x * max_value
+y = y * max_value
+z = z * max_value
+
+# now convert x and y to uint16
+x = np.array(x, dtype=np.uint8)
+y = np.array(y, dtype=np.uint8)
+z = np.array(z, dtype=np.uint8)
+
+# Compute the cosine similarity
+def cosine_similarity(v1, v2):
+    return 1 - (np.dot(v1, v2) / 100000)
+
+print("cosine distance uint8: ", cosine_similarity(x, y))
+print("cosine distance uint8: ", cosine_similarity(x, z))
 
 # before, after = evaluate_quantization(x,y,qt.scalar_quantisation_percentile)
 # print("BEFORE QUANTIZATION: ", before)
