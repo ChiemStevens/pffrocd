@@ -65,6 +65,7 @@ x = pffrocd.get_embedding(img1, dtype=np.float32)
 y = pffrocd.get_embedding(img2, dtype=np.float32)
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
+print("cosine distance float32: ", cosine_similarity(x, y))
 # multiply each item in x and y (which are np arrays) by 65535
 max_value = np.iinfo(np.uint8).max
 print("before max: ", x[0])
