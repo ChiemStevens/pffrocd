@@ -94,6 +94,9 @@ z = np.array(z, dtype=np.uint16)
 def cosine_similarity(v1, v2):
     return 1 - (np.dot(v1, v2) / (65535 * 65535))
 
+print(np.dot(x, y))
+print(np.dot(x, z))
+
 print("cosine distance uint16: ", cosine_similarity(x, y))
 print("cosine distance uint16: ", cosine_similarity(x, z))
 
