@@ -65,6 +65,9 @@ share0scalar_x, share1scalar_x = pffrocd.create_shares(np.array(norm_x, dtype=NU
 share0scalar_y, share1scalar_y = pffrocd.create_shares(np.array(norm_y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 #print(pffrocd.create_shares(norm_y))
 # what happens if we create shares from this
+share0scalar_x = np.array([share0scalar_x[0]], dtype=np.float32)
+share1scalar_x = np.array([share1scalar_x[0]], dtype=np.float32)
+
 print("scalar0x: ", share0scalar_x)
 print("scalar1x: ", share1scalar_x)
 
