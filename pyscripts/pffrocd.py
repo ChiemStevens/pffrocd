@@ -778,10 +778,12 @@ def create_shares(x: np.ndarray, dtype, quantized=False):
 def create_share(x: float):
     
     nonce = fxor(x, np.random.uniform(-3,3), np.float32) 
+    nonce = x ^ np.random.uniform(-3,3)
+    print(nonce)
 
     share1 = nonce
 
-    share0 = fxor(x, share1, np.float32)
+    share0 = x ^ share1
 
     return share0, share1
 
