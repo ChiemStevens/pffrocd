@@ -317,7 +317,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_out = ac->PutOUTGate(s_x_times_y, ALL);
 	party->ExecCircuit();
 
-	output_scalar = s_out->get_clear_value<float>();
+	uint32_t *cos_sim_out_vals = (uint32_t *)s_out->get_clear_value_ptr();
+	float cos_sim = *((float *)cos_sim_out_vals);
 
 	std::cout << "cos_dist: " << output_scalar << std::endl;
 }
