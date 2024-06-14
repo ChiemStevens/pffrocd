@@ -86,7 +86,7 @@ share1prime = np.array(share1prime, dtype=np.int32)
 x = np.array(x, dtype=np.int32)
 y = np.array(y, dtype=np.int32)
 output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime, 
-                                  scalar_x0=share0scalar_x, scalar_x1=share0scalar_y, scalar_y0=share0scalar_y, scalar_y1=share1scalar_y)
+                                  scalar_x0=share0scalar_x, scalar_x1=share1scalar_x, scalar_y0=share0scalar_y, scalar_y1=share1scalar_y)
 print(output.stdout)
 
 print("NUMPY COS_DIST:")
