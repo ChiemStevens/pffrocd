@@ -310,7 +310,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	magnitude_yin = bc->PutSharedINGate(share_scalar_yvals, bitlen);
 
 	
-	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
+	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, 1, no_status);
 	// uint32_t posids[3] = {0, 0, 1};
 	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
 	// share *s_x_times_y_real = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
