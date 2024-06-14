@@ -71,6 +71,10 @@ share0scalar_x = np.array([share0scalar_x[0]], dtype=np.float32)
 share1scalar_x = np.array([share1scalar_x[0]], dtype=np.float32)
 share0scalar_y = np.array([share0scalar_y[0]], dtype=np.float32)
 share1scalar_y = np.array([share1scalar_y[0]], dtype=np.float32)
+print("share0scalar_x: ", share0scalar_x)
+print("share1scalar_x: ", share1scalar_x)
+print("share0scalar_y: ", share0scalar_y)
+print("share1scalar_y: ", share1scalar_y)
 
 # create shares for magnitude and its a scalar (float32) eudclidean distance
 # normalize(x) is share0
