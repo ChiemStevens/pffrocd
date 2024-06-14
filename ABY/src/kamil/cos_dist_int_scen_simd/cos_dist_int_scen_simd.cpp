@@ -326,7 +326,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 
 	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
-	float output_scalar = *((float *)output_scalar_uint);
+	output_scalar = *((float *)output_scalar_uint);
 
 	std::cout << "scalar output: " << output_scalar << std::endl;
 }
