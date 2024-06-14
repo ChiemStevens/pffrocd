@@ -44,7 +44,7 @@ def quant_uint64_cos_sim(x,y):
     y = y * 1000
     x = np.array(x, dtype=np.uint64)
     y = np.array(y, dtype=np.uint64)
-    return 1 - (np.dot(x, y) / 1000000000)
+    return 1 - (np.dot(x, y) / 10000000)
 
 def quant_uint32_cos_sim(x,y):
     x = x * 1000
@@ -108,8 +108,8 @@ for i in range(100):
     print("cosine distance: ", cosine_similarity(x, y))
     #print("cosine distance uint32: ", quant_uint32_cos_sim(x, y))
     #print("cosine distance uint16: ", quant_uint16_cos_sim(x, y))
-    print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
-    bestI.append(find_best_result(x,y))
+    #print("cosine distance uint8: ", quant_uint8_cos_sim(x, y))
+    #bestI.append(find_best_result(x,y))
     cos_sim.append(cosine_similarity(x, y))
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
     cos_sim_uint64.append(quant_uint64_cos_sim(x, y))
