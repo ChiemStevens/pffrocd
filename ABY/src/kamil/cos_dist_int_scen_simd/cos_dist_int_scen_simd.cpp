@@ -331,7 +331,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
 	// 	//bc->PutPrintValueGate(a_share, "a_share");
 	// }
-	s_out_scalar = bc->PutOUTGate(s_x_times_y, ALL);
+	//s_out_scalar = bc->PutOUTGate(s_x_times_y, ALL);
+	s_out_scalar = bc->PutOUTGate(magnitude_xin, ALL);
 	party->ExecCircuit();
 
 	/**
