@@ -120,6 +120,6 @@ for i in range(100):
 # take the average value of bestI
 print("average bestI: ", sum(bestI) / len(bestI))
 
-df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
+df = pd.DataFrame({'cos_sim': cos_sim, 'cos_sim_uint64': cos_sim_uint64, 'cos_sim_uint32': cos_sim_uint32, 'cos_sim_uint16': cos_sim_uint16, 'cos_sim_uint8': cos_sim_uint8})
 # save the dataframe to a csv file
 df.to_csv('cosine_similarity.csv')
