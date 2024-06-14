@@ -39,6 +39,13 @@ def cosine_similarity(v1, v2):
     # Compute the cosine similarity
     return 1- np.dot(v1, v2)
 
+def quant_uint64_cos_sim(x,y):
+    x = x * 1000
+    y = y * 1000
+    x = np.array(x, dtype=np.uint64)
+    y = np.array(y, dtype=np.uint64)
+    return 1 - (np.dot(x, y) / 1000000000)
+
 def quant_uint32_cos_sim(x,y):
     x = x * 1000
     y = y * 1000
@@ -87,6 +94,7 @@ def find_best_result(x,y):
     return foundI
 
 cos_sim = []
+cos_sim_uint64 = []
 cos_sim_uint32 = []
 cos_sim_uint16 = []
 cos_sim_uint8 = []
@@ -104,8 +112,10 @@ for i in range(100):
     bestI.append(find_best_result(x,y))
     cos_sim.append(cosine_similarity(x, y))
     cos_sim_uint32.append(quant_uint32_cos_sim(x, y))
+    cos_sim_uint64.append(quant_uint64_cos_sim(x, y))
     cos_sim_uint16.append(quant_uint16_cos_sim(x, y))
     cos_sim_uint8.append(quant_uint8_cos_sim(x, y))
+
 
 # take the average value of bestI
 print("average bestI: ", sum(bestI) / len(bestI))
