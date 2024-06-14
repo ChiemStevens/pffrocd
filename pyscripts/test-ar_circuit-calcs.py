@@ -80,6 +80,8 @@ print("share1scalar_x: ", share1scalar_x)
 print("share0scalar_y: ", share0scalar_y)
 print("share1scalar_y: ", share1scalar_y)
 
+print("result of xoring agains ",fxor32(share0scalar_x, share1scalar_x))
+
 # create shares for magnitude and its a scalar (float32) eudclidean distance
 # normalize(x) is share0
 # normalize(y) is share1
