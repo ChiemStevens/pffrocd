@@ -87,6 +87,7 @@ print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
 print(np.dot(x,y))
 print("norm x * norm y", norm_x[0] * norm_y[0])
+print("our cosine distance: ", 1 - (np.dot(x,y) / (norm_x[0] * norm_y[0])))
 # # the dot product written out
 # sum = 0
 # for i in range(0, len(x)):
