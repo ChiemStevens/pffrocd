@@ -118,12 +118,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t bitlen = 32;
 
 	// two arrays of real-world embeddings
-	std::vector<uint32_t> xembeddings;
-	std::vector<uint32_t> yembeddings;
+	std::vector<int32_t> xembeddings;
+	std::vector<int32_t> yembeddings;
 
 	// array for the Sy<role> share
-	std::vector<uint32_t> share_embeddings;
-	std::vector<uint32_t> share_embeddings_prime;
+	std::vector<int32_t> share_embeddings;
+	std::vector<int32_t> share_embeddings_prime;
+	std::vector<float> share_scalar_x;
+	std::vector<float> share_scalar_y;
 
 
 	// reading the non-xored embeddings, i.e. current face and database face
@@ -132,7 +134,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
-	uint32_t x, y;
+	int32_t x, y;
 
 	// std::cout << "starting reading x and y" << std::endl;
 
@@ -157,12 +159,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
 	std::string fnameprime = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "prime.txt";
+	std::string fname_scalar_sharex = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "scalar_x.txt";
+	std::string fname_scalar_sharey = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + "scalar_y.txt";
 	// //std::cout << "FNAME: " << fname << std::endl; 
 
 	std::fstream infile_share(fname);
 	std::fstream infile_share_prime(fnameprime);
+	std::fstream infile_scalar_sharex(fname_scalar_sharex);
+	std::fstream infile_scalar_sharey(fname_scalar_sharey);
 
 	uint32_t z;
+	float q;
 	// // std::cout << "starting reading z" << std::endl;
 
 	while(infile_share >> z) {
@@ -173,6 +180,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	while(infile_share_prime >> z) {
 		//std::cout << "z: " << z << std::endl;
 		share_embeddings_prime.push_back(z);
+	}
+	q = 0;
+	while(infile_scalar_sharex >> q) {
+		//std::cout << "z: " << z << std::endl;
+		share_scalar_x.push_back(q);
+	}
+	q = 0;
+	while(infile_scalar_sharey >> q) {
+		//std::cout << "z: " << z << std::endl;
+		share_scalar_y.push_back(q);
 	}
 
 	// //std::cout<<"finished reading z" << std::endl;
@@ -212,6 +229,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	uint32_t sharevals[nvals];
 	uint32_t sharevals_prime[nvals];
+	uint32_t share_scalar_xvals[nvals];
+	uint32_t share_scalar_yvals[nvals];
 	uint32_t xvals[nvals];
 	uint32_t yvals[nvals];
 
@@ -231,16 +250,22 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		uint32_t current_y = yembeddings[i];
 		uint32_t current_share = share_embeddings[i];
 		uint32_t current_share_prime = share_embeddings_prime[i];
+		uint32_t current_scalar_x = share_scalar_x[i];
+		uint32_t current_scalar_y = share_scalar_y[i];
 
 		uint32_t *xptr = (uint32_t *)&current_x;
 		uint32_t *yptr = (uint32_t *)&current_y;
 		uint32_t *shareptr = (uint32_t *)&current_share;
 		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
+		uint32_t *scalar_xptr = (uint32_t *)&current_scalar_x;
+		uint32_t *scalar_yptr = (uint32_t *)&current_scalar_y;
 
 		xvals[i] = *xptr;
 		yvals[i] = *yptr;
 		sharevals[i] = *shareptr;
 		sharevals_prime[i] = *shareptr_prime;
+		share_scalar_xvals[i] = *scalar_xptr;
+		share_scalar_yvals[i] = *scalar_yptr;
 
 		v_sum += xvals[i] * yvals[i];
 	}
@@ -261,6 +286,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	s_out = ac->PutOUTGate(s_out, ALL);
 
+
+	
 	/**
 	 Step 9: Executing the circuit using the ABYParty object evaluate the
 	 problem.
@@ -275,6 +302,23 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << std::endl << "cos_dist_ver: " << v_sum << std::endl;
 
 	std::cout << "cos_dist: " << output << std::endl;
+
+
+	// INPUTS
+	share *magnitude_xin, *magnitude_yin;
+
+	// // Input of the pre-computed shares of the face in the database
+	s_xin = bc->PutSharedINGate(nvals, share_scalar_xvals, bitlen);
+	s_yin = bc->PutSharedINGate(nvals, share_scalar_yvals, bitlen);
+
+	
+	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+
+	party->ExecCircuit();
+
+	output_scalar = s_out->get_clear_value<float>();
+
+	std::cout << "cos_dist: " << output_scalar << std::endl;
 }
 
 int main(int argc, char **argv)

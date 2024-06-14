@@ -67,9 +67,8 @@ share0scalar_y, share1scalar_y = pffrocd.create_shares(np.array(norm_y, dtype=NU
 # what happens if we create shares from this
 share0scalar_x = np.array([share0scalar_x[0]], dtype=np.float32)
 share1scalar_x = np.array([share1scalar_x[0]], dtype=np.float32)
-
-print("scalar0x: ", share0scalar_x)
-print("scalar1x: ", share1scalar_x)
+share0scalar_y = np.array([share0scalar_y[0]], dtype=np.float32)
+share1scalar_y = np.array([share1scalar_y[0]], dtype=np.float32)
 
 # create shares for magnitude and its a scalar (float32) eudclidean distance
 # normalize(x) is share0
