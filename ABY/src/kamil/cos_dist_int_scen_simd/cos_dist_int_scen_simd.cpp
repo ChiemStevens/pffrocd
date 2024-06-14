@@ -314,7 +314,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	
 	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
-
+	s_out = ac->PutOUTGate(s_x_times_x, ALL);
 	party->ExecCircuit();
 
 	output_scalar = s_out->get_clear_value<float>();
