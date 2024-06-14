@@ -61,6 +61,8 @@ share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTY
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 norm_x = [np.linalg.norm(x)]
 norm_y = [np.linalg.norm(y)]
+print("normalized x : ", norm_x)
+print("normalized y : ", norm_y)
 share0scalar_x, share1scalar_x = pffrocd.create_shares(np.array(norm_x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 share0scalar_y, share1scalar_y = pffrocd.create_shares(np.array(norm_y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 #print(pffrocd.create_shares(norm_y))
