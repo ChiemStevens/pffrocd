@@ -59,7 +59,15 @@ y = qt.scalar_quantisation_percentile(y)
 
 share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+norm_x = np.linalg.norm(x)
+norm_y = np.linalg.norm(y)
+print(pffrocd.create_share(norm_x))
+print(pffrocd.create_share(norm_y))
+# what happens if we create shares from this
 
+# create shares for magnitude and its a scalar (float32) eudclidean distance
+# normalize(x) is share0
+# normalize(y) is share1
 print("og share1 prime", share0prime)
 share0 = np.array(share0, dtype=np.int32)
 share1 = np.array(share1, dtype=np.int32)

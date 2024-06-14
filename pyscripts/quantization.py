@@ -34,7 +34,7 @@ def scalar_quantisation_percentile_og(values, qmin=-128, qmax=127, lower_bound=N
 def quantize(v, precision=1000):
     return np.round(v * precision).astype(np.uint32)
 
-def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, upper_bound=None):
+def scalar_quantisation_percentile(values, qmin=-127, qmax=128, lower_bound=None, upper_bound=None):
     """
     Quantize the values to uint8 using the calibrated range.
     """
@@ -50,7 +50,7 @@ def scalar_quantisation_percentile(values, qmin=0, qmax=255, lower_bound=None, u
     zero_point = qmin - round(lower_bound / scale)
     
     # Quantize the values
-    quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.uint8)
+    quantized_values = np.clip(np.round(values / scale + zero_point), qmin, qmax).astype(np.int32)
     
     return quantized_values
 

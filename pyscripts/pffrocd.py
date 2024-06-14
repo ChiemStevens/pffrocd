@@ -775,6 +775,19 @@ def create_shares(x: np.ndarray, dtype, quantized=False):
 
     return share0.astype(dtype), share1.astype(dtype)
 
+def create_share(x: float):
+    
+    nonce = fxor(x, np.random.uniform(-3,3), np.float32) 
+
+    share1 = nonce
+
+    share0 = fxor(x, share1, np.float32)
+
+    return share0, share1
+
+
+
+
 def get_images_in_folder(folder_path):
     images = []
     for file_name in os.listdir(folder_path):
