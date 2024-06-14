@@ -230,8 +230,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	uint32_t sharevals[nvals];
 	uint32_t sharevals_prime[nvals];
-	uint32_t share_scalar_xvals[nvals];
-	uint32_t share_scalar_yvals[nvals];
 	uint32_t xvals[nvals];
 	uint32_t yvals[nvals];
 
@@ -251,27 +249,31 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		uint32_t current_y = yembeddings[i];
 		uint32_t current_share = share_embeddings[i];
 		uint32_t current_share_prime = share_embeddings_prime[i];
-		float current_scalar_x = share_scalar_x[i];
-		float current_scalar_y = share_scalar_y[i];
 
 		uint32_t *xptr = (uint32_t *)&current_x;
 		uint32_t *yptr = (uint32_t *)&current_y;
 		uint32_t *shareptr = (uint32_t *)&current_share;
 		uint32_t *shareptr_prime = (uint32_t *)&current_share_prime;
-		uint32_t *scalar_xptr = (uint32_t *)&current_scalar_x;
-		uint32_t *scalar_yptr = (uint32_t *)&current_scalar_y;
 
 		xvals[i] = *xptr;
 		yvals[i] = *yptr;
 		sharevals[i] = *shareptr;
 		sharevals_prime[i] = *shareptr_prime;
-		share_scalar_xvals[i] = *scalar_xptr;
-		share_scalar_yvals[i] = *scalar_yptr;
 
 		v_sum += xvals[i] * yvals[i];
 	}
-	std::cout << "share_scalar_xvals " << share_scalar_xvals[0] << std::endl;
-	std::cout << "share_scalar_yvals " << share_scalar_xvals[10] << std::endl;
+	uint32_t share_scalar_xvals[1];
+	uint32_t share_scalar_yvals[1];
+	float current_scalar_x = share_scalar_x[0];
+	float current_scalar_y = share_scalar_y[0];
+
+	uint32_t *scalar_xptr = (uint32_t *)&current_scalar_x;
+	uint32_t *scalar_yptr = (uint32_t *)&current_scalar_y;
+
+	share_scalar_xvals[0] = *scalar_xptr;
+	share_scalar_yvals[0] = *scalar_yptr;
+	// std::cout << "share_scalar_xvals " << share_scalar_xvals[0] << std::endl;
+	// std::cout << "share_scalar_yvals " << share_scalar_xvals[10] << std::endl;
 	//s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
 	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
