@@ -301,14 +301,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	//party->ExecCircuit();
 
-	
 
 	// INPUTS
 	share *magnitude_xin, *magnitude_yin;
 
 	// // Input of the pre-computed shares of the face in the database
-	magnitude_xin = bc->PutSharedSIMDINGate(nvals, share_scalar_xvals, bitlen);
-	magnitude_yin = bc->PutSharedSIMDINGate(nvals, share_scalar_yvals, bitlen);
+	magnitude_xin = bc->PutSharedINGate(share_scalar_xvals, bitlen);
+	magnitude_yin = bc->PutSharedINGate(share_scalar_yvals, bitlen);
 
 	
 	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
