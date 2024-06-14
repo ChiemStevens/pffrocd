@@ -267,6 +267,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	float current_scalar_x = share_scalar_x[0];
 	float current_scalar_y = share_scalar_y[0];
 
+	std::cout << "current_scalar_x: " << current_scalar_x << std::endl;
+	std::cout << "current_scalar_y: " << current_scalar_y << std::endl;
+
 	uint32_t *scalar_xptr = (uint32_t *)&current_scalar_x;
 	uint32_t *scalar_yptr = (uint32_t *)&current_scalar_y;
 
