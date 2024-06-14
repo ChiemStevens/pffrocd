@@ -330,8 +330,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
 	// 	//bc->PutPrintValueGate(a_share, "a_share");
 	// }
-	//s_out_scalar = bc->PutOUTGate(s_x_times_y, ALL);
-	s_out_scalar = bc->PutOUTGate(magnitude_xin, ALL);
+	s_out_scalar = bc->PutOUTGate(s_x_times_y, ALL);
+	//s_out_scalar = bc->PutOUTGate(magnitude_xin, ALL);
 	party->ExecCircuit();
 
 	/**
@@ -347,7 +347,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t *cos_sim_out_vals = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	float cos_sim = *((float *)cos_sim_out_vals);
 
-	std::cout << "cos_dist: " << output_scalar << std::endl;
+	std::cout << "scalar output: " << output_scalar << std::endl;
 }
 
 int main(int argc, char **argv)
