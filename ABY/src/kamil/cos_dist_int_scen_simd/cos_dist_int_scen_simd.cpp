@@ -218,7 +218,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 are used as inputs to the computation. Also, s_out which stores the output.
 	 */
 
-	share *s_x_vec, *s_y_vec, *s_out;
+	share *s_x_vec, *s_y_vec, *s_out, *s_out_scalar;
 
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
@@ -293,6 +293,20 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 Step 9: Executing the circuit using the ABYParty object evaluate the
 	 problem.
 	 */
+	//party->ExecCircuit();
+
+	
+
+	// INPUTS
+	share *magnitude_xin, *magnitude_yin;
+
+	// // Input of the pre-computed shares of the face in the database
+	magnitude_xin = bc->PutSharedSIMDINGate(nvals, share_scalar_xvals, bitlen);
+	magnitude_yin = bc->PutSharedSIMDINGate(nvals, share_scalar_yvals, bitlen);
+
+	
+	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
+	s_out_scalar = ac->PutOUTGate(s_x_times_y, ALL);
 	party->ExecCircuit();
 
 	/**
@@ -305,19 +319,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "cos_dist: " << output << std::endl;
 
 
-	// INPUTS
-	share *magnitude_xin, *magnitude_yin;
-
-	// // Input of the pre-computed shares of the face in the database
-	magnitude_xin = bc->PutSharedSIMDINGate(nvals, share_scalar_xvals, bitlen);
-	magnitude_yin = bc->PutSharedSIMDINGate(nvals, share_scalar_yvals, bitlen);
-
-	
-	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
-	s_out = ac->PutOUTGate(s_x_times_y, ALL);
-	party->ExecCircuit();
-
-	uint32_t *cos_sim_out_vals = (uint32_t *)s_out->get_clear_value_ptr();
+	uint32_t *cos_sim_out_vals = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	float cos_sim = *((float *)cos_sim_out_vals);
 
 	std::cout << "cos_dist: " << output_scalar << std::endl;
