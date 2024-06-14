@@ -224,6 +224,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
 	uint32_t output, v_sum = 0;
+	float output_scalar = 0;
 
 	uint32_t i;
 
@@ -308,8 +309,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *magnitude_xin, *magnitude_yin;
 
 	// // Input of the pre-computed shares of the face in the database
-	s_xin = bc->PutSharedINGate(nvals, share_scalar_xvals, bitlen);
-	s_yin = bc->PutSharedINGate(nvals, share_scalar_yvals, bitlen);
+	s_xin = bc->PutSharedSIMDINGate(nvals, share_scalar_xvals, bitlen);
+	s_yin = bc->PutSharedSIMDINGate(nvals, share_scalar_yvals, bitlen);
 
 	
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
