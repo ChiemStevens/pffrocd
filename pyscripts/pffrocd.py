@@ -224,7 +224,7 @@ def get_cos_dist_numpy(x, y):
     """
     return 1 - np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
 
-def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None):
+def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None, scalar_x0=None, scalar_x1=None, scalar_y0=None, scalar_y1=None):
     """
     Write the vectors to files used by ABY executable
     If y_0 and y_1 are provided run it as actual scenario (shared IN gates)
@@ -248,6 +248,21 @@ def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None):
         with open(f"{EXECUTABLE_PATH}/share1prime.txt", 'w') as f:
             for i in x_1:
                 f.write(f"{i}\n")
+        # scalar
+        with open(f"{EXECUTABLE_PATH}/share0scalar_x.txt", 'w') as f:
+            for i in scalar_x0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1scalar_x.txt", 'w') as f:
+            for i in scalar_x1:
+                f.write(f"{i}\n")
+
+        with open(f"{EXECUTABLE_PATH}/share0scalar_y.txt", 'w') as f:
+            for i in scalar_y0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1scalar_y.txt", 'w') as f:
+            for i in scalar_y1:
+                f.write(f"{i}\n")
+        
 
     CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
     output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)

@@ -61,23 +61,24 @@ share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTY
 share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 norm_x = [np.linalg.norm(x)]
 norm_y = [np.linalg.norm(y)]
-print(np.array(norm_x, dtype=NUMPY_DTYPE))
-print(pffrocd.create_shares(np.array(norm_x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False))
+share0scalar_x, share1scalar_x = pffrocd.create_shares(np.array(norm_x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
+share0scalar_y, share1scalar_y = pffrocd.create_shares(np.array(norm_y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 #print(pffrocd.create_shares(norm_y))
 # what happens if we create shares from this
+print("scalar0x: ", share0scalar_x)
+print("scalar1x: ", share1scalar_x)
 
 # create shares for magnitude and its a scalar (float32) eudclidean distance
 # normalize(x) is share0
 # normalize(y) is share1
-print("og share1 prime", share0prime)
 share0 = np.array(share0, dtype=np.int32)
 share1 = np.array(share1, dtype=np.int32)
 share0prime = np.array(share0prime, dtype=np.int32)
-print(share0prime)
 share1prime = np.array(share1prime, dtype=np.int32)
 x = np.array(x, dtype=np.int32)
 y = np.array(y, dtype=np.int32)
-output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime)
+output = pffrocd.run_sfe_improved(x, y, y_0=share0, y_1=share1, x_0=share0prime, x_1=share1prime, 
+                                  scalar_x0=share0scalar_x, scalar_x1=share0scalar_y, scalar_y0=share0scalar_y, scalar_y1=share1scalar_y)
 print(output.stdout)
 
 print("NUMPY COS_DIST:")
