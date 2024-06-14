@@ -308,28 +308,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// // Input of the pre-computed shares of the face in the database
 	magnitude_xin = bc->PutSharedINGate(share_scalar_xvals, bitlen);
 	magnitude_yin = bc->PutSharedINGate(share_scalar_yvals, bitlen);
-
 	
 	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, 1, no_status);
-	// uint32_t posids[3] = {0, 0, 1};
-	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	// share *s_x_times_y_real = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
-	// for (int i = 1; i < nvals; i++)
-	// {
-	// 	//uint32_t posids[3] = {i, i, 1};
 
-	// 		posids[0] = i;
-	// 		posids[1] = i;
-	// 		posids[2] = 1;
-
-	// 	// bc->PutPrintValueGate(bc->PutSubsetGate(s_product,posids,1,false), "First wire");
-
-	// 	// share *s_product_split;
-	// 	s_x_times_y_real = bc->PutFPGate(s_x_times_y_real , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
-	// 	//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
-	// 	//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-	// 	//bc->PutPrintValueGate(a_share, "a_share");
-	// }
 	s_out_scalar = bc->PutOUTGate(s_x_times_y, ALL);
 	//s_out_scalar = bc->PutOUTGate(magnitude_xin, ALL);
 	party->ExecCircuit();
@@ -344,8 +325,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "cos_dist: " << output << std::endl;
 
 
-	uint32_t *cos_sim_out_vals = (uint32_t *)s_out_scalar->get_clear_value_ptr();
-	float cos_sim = *((float *)cos_sim_out_vals);
+	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
+	float output_scalar = *((float *)output_scalar_uint);
 
 	std::cout << "scalar output: " << output_scalar << std::endl;
 }
