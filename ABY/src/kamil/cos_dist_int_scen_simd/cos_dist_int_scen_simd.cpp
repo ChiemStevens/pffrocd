@@ -310,26 +310,26 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	
 	share *s_x_times_y = bc->PutFPGate(magnitude_xin, magnitude_yin, MUL, bitlen, nvals, no_status);
-	uint32_t posids[3] = {0, 0, 1};
-	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_times_y_real = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
+	// uint32_t posids[3] = {0, 0, 1};
+	// // share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
+	// share *s_x_times_y_real = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
+	// for (int i = 1; i < nvals; i++)
+	// {
+	// 	//uint32_t posids[3] = {i, i, 1};
 
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
+	// 		posids[0] = i;
+	// 		posids[1] = i;
+	// 		posids[2] = 1;
 
-		// bc->PutPrintValueGate(bc->PutSubsetGate(s_product,posids,1,false), "First wire");
+	// 	// bc->PutPrintValueGate(bc->PutSubsetGate(s_product,posids,1,false), "First wire");
 
-		// share *s_product_split;
-		s_x_times_y_real = bc->PutFPGate(s_x_times_y_real , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
-		//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
-		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-		//bc->PutPrintValueGate(a_share, "a_share");
-	}
-	s_out_scalar = ac->PutOUTGate(s_x_times_y_real, ALL);
+	// 	// share *s_product_split;
+	// 	s_x_times_y_real = bc->PutFPGate(s_x_times_y_real , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+	// 	//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
+	// 	//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
+	// 	//bc->PutPrintValueGate(a_share, "a_share");
+	// }
+	s_out_scalar = ac->PutOUTGate(s_x_times_y, ALL);
 	party->ExecCircuit();
 
 	/**
