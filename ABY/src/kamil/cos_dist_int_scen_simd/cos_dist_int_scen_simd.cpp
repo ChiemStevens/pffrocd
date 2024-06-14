@@ -270,6 +270,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		v_sum += xvals[i] * yvals[i];
 	}
+	std::cout << "share_scalar_xvals " << share_scalar_xvals[0] << std::endl;
+	std::cout << "share_scalar_yvals " << share_scalar_xvals[10] << std::endl;
 	//s_x_vec = ac->PutSIMDINGate(nvals, xvals.data(), 32, SERVER);
 	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
