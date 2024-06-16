@@ -144,9 +144,7 @@ def run_test():
             s = stdout.split('|')
             scalar = s[0].strip("[]").split()
             logger.info(f"scalar: {scalar}")
-            # remove the last item from scalar
-            scalar = scalar[:-1]
-            logger.info(f"scalar: {scalar}")
+            logger.info(f"scalar: {scalar[0]}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
