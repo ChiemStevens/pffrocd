@@ -622,7 +622,6 @@ def execute_command(host, username, command, private_key_path):
     # Read and decode the output of the command
     output_stdout = stdout.read().decode().strip()
     output_stderr = stderr.read().decode().strip()
-    print(f"{output_stdout=}, {output_stderr=}")
 
     # Close the SSH connection
     ssh.close()
