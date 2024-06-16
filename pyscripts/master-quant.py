@@ -169,7 +169,10 @@ def run_test():
             img_embedding = qt.scalar_quantisation_percentile(img_embedding)
             ref_img_embedding = np.array(ref_img_embedding, dtype=np.int32)
             img_embedding = np.array(img_embedding, dtype=np.int32)
-            logger.info(f"cosine distance between embeddings: {1-np.dot(ref_img_embedding, img_embedding)}")
+            
+            logger.info(f"ref image", ref_img_embedding)
+            logger.info(f"img image", img_embedding)
+            logger.info(f"cosine distance between embeddings: {pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)}")
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
