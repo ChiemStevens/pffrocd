@@ -142,14 +142,11 @@ def run_test():
             # logger.info(f"Stderr of extracting embedding: {stderr}")
             # split the string in two, parts before | and after
             s = stdout.split('|')
-            logger.info(f"Scalar: {s[0]}")
             scalar = s[0].strip("[]").split()
-            logger.info(f"Scalar: {scalar}")
             # remove last item from scalar[0]
             scalar[0] = scalar[0][:-1]
-            logger.info(f"Scalar: {scalar}")
             scalar = [np.float32(i) for i in scalar]
-            logger.info(f"Scalar: {scalar}")
+            scalar = np.array(scalar, dtype=np.float32)
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
