@@ -138,14 +138,14 @@ def run_test():
 
             # Let the server create two shares from the embeddings
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt -q {True} -s {server_exec_path}/share0scalar_y.txt", master_key_path)
-            logger.info(f"Stdout of extracting embedding: {stdout}")
-            logger.info(f"Stderr of extracting embedding: {stderr}")
+            # logger.info(f"Stdout of extracting embedding: {stdout}")
+            # logger.info(f"Stderr of extracting embedding: {stderr}")
             # split the string in two, parts before | and after
-            logger.info(f"Stdout looks like {stdout}")
             s = stdout.split('|')
-            logger.info(f"S looks like {s}")
+            scalar = s[0].strip()
+            logger.info(f"Scalar looks like: {scalar}")
             # Remove the brackets and split the string into a list of strings
-            s = s.strip('[]').split()
+            s = s[1].strip('[]').split()
             logger.info(f"S looks like {s}")
             # Convert the list of strings into a list of floats
             s = [np.int32(i) for i in s]
@@ -156,6 +156,7 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar)
             pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
