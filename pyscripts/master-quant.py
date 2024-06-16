@@ -145,6 +145,8 @@ def run_test():
             scalar = s[0].strip("[]").split()
             # remove last item from scalar[0]
             scalar[0] = scalar[0][:-1]
+            scalar = [np.float32(i) for i in scalar]
+            logger.info(f"Scalar: {scalar}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
