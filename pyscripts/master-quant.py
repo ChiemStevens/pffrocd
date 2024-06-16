@@ -141,10 +141,11 @@ def run_test():
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             # split the string in two, parts before | and after
+            logger.info(f"Stdout looks like {stdout}")
             s = stdout.split('|')
             logger.info(f"S looks like {s}")
             # Remove the brackets and split the string into a list of strings
-            s = stdout.strip('[]').split()
+            s = s.strip('[]').split()
             logger.info(f"S looks like {s}")
             # Convert the list of strings into a list of floats
             s = [np.int32(i) for i in s]
