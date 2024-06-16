@@ -50,8 +50,8 @@ y = pffrocd.get_embedding(img2, dtype=np.float32)
 x = x / np.linalg.norm(x)
 y = y / np.linalg.norm(y)
 
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
+share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, False)
 
 # share0 = np.array(share0, dtype=np.int32)
 # share1 = np.array(share1, dtype=np.int32)
