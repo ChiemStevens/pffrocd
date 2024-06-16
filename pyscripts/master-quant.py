@@ -146,7 +146,7 @@ def run_test():
             scalar = s[0].strip("[]").split()
             logger.info(f"Scalar: {scalar}")
             # remove last item from scalar[0]
-            scalar = scalar[0][:-1]
+            scalar[0] = scalar[0][:-1]
             logger.info(f"Scalar: {scalar}")
             scalar = [np.float32(i) for i in scalar]
             logger.info(f"Scalar: {scalar}")
