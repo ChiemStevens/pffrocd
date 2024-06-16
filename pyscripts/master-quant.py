@@ -142,7 +142,9 @@ def run_test():
             # logger.info(f"Stderr of extracting embedding: {stderr}")
             # split the string in two, parts before | and after
             s = stdout.split('|')
+            logger.info(f"Scalar: {s[0]}")
             scalar = s[0].strip("[]").split()
+            logger.info(f"Scalar: {scalar}")
             # remove last item from scalar[0]
             scalar = scalar[0][:-1]
             logger.info(f"Scalar: {scalar}")
