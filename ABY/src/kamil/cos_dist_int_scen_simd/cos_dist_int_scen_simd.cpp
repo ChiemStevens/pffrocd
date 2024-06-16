@@ -267,8 +267,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	float current_scalar_x = share_scalar_x[0];
 	float current_scalar_y = share_scalar_y[0];
 
-	std::cout << "current_scalar_x: " << current_scalar_x << std::endl;
-
 	uint32_t *scalar_xptr = (uint32_t *)&current_scalar_x;
 	uint32_t *scalar_yptr = (uint32_t *)&current_scalar_y;
 
@@ -323,10 +321,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	output_scalar = *((float *)output_scalar_uint);
 
-	std::cout << std::endl << "dot product: " << output << std::endl;
-	std::cout << std::endl << "scalar: " << output_scalar << std::endl;
 	std::cout << std::endl << "cos_dist_ver: " << 1 - (v_sum / output_scalar) << std::endl;
-
 	std::cout << "cos_dist: " << 1 - (output / output_scalar) << std::endl;
 }
 

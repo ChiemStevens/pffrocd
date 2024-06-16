@@ -17,7 +17,7 @@ parser.add_argument('-i', '--input', type=str, help='Input shares file path', re
 parser.add_argument('-b', '--byte', type=int, help='The big length', required=True)
 parser.add_argument('-q', '--quantize', type=bool, help='Quantize the embeddings', default=False, required=False)
 parser.add_argument('-o', '--output', type=str, help='Output file path', required=True)
-parser.add_argument('-s', '--scalar', type=str, help='Output for scalar', required=True)
+parser.add_argument('-s', '--scalar', type=str, help='Output for scalar', required=False)
 args = parser.parse_args()
 
 bit_length = args.byte
