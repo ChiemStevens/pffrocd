@@ -143,14 +143,9 @@ def run_test():
             # split the string in two, parts before | and after
             s = stdout.split('|')
             scalar = s[0].strip()
-
-            logger.info(f"Scalar looks like: {scalar}")
             # Remove the brackets and split the string into a list of strings
-            logger.info(f"s1 looks like {s[1]}")
-            s = s[1].strip('[]').split()
-            logger.info(f"S looks like {s}")
             # Convert the list of strings into a list of floats
-            s = [np.int32(i) for i in s]
+            s = [np.int32(i) for i in s[1]]
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=np.int32)
             logger.info(f"Share prime looks like: {shareprime}")
