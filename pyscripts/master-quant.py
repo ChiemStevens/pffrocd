@@ -143,10 +143,8 @@ def run_test():
             # split the string in two, parts before | and after
             s = stdout.split('|')
             scalar = s[0].strip("[]").split()
-            logger.info(f"scalar: {scalar}")
             # remove last item from scalar[0]
             scalar[0] = scalar[0][:-1]
-            logger.info(f"scalar: {scalar[0]}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
@@ -159,7 +157,7 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", np.float32(scalar))
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", np.float32(scalar[0]))
             pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
