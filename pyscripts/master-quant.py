@@ -147,6 +147,7 @@ def run_test():
             scalar[0] = scalar[0][:-1]
             scalar = [np.float32(i) for i in scalar]
             scalar = np.array(scalar, dtype=np.float32)
+            logger.info(f"Scalar: {scalar}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
@@ -159,7 +160,7 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar[0])
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar)
             pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
