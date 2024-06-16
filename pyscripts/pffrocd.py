@@ -249,19 +249,20 @@ def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None, scalar_x0=None
             for i in x_1:
                 f.write(f"{i}\n")
         # scalar
-        with open(f"{EXECUTABLE_PATH}/share0scalar_x.txt", 'w') as f:
-            for i in scalar_x0:
-                f.write(f"{i}\n")
-        with open(f"{EXECUTABLE_PATH}/share1scalar_x.txt", 'w') as f:
-            for i in scalar_x1:
-                f.write(f"{i}\n")
+        if scalar_x0 is not None and scalar_x1 is not None:
+            with open(f"{EXECUTABLE_PATH}/share0scalar_x.txt", 'w') as f:
+                for i in scalar_x0:
+                    f.write(f"{i}\n")
+            with open(f"{EXECUTABLE_PATH}/share1scalar_x.txt", 'w') as f:
+                for i in scalar_x1:
+                    f.write(f"{i}\n")
 
-        with open(f"{EXECUTABLE_PATH}/share0scalar_y.txt", 'w') as f:
-            for i in scalar_y0:
-                f.write(f"{i}\n")
-        with open(f"{EXECUTABLE_PATH}/share1scalar_y.txt", 'w') as f:
-            for i in scalar_y1:
-                f.write(f"{i}\n")
+            with open(f"{EXECUTABLE_PATH}/share0scalar_y.txt", 'w') as f:
+                for i in scalar_y0:
+                    f.write(f"{i}\n")
+            with open(f"{EXECUTABLE_PATH}/share1scalar_y.txt", 'w') as f:
+                for i in scalar_y1:
+                    f.write(f"{i}\n")
         
 
     CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
