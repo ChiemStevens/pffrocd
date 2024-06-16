@@ -69,6 +69,7 @@ with open(output_file, 'w') as f:
 
 if quantize:
     output_file = args.scalar
+    print("output file: ", output_file)
     with open(output_file, 'w') as f:
         for i in share1scalar_y:
             f.write(f"{i}\n")
