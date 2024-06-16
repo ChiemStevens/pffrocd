@@ -17,7 +17,7 @@ parser.add_argument('-i', '--input', type=str, help='Input shares file path', re
 parser.add_argument('-b', '--byte', type=int, help='The big length', required=True)
 parser.add_argument('-q', '--quantize', type=bool, help='Quantize the embeddings', default=False, required=False)
 parser.add_argument('-o', '--output', type=str, help='Output file path', required=True)
-parser.add_argument('-s', '--scalar', type=bool, help='Output for scalar', required=True)
+parser.add_argument('-s', '--scalar', type=str, help='Output for scalar', required=True)
 args = parser.parse_args()
 
 bit_length = args.byte
@@ -69,7 +69,6 @@ with open(output_file, 'w') as f:
 
 if quantize:
     output_file = args.scalar
-    print("output file: ", output_file)
     with open(output_file, 'w') as f:
         for i in share1scalar_y:
             f.write(f"{i}\n")
@@ -77,7 +76,4 @@ else:
     share0 = ""
 
 # Print share1 so it is brought back to master where it can be send to the client. 
-print(share0scalar_y)
-print("|")
-print(share0)
-print("testing")
+print("%s | %s" % (share0scalar_y, share0))
