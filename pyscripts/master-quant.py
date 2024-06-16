@@ -145,7 +145,7 @@ def run_test():
             scalar = s[0].strip()
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
-            logger.info(f"s1 looks like: {s[1]}")
+            logger.info(f"s1 looks like: {s[1][0]}")
             s[1] = s[1].strip('[]').split()
             logger.info(f"s1 looks like: {s[1]}")
             s = [np.int32(i) for i in s[1]]
