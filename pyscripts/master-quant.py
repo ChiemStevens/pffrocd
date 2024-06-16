@@ -152,7 +152,9 @@ def run_test():
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
             # remove first item from s[1]
+            logger.info(f"Shareprime: {s[1]}")
             s[1] = s[1][1:]
+            logger.info(f"Shareprime: {s[1]}")
             s = [np.int32(i) for i in s[1]]
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=np.int32)
