@@ -143,7 +143,8 @@ def run_test():
             # split the string in two, parts before | and after
             s = stdout.split('|')
             scalar = s[0].strip("[]").split()
-            scalar = s[0][1:]
+            # remove the last item from scalar
+            scalar = scalar[:-1]
             logger.info(f"scalar: {scalar}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
