@@ -675,6 +675,7 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
         with sftp.open(remote_path, 'w') as file:
             # Write the content to the file
             for i in content:
+                print(i)
                 file.write(f"{i}\n")
 
         # Close the SFTP session

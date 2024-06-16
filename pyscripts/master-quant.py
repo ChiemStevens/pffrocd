@@ -157,7 +157,7 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", np.float32(scalar[0]))
+            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar[0])
             pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
