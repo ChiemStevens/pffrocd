@@ -145,15 +145,12 @@ def run_test():
             scalar = s[0].strip()
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
-            logger.info(f"s1 looks like: {s[1]}")
             s[1] = s[1].strip("[]").split()
             # remove first item from s[1]
             s[1] = s[1][1:]
-            logger.info(f"s1 looks like: {s[1]}")
             s = [np.int32(i) for i in s[1]]
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=np.int32)
-            logger.info(f"Share prime looks like: {shareprime}")
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
@@ -165,13 +162,9 @@ def run_test():
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
             img_embedding = img_embedding / np.linalg.norm(img_embedding)
             img_embedding = qt.scalar_quantisation_percentile(img_embedding)
-            logger.info(f"ref_img_embedding before uint32: {ref_img_embedding}")
-            logger.info(f"img_embedding before uint32: {img_embedding}")
-            ref_img_embedding = np.array(ref_img_embedding, dtype=np.uint32)
-            img_embedding = np.array(img_embedding, dtype=np.uint32)
-            logger.info(f"ref_img_embedding: {ref_img_embedding}")
-            logger.info(f"img_embedding: {img_embedding}")
-            logger.info(f"cosine distance between embeddings: {np.dot(ref_img_embedding, img_embedding)}")
+            ref_img_embedding = np.array(ref_img_embedding, dtype=np.int32)
+            img_embedding = np.array(img_embedding, dtype=np.int32)
+            logger.info(f"cosine distance between embeddings: {1-np.dot(ref_img_embedding, img_embedding)}")
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
