@@ -72,8 +72,9 @@ if quantize:
     with open(output_file, 'w') as f:
         for i in share1scalar_y:
             f.write(f"{i}\n")
-else:
-    share0 = ""
 
-# Print share1 so it is brought back to master where it can be send to the client. 
-print("%s | %s" % (share0scalar_y, share0))
+if quantize:
+    # Print share1 so it is brought back to master where it can be send to the client. 
+    print("%s | %s" % (share0scalar_y, share0))
+else:
+    print(share0)
