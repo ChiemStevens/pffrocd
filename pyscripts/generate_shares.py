@@ -76,4 +76,7 @@ else:
     share0 = ""
 
 # Print share1 so it is brought back to master where it can be send to the client. 
-print(share0scalar_y + "|" + share0)
+print(share0scalar_y)
+print("|")
+print(share0)
+print("testing")
