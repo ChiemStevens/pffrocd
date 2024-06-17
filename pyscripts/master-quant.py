@@ -169,7 +169,6 @@ def run_test():
             ref_img_embedding = np.array(ref_img_embedding, dtype=np.int32)
             img_embedding = np.array(img_embedding, dtype=np.int32)
 
-            logger.info(f"cosine distance between embeddings: {pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)}")
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
@@ -246,7 +245,8 @@ def run_test():
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             # ref_img_embedding = np.array(ref_img_embedding, dtype=np.uint32)
             # img_embedding = np.array(img_embedding, dtype=np.uint32)
-            cos_dist_np = np.dot(ref_img_embedding, img_embedding)
+            
+            cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             logger.info(f"cosine distance between embeddings: {cos_dist_np}")
             server_list_of_sfe_values = list(server_parsed_sfe_output.values())
             client_list_of_sfe_values = list(client_parsed_sfe_output.values())
