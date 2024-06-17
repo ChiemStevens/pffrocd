@@ -147,14 +147,11 @@ def run_test():
             scalar[0] = scalar[0][:-1]
             scalar = [np.float32(i) for i in scalar]
             scalar = np.array(scalar, dtype=np.float32)
-            logger.info(f"Scalar: {scalar}")
             # Remove the brackets and split the string into a list of strings
             # Convert the list of strings into a list of floats
             s[1] = s[1].strip("[]").split()
             # remove first item from s[1]
-            logger.info(f"Shareprime: {s[1]}")
             s[1] = s[1][1:]
-            logger.info(f"Shareprime: {s[1]}")
             s = [np.int32(i) for i in s[1]]
             # Convert the list of floats into a numpy array
             shareprime = np.array(s, dtype=np.int32)
@@ -172,8 +169,6 @@ def run_test():
             ref_img_embedding = np.array(ref_img_embedding, dtype=np.int32)
             img_embedding = np.array(img_embedding, dtype=np.int32)
 
-            logger.info(f"ref image {ref_img_embedding}")
-            logger.info(f"img image {img_embedding}")
             logger.info(f"cosine distance between embeddings: {pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)}")
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
