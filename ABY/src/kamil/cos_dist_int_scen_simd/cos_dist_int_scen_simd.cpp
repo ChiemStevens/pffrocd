@@ -91,21 +91,31 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	uint32_t i;
 
 	// pairwise multiplication of all input values
-	share *dot_xy = ac->PutMULGate(s_x, s_y);
+	s_x = ac->PutMULGate(s_x, s_y);
 
 	// split SIMD gate to separate wires (size many)
-	dot_xy = ac->PutSplitterGate(dot_xy);
+	s_x = ac->PutSplitterGate(s_x);
+
+	share *temp;
+	share *temp1, *temp2;
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
 	for (i = 1; i < numbers; i++) {
-		dot_xy->set_wire_id(0, ac->PutADDGate(dot_xy->get_wire_id(0), dot_xy->get_wire_id(i)));
+		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+		//std::cout << "s_x wire_id(0)" <<s_x->get_wire_id(0) << std::endl;
+		//std::cout << "s_x wire_id(i)" <<s_x->get_wire_id(i) << std::endl;
+		ac->PutPrintValueGate(s_x->get_wire_ids_as_share(i), "wire(i)");
+		
+		// temp1 = s_x->get_wire_ids_as_share(0);
+		// temp2 = s_x->get_wire_ids_as_share(i);
+		// temp->set_wire_id(0, ac->PutADDGate(temp1, temp2))
 	}
 
 	// discard all wires, except the addition result
-	dot_xy->set_bitlength(1);
+	s_x->set_bitlength(1);
 
-	return dot_xy;
+	return s_x;
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
@@ -317,9 +327,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-//	output = s_out->get_clear_value<int32_t>();
-	uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
-	output = *((int32_t *)output_uint);
+	output = s_out->get_clear_value<int32_t>();
+	// uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
+	// output = *((int32_t *)output_uint);
 	
 	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	output_scalar = *((float *)output_scalar_uint);
