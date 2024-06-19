@@ -57,8 +57,8 @@ y = y / np.linalg.norm(y)
 x = qt.scalar_quantisation_percentile(x)
 y = qt.scalar_quantisation_percentile(y)
 
-share0, share1 = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
-share0prime, share1prime = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0, share1 = pffrocd.create_shares(np.array(y, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
+share0prime, share1prime = pffrocd.create_shares(np.array(x, dtype=NUMPY_DTYPE), NUMPY_DTYPE, True)
 norm_x = [np.linalg.norm(x)]
 norm_y = [np.linalg.norm(y)]
 print("normalized x : ", norm_x)
@@ -96,9 +96,9 @@ print(output.stdout)
 
 
 # recompute x from share0 and share1
-result = np.int32(share0 + share1)
-print("result",result)
-print("x",x)
+# result = np.int32(share0 + share1)
+# print("result",result)
+# print("x",x)
 
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
