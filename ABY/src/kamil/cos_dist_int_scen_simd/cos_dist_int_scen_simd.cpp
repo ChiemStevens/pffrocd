@@ -290,13 +290,33 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+
+	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+
+	// computing x \dot y
+	uint32_t posids[3] = {0, 0, 1};
+	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
+	share *s_x_dot_y = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
+	for (int i = 1; i < nvals; i++)
+	{
+		//uint32_t posids[3] = {i, i, 1};
+
+			posids[0] = i;
+			posids[1] = i;
+			posids[2] = 1;
+
+		// share *s_product_split;
+		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+	}
+
+	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
 	 Don't forget to type cast the circuit object to type of share
 	 */
-	s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, nvals,
-			(ArithmeticCircuit*) ac);
+	// s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, nvals,
+	// 		(ArithmeticCircuit*) ac);
 
 	/**
 	 Step 8: Output the value of s_out (the computation result) to both parties
@@ -328,7 +348,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-	output = s_out->get_clear_value<int32_t>();
+	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
+	output = *((int32_t *)x_dot_y_out_vals);
+	//output = s_out->get_clear_value<int32_t>();
 	std::cout << "output: " << output << std::endl;
 	// uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
 	// output = *((int32_t *)output_uint);
