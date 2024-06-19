@@ -334,7 +334,7 @@ int main(int argc, char **argv)
 	uint16_t port = 7766;
 	std::string address = "127.0.0.1";
 	int32_t test_op = -1;
-	e_mt_gen_alg mt_alg = MT_OT;
+	e_mt_gen_alg mt_alg = MT_PAILLIER;
 	uint32_t test_bit = 0;
 	uint32_t debug = 0;
 	std::string inputfile;
