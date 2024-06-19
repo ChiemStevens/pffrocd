@@ -273,9 +273,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		sharevals_prime[i] = *shareptr_prime;
 
 		v_sum += xvals[i] * yvals[i];
-		std::cout << "xvals: " << xvals[i] << std::endl;
-		std::cout << "yvals: " << yvals[i] << std::endl;
-		std::cout << "times: " << xvals[i] * yvals[i] << std::endl;
 	}
 	uint32_t share_scalar_xvals;
 	uint32_t share_scalar_yvals;
@@ -333,9 +330,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 */
 	output = s_out->get_clear_value<uint32_t>();
 	std::cout << "output: " << output << std::endl;
-	uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
-	output = *((int32_t *)output_uint);
-	std::cout << "output: " << output << std::endl;
+	// uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
+	// output = *((int32_t *)output_uint);
+	// std::cout << "output: " << output << std::endl;
 	
 	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	output_scalar = *((float *)output_scalar_uint);
