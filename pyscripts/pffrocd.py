@@ -36,7 +36,7 @@ columns = [
     'share_bytes_setup_phase_total',
     'share_bytes_setup_phase_client',
     'share_bytes_setup_phase_server',
-    'share_bytes_online_phase_client'
+    'share_bytes_online_phase_client',
     'server.Command being timed',
     'server.User time (seconds)',
     'server.System time (seconds)',
