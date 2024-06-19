@@ -73,17 +73,16 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 
 	*test_bit = int_testbit;
 
-	// if (int_mt_alg == 0) {
-	// 	*mt_alg = MT_OT;
-	// } else if (int_mt_alg == 1) {
-	// 	*mt_alg = MT_PAILLIER;
-	// } else if (int_mt_alg == 2) {
-	// 	*mt_alg = MT_DGK;
-	// } else {
-	// 	std::cout << "Invalid MT algorithm" << std::endl;
-	// 	exit(EXIT_FAILURE);
-	// }
-	*mt_alg = MT_LAST;
+	if (int_mt_alg == 0) {
+		*mt_alg = MT_OT;
+	} else if (int_mt_alg == 1) {
+		*mt_alg = MT_PAILLIER;
+	} else if (int_mt_alg == 2) {
+		*mt_alg = MT_DGK;
+	} else {
+		std::cout << "Invalid MT algorithm" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 	std::cout << "Finished pre checks" << std::endl; 
 }
 
@@ -91,32 +90,21 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	uint32_t i;
 
 	// pairwise multiplication of all input values
-	s_x = ac->PutMULGate(s_x, s_y);
+	share *dot_xy = ac->PutMULGate(s_x, s_y);
 
 	// split SIMD gate to separate wires (size many)
-	s_x = ac->PutSplitterGate(s_x);
-
-	share *temp;
-	share *temp1, *temp2;
+	dot_xy = ac->PutSplitterGate(dot_xy);
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
 	for (i = 1; i < numbers; i++) {
-		ac->PutPrintValueGate(s_x->get_wire_ids_as_share(i), "wire(0)");
-		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
-		//std::cout << "s_x wire_id(0)" <<s_x->get_wire_id(0) << std::endl;
-		//std::cout << "s_x wire_id(i)" <<s_x->get_wire_id(i) << std::endl;
-		ac->PutPrintValueGate(s_x->get_wire_ids_as_share(0), "wire(i)");
-		
-		// temp1 = s_x->get_wire_ids_as_share(0);
-		// temp2 = s_x->get_wire_ids_as_share(i);
-		// temp->set_wire_id(0, ac->PutADDGate(temp1, temp2))
+		dot_xy->set_wire_id(0, ac->PutADDGate(dot_xy->get_wire_id(0), dot_xy->get_wire_id(i)));
 	}
 
 	// discard all wires, except the addition result
-	s_x->set_bitlength(1);
+	dot_xy->set_bitlength(1);
 
-	return s_x;
+	return dot_xy;
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
@@ -180,7 +168,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::fstream infile_scalar_sharex(fname_scalar_sharex);
 	std::fstream infile_scalar_sharey(fname_scalar_sharey);
 
-	int32_t z;
+	uint32_t z;
 	float q;
 	// // std::cout << "starting reading z" << std::endl;
 
@@ -235,7 +223,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 5: Allocate the xvals and yvals that will hold the plaintext values.
 	 */
-	int32_t output, v_sum = 0;
+	uint32_t output, v_sum = 0;
 	float output_scalar = 0;
 
 	uint32_t i;
@@ -290,33 +278,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	//s_y_vec = ac->PutSIMDINGate(nvals, yvals.data(), 32, CLIENT);
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
-
-	share *s_x_times_y_1 = bc->PutFPGate(s_x_vec, s_y_vec, MUL, bitlen, nvals, no_status);
-
-	// computing x \dot y
-	uint32_t posids[3] = {0, 0, 1};
-	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = bc->PutSubsetGate(s_x_times_y_1, posids, 1, true);
-	for (int i = 1; i < nvals; i++)
-	{
-		//uint32_t posids[3] = {i, i, 1};
-
-			posids[0] = i;
-			posids[1] = i;
-			posids[2] = 1;
-
-		// share *s_product_split;
-		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y_1,posids,1,true),ADD);
-	}
-
-	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
 	/**
 	 Step 7: Call the build method for building the circuit for the
 	 problem by passing the shared objects and circuit object.
 	 Don't forget to type cast the circuit object to type of share
 	 */
-	// s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, nvals,
-	// 		(ArithmeticCircuit*) ac);
+	s_out = BuildInnerProductCircuit(s_x_vec, s_y_vec, nvals,
+			(ArithmeticCircuit*) ac);
 
 	/**
 	 Step 8: Output the value of s_out (the computation result) to both parties
@@ -348,24 +316,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	/**
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
-	uint32_t *x_dot_y_out_vals = (uint32_t *)x_dot_y_out->get_clear_value_ptr();
-	output = *((int32_t *)x_dot_y_out_vals);
-	//output = s_out->get_clear_value<int32_t>();
-	std::cout << "output: " << output << std::endl;
-	// uint32_t *output_uint = (uint32_t *)s_out->get_clear_value_ptr();
-	// output = *((int32_t *)output_uint);
-	// std::cout << "output: " << output << std::endl;
-	
+	output = s_out->get_clear_value<int32_t>();
+
 	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
 	output_scalar = *((float *)output_scalar_uint);
 
 	std::cout << std::endl << "cos_dist_ver: " << 1 - (v_sum / output_scalar) << std::endl;
-	// remove later
-	std::cout << "output scalar: " << output_scalar << std::endl;
-	std::cout << "output: " << output << std::endl;
-	// vsum
-	std::cout << "vsum: " << v_sum << std::endl;
-	// leave this
 	std::cout << "cos_dist: " << 1 - (output / output_scalar) << std::endl;
 }
 
@@ -378,7 +334,7 @@ int main(int argc, char **argv)
 	uint16_t port = 7766;
 	std::string address = "127.0.0.1";
 	int32_t test_op = -1;
-	e_mt_gen_alg mt_alg = MT_PAILLIER;
+	e_mt_gen_alg mt_alg = MT_OT;
 	uint32_t test_bit = 0;
 	uint32_t debug = 0;
 	std::string inputfile;
