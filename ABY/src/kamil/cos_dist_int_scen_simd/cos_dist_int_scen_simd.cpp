@@ -291,12 +291,12 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_x_vec = ac->PutSharedSIMDINGate(nvals, sharevals_prime, bitlen);
 	s_y_vec = ac->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
-	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+	share *s_x_times_y_1 = bc->PutFPGate(s_x_vec, s_y_vec, MUL, bitlen, nvals, no_status);
 
 	// computing x \dot y
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_x_dot_y = bc->PutSubsetGate(s_x_times_y, posids, 1, true);
+	share *s_x_dot_y = bc->PutSubsetGate(s_x_times_y_1, posids, 1, true);
 	for (int i = 1; i < nvals; i++)
 	{
 		//uint32_t posids[3] = {i, i, 1};
@@ -306,7 +306,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 			posids[2] = 1;
 
 		// share *s_product_split;
-		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
+		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y_1,posids,1,true),ADD);
 	}
 
 	share *x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
