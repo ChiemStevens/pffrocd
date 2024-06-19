@@ -221,7 +221,7 @@ def run_test():
                 running_time_client = float(client_ram_usage['User time (seconds)'])
                 running_time_server = float(server_ram_usage['User time (seconds)'])
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
-                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
+                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=600)
                 # get the powertop files from hosts and parse them and save in the dataframe
                 all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, master_key_path, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
                 logger.info(f"All values from powertop for client: {all_values}")
@@ -270,8 +270,8 @@ def run_test():
             logger.debug(f"{server_list_of_ram_values=}")
             logger.debug(f"{client_list_of_ram_values=}")
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, shareBytesSetupPhaseTotal, shareBytesSetupPhaseClient, shareBytesSetupPhaseServer, shareBytesOnlinePhaseClient] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
-            logger.info(f"{to_be_appended=}")
-            logger.info(f"{pffrocd.columns=}")
+            logger.debug(f"{to_be_appended=}")
+            logger.debug(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        
             df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
             output_path = f"dfs/{current_datetime}.csv"
