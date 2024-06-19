@@ -59,6 +59,9 @@ else:
 # client_exec_name += f"_{bit_length}"
 # server_exec_name += f"_{bit_length}"
 
+df = pd.read_csv('dfs/2024-06-19_19-25-59.csv')
+
+
 def run_test():
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
@@ -126,6 +129,11 @@ def run_test():
         shareBytesSetupPhaseTotal = shareBytesSetupPhaseClient + shareBytesSetupPhaseServer
         # run the test for each image
         for count_img,img in enumerate(imgs):
+            # if df['other_img'] already contains img, skip this iteration
+            if img in df['other_img'].values:
+                logger.info(f"Skipping image {img} as it is already in the dataframe")
+                continue
+             
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
@@ -223,10 +231,10 @@ def run_test():
                 output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=600)
                 # get the powertop files from hosts and parse them and save in the dataframe
                 all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, master_key_path, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
-                logger.info(f"All values from powertop for client: {all_values}")
+                #logger.info(f"All values from powertop for client: {all_values}")
                 #logger.info(f"Energy client: {energy_client}")
                 all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, master_key_path, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
-                logger.info(f"All values from powertop for server: {all_values}")
+                #logger.info(f"All values from powertop for server: {all_values}")
                 #logger.debug(f"Energy server: {energy_server}")
             else:
                 energy_client = 'not measured'
