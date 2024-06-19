@@ -116,10 +116,14 @@ def run_test():
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here
-        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
-        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_x.txt", share0scalar)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0scalar_x.txt", share1scalar)
+        shareBytesSetupPhaseTotal = 0
+        shareBytesSetupPhaseServer = 0
+        shareBytesSetupPhaseClient = 0       
+        shareBytesSetupPhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
+        shareBytesSetupPhaseServer += pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
+        shareBytesSetupPhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_x.txt", share0scalar)
+        shareBytesSetupPhaseServer += pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0scalar_x.txt", share1scalar)
+        shareBytesSetupPhaseTotal = shareBytesSetupPhaseClient + shareBytesSetupPhaseServer
         # run the test for each image
         for count_img,img in enumerate(imgs):
             logger.info(f"Running test for {img}")
@@ -159,8 +163,9 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
+            shareBytesOnlinePhaseClient = 0
+            shareBytesOnlinePhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1scalar_y.txt", scalar)
+            shareBytesOnlinePhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
@@ -264,7 +269,7 @@ def run_test():
             logger.debug(f"{client_ram_usage=}")
             logger.debug(f"{server_list_of_ram_values=}")
             logger.debug(f"{client_list_of_ram_values=}")
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, shareBytesSetupPhaseTotal, shareBytesSetupPhaseClient, shareBytesSetupPhaseServer, shareBytesOnlinePhaseClient] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        

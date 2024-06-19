@@ -33,6 +33,10 @@ columns = [
     'total_time',
     'sfe_time',
     'extraction_time',
+    'share_bytes_setup_phase_total',
+    'share_bytes_setup_phase_client',
+    'share_bytes_setup_phase_server',
+    'share_bytes_online_phase_client'
     'server.Command being timed',
     'server.User time (seconds)',
     'server.System time (seconds)',
@@ -681,13 +685,14 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
                 line = f"{i}\n"
                 total_bytes += sys.getsizeof(line)
                 file.write(line)
-            print(f"Total bytes written: {total_bytes}")
 
         # Close the SFTP session
         sftp.close()
     finally:
         # Close the SSH client connection
         client.close()
+
+    return total_bytes
 
 
 def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray):
