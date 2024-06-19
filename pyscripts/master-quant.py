@@ -190,7 +190,6 @@ def run_test():
             command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, command1, command2, timeout=300)
-            logger.info(f"output {output}")
             sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
@@ -213,8 +212,8 @@ def run_test():
             client_ram_usage = pffrocd.parse_usr_bin_time_output(client_sfe_error)
             logger.debug(f"Parsed server ram usage: {server_ram_usage}")
             logger.debug(f"Parsed client ram usage: {client_ram_usage}")
-            logger.info(f"Server SFE output: {server_sfe_output}")
-            logger.info(f"Client SFE output: {client_sfe_output}")
+            logger.debug(f"Server SFE output: {server_sfe_output}")
+            logger.debug(f"Client SFE output: {client_sfe_output}")
             # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
