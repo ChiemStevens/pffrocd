@@ -91,10 +91,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	uint32_t i;
 
 	// pairwise multiplication of all input values
-	ac->PutPrintValueGate(s_x->get_wire_ids_as_share(0), "s_x wire_ids_as_share(0)");
-	ac->PutPrintValueGate(s_y->get_wire_ids_as_share(0), "s_y wire_ids_as_share(0)");
 	s_x = ac->PutMULGate(s_x, s_y);
-	ac->PutPrintValueGate(s_x->get_wire_ids_as_share(0), "s_x wire_ids_as_share(0)");
 
 	// split SIMD gate to separate wires (size many)
 	s_x = ac->PutSplitterGate(s_x);
