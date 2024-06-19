@@ -98,7 +98,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (i = 0; i < numbers; i++) {
+	for (i = 1; i < numbers; i++) {
 		dot_xy->set_wire_id(0, ac->PutADDGate(dot_xy->get_wire_id(0), dot_xy->get_wire_id(i)));
 	}
 
@@ -169,7 +169,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::fstream infile_scalar_sharex(fname_scalar_sharex);
 	std::fstream infile_scalar_sharey(fname_scalar_sharey);
 
-	uint32_t z;
+	int32_t z;
 	float q;
 	// // std::cout << "starting reading z" << std::endl;
 
