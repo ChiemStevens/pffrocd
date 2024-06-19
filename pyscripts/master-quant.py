@@ -59,6 +59,7 @@ else:
 # client_exec_name += f"_{bit_length}"
 # server_exec_name += f"_{bit_length}"
 
+output_path = 'dfs/2024-06-19_19-25-59.csv'
 df = pd.read_csv('dfs/2024-06-19_19-25-59.csv')
 
 
@@ -133,7 +134,7 @@ def run_test():
             if img in df['other_img'].values:
                 logger.info(f"Skipping image {img} as it is already in the dataframe")
                 continue
-             
+
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
@@ -281,7 +282,7 @@ def run_test():
             logger.debug(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        
             df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
-            output_path = f"dfs/{current_datetime}.csv"
+            #output_path = f"dfs/{current_datetime}.csv"
             # append dataframe to file, only write headers if file does not exist yet
             df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
 
