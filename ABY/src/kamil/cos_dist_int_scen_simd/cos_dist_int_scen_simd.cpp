@@ -98,7 +98,7 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	for (i = 1; i < numbers; i++) {
+	for (i = 0; i < numbers; i++) {
 		dot_xy->set_wire_id(0, ac->PutADDGate(dot_xy->get_wire_id(0), dot_xy->get_wire_id(i)));
 	}
 
