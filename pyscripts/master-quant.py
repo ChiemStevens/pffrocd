@@ -61,7 +61,6 @@ else:
 
 def run_test():
     output_path = 'dfs/2024-06-19_19-25-59.csv'
-    df = pd.read_csv('dfs/2024-06-19_19-25-59.csv')
 
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
@@ -130,6 +129,7 @@ def run_test():
         # run the test for each image
         for count_img,img in enumerate(imgs):
             # if df['other_img'] already contains img, skip this iteration
+            df = pd.read_csv(output_path)
             if img in df['other_img'].values:
                 logger.info(f"Skipping image {img} as it is already in the dataframe")
                 continue
