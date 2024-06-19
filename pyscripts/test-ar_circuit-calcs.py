@@ -96,7 +96,7 @@ print(output.stdout)
 
 
 # recompute x from share0 and share1
-result = np.float32(share0 + share1)
+result = np.int32(share0 + share1)
 print("result",result)
 print("x",x)
 
