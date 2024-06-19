@@ -323,6 +323,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << std::endl << "cos_dist_ver: " << 1 - (v_sum / output_scalar) << std::endl;
 	std::cout << "cos_dist: " << 1 - (output / output_scalar) << std::endl;
+
+	// remove later
+	std::cout << "output: " << output << std::endl;
+	std::cout << "output_scalar: " << output_scalar << std::endl;
 }
 
 int main(int argc, char **argv)
