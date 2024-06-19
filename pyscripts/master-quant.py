@@ -270,8 +270,8 @@ def run_test():
             logger.debug(f"{server_list_of_ram_values=}")
             logger.debug(f"{client_list_of_ram_values=}")
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, shareBytesSetupPhaseTotal, shareBytesSetupPhaseClient, shareBytesSetupPhaseServer, shareBytesOnlinePhaseClient] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
-            logger.debug(f"{to_be_appended=}")
-            logger.debug(f"{pffrocd.columns=}")
+            logger.info(f"{to_be_appended=}")
+            logger.info(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        
             df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
             output_path = f"dfs/{current_datetime}.csv"
