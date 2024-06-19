@@ -73,16 +73,17 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 
 	*test_bit = int_testbit;
 
-	if (int_mt_alg == 0) {
-		*mt_alg = MT_OT;
-	} else if (int_mt_alg == 1) {
-		*mt_alg = MT_PAILLIER;
-	} else if (int_mt_alg == 2) {
-		*mt_alg = MT_DGK;
-	} else {
-		std::cout << "Invalid MT algorithm" << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	// if (int_mt_alg == 0) {
+	// 	*mt_alg = MT_OT;
+	// } else if (int_mt_alg == 1) {
+	// 	*mt_alg = MT_PAILLIER;
+	// } else if (int_mt_alg == 2) {
+	// 	*mt_alg = MT_DGK;
+	// } else {
+	// 	std::cout << "Invalid MT algorithm" << std::endl;
+	// 	exit(EXIT_FAILURE);
+	// }
+	*mt_alg = MT_LAST;
 	std::cout << "Finished pre checks" << std::endl; 
 }
 
@@ -317,9 +318,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	 Step 10: Type caste the plaintext output to 16 bit unsigned integer.
 	 */
 	output = s_out->get_clear_value<int32_t>();
-
-	uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
-	output_scalar = *((float *)output_scalar_uint);
+	output_scalar = s_out_scalar->get_clear_value<float>();
+	// uint32_t *output_scalar_uint = (uint32_t *)s_out_scalar->get_clear_value_ptr();
+	// output_scalar = *((float *)output_scalar_uint);
 
 	std::cout << std::endl << "cos_dist_ver: " << 1 - (v_sum / output_scalar) << std::endl;
 	std::cout << "cos_dist: " << 1 - (output / output_scalar) << std::endl;
