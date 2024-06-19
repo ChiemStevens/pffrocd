@@ -59,11 +59,10 @@ else:
 # client_exec_name += f"_{bit_length}"
 # server_exec_name += f"_{bit_length}"
 
-output_path = 'dfs/2024-06-19_19-25-59.csv'
-df = pd.read_csv('dfs/2024-06-19_19-25-59.csv')
-
-
 def run_test():
+    output_path = 'dfs/2024-06-19_19-25-59.csv'
+    df = pd.read_csv('dfs/2024-06-19_19-25-59.csv')
+
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
     mt_alg = config.getint('misc', 'mt_algorithm')
