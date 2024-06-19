@@ -11,6 +11,7 @@ from deepface import DeepFace
 import paramiko
 import logging
 import datetime
+import sys
 import json
 from pssh.clients import ParallelSSHClient
 from pssh.config import HostConfig
@@ -675,8 +676,12 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
 
         with sftp.open(remote_path, 'w') as file:
             # Write the content to the file
+            total_bytes = 0
             for i in content:
-                file.write(f"{i}\n")
+                line = f"{i}\n"
+                total_bytes += sys.getsizeof(line)
+                file.write(line)
+            print(f"Total bytes written: {total_bytes}")
 
         # Close the SFTP session
         sftp.close()
