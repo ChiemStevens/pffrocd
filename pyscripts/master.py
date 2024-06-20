@@ -59,6 +59,8 @@ client_exec_name += f"_{bit_length}"
 server_exec_name += f"_{bit_length}"
 
 def run_test():
+    output_path = 'dfs/2024-06-20_12-00-00.csv'
+
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
     mt_alg = config.getint('misc', 'mt_algorithm')
@@ -106,10 +108,19 @@ def run_test():
         # write the shares to the server and client
         # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
         # This made me confused for a while, so I think it is good to clarify this here
-        pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
+        shareBytesSetupPhaseTotal = 0
+        shareBytesSetupPhaseServer = 0
+        shareBytesSetupPhaseClient = 0   
+        shareBytesSetupPhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
+        shareBytesSetupPhaseServer += pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
+        shareBytesSetupPhaseTotal = shareBytesSetupPhaseClient + shareBytesSetupPhaseServer
         # run the test for each image
         for count_img,img in enumerate(imgs):
+            df = pd.read_csv(output_path)
+            if img in df['other_img'].values:
+                logger.info(f"Skipping image {img} as it is already in the dataframe")
+                continue
+
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
@@ -140,7 +151,8 @@ def run_test():
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
-            pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
+            shareBytesOnlinePhaseClient = 0
+            shareBytesOnlinePhaseClient+=pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
@@ -234,12 +246,12 @@ def run_test():
             logger.debug(f"{client_ram_usage=}")
             logger.debug(f"{server_list_of_ram_values=}")
             logger.debug(f"{client_list_of_ram_values=}")
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, shareBytesSetupPhaseTotal, shareBytesSetupPhaseClient, shareBytesSetupPhaseServer, shareBytesOnlinePhaseClient] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        
             df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
-            output_path = f"dfs/{current_datetime}.csv"
+            #output_path = f"dfs/{current_datetime}.csv"
             # append dataframe to file, only write headers if file does not exist yet
             df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
 
