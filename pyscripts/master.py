@@ -38,6 +38,10 @@ server_exec_path = config.get('server', 'executable_path')
 server_exec_name = config.get('server', 'executable_name')
 server_pffrocd_path = config.get('server', 'pffrocd_path')
 
+# Added this to the config file
+# Since at first the master, server and client all had the same path e.g.: home/user/.ssh/id_rsa we could always use the server or client key path
+# However during my testing I had a different path on master, therefore, added this to config file
+# If all your paths are the same, you can set this in the config file to the same as the server or client key path
 master_key_path = config.get('master', 'private_ssh_key_path')
 
 nr_of_people = config.getint('misc', 'nr_of_people')
